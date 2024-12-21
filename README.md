@@ -23,13 +23,13 @@ InternHub Students & Companies (S&C) is a comprehensive platform designed to rev
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/YourOrganization/internhub-frontend.git
-cd internhub-frontend
+git clone https://github.com/shreeshjha/JhaBhatiaSharma.git
+cd JhaBhatiaSharma/frontend
 ```
 
 2. Install dependencies:
 ```bash
-npm install
+npm i
 ```
 
 3. Start the development server:
