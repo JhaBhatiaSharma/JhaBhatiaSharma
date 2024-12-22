@@ -1,0 +1,31 @@
+# Node.js
+node_modules/
+package-lock.json
+
+# React + Vite
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+frontend/.env.local
+frontend/.env.*.local
+
+# Sublime
+*.sublime-workspace
+*.sublime-project
+
+# Alloy Code
+Alloy Code/.DS_Store
+Alloy Code/*~
+
+# macOS
+.DS_Store
+
+# General
+*.log
+*.tmp
+*.swp
+*.bak
+
+# Generated files
+README.md~*
+

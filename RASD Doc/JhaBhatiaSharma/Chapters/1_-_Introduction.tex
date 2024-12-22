@@ -1,0 +1,238 @@
+Internships form a crucial bridge between academic learning and real-world professional experience. However, many existing tools struggle to efficiently connect students with suitable internship opportunities, resulting in mismatches and administrative burdens for universities and companies alike. \textbf{InternHub – Students \& Companies (S\&C)} addresses this gap by unifying the entire internship cycle—from finding the right match to ensuring quality, accountability, and continuous improvement—within a single, integrated platform.
+
+This \textbf{Requirements Analysis and Specification Document (RASD)} outlines the platform’s technical and functional specifications, serving both as a development roadmap and a contractual reference for stakeholders. By employing advanced matching algorithms, providing robust feedback mechanisms, and streamlining internship workflows, the S\&C platform ensures a seamless experience that benefits students, companies, and universities. Through this document, each party gains a clear understanding of the platform’s capabilities and the value it delivers, setting the foundation for more efficient and effective internships.
+
+\newpage
+
+\section{Purpose}
+\label{sec:purpose}%
+This Requirements Analysis and Specification Document (RASD) provides a comprehensive overview of the \textbf{InternHub - Students \& Companies (S\&C) platform}. Its primary purpose is to serve as both a guide for developers responsible for implementing the system specifications and as a contractual reference point for clients and contractors. Additionally, it offers a clear, precise, and unambiguous explanation of the platform’s features and limitations, empowering students, companies, and academic institutions to confirm that the system meets their needs and requirements.
+The S\&C platform’s overarching goal is to transform how university students connect with companies for internships. To this end, it focuses on:
+\begin{enumerate}
+    \item Establishing an efficient system that matches students with suitable internship opportunities.
+    \item Streamlining the entire internship lifecycle—from application through completion—to simplify both student and company workflows. 
+    \item Utilizing smart recommendation algorithms to align student skills with company requirements, ensuring more accurate and beneficial matches.
+    \item Providing robust monitoring and feedback tools to enhance transparency, accountability, and continuous improvement.
+    \item Ensuring effective complaint management and maintaining high-quality standards throughout the internship process.
+\end{enumerate}
+
+By offering a seamless and impactful experience, the S\&C platform aims to serve as a trusted solution that addresses the requirements of all stakeholders—students, businesses, and universities—thereby ensuring a more efficient, productive, and rewarding internship ecosystem.
+
+
+\subsection{Goals}
+\label{subsec:goals}%
+\newcounter{g}
+\setcounter{g}{1}
+\newcommand{\cg}{\theg\stepcounter{g}}
+
+Below is a table that lists all the goals of the S\&C platform:
+
+\begin{center}
+    \begin{longtable}{ |l|p{0.9\linewidth}| }
+        \hline
+        \textbf{ID} & \textbf{Description} \\
+        \hline
+        G\cg & Enable students to create detailed profiles, including their CVs, skills, academic achievements, and interests. \\
+        \hline
+        G\cg & Allow companies to post comprehensive internship opportunities, detailing roles, requirements, benefits, and timelines. \\
+        \hline
+        G\cg & Provide intelligent recommendations that align student skills and preferences with internship opportunities. \\
+        \hline
+        G\cg & Equip universities with tools to effectively monitor, manage, and track student internship progress and performance. \\
+        \hline
+        G\cg & Implement feedback and rating systems to promote accountability and continuous improvement for both students and companies. \\
+        \hline
+        G\cg & Facilitate seamless communication between students, companies, and universities for better collaboration and coordination. \\
+        \hline
+        G\cg & Integrate a secure document management system for handling internship-related paperwork, such as contracts and certificates. \\
+        \hline
+        G\cg & Offer analytics and reporting tools to provide insights into internship trends, success rates, and areas for improvement. \\
+        \hline
+        G\cg & Support multilingual functionality to ensure accessibility for a diverse user base across regions. \\
+        \hline
+        G\cg & Implement a grievance redressal mechanism to resolve disputes and ensure fair treatment for all users. \\
+        \hline
+        G\cg & Provide training modules or resources to prepare students for internships, such as interview tips and skill-building exercises. \\
+        \hline
+        \caption{Goals table.}
+        \label{tab:goals_tab}%
+    \end{longtable}
+\end{center}
+
+\section{Scope}
+\label{sec:scope}%
+\subsection{World Phenomena}
+\label{subsec:world_phenomena}%
+\newcounter{wp}
+\setcounter{wp}{1}
+\newcommand{\cwp}{\thewp\stepcounter{wp}}
+\textbf{World Phenomena:} 
+The project addresses core operational areas that shape the interactions and processes among students, companies, and universities. These include:
+\begin{enumerate}
+    \item \textbf{Student Internship Process:} Students search for and apply to internships, creating personal profiles and uploading their CVs.
+    \begin{itemize}
+        \item ID: WP1 Students create profiles and upload their CVs.
+        \item ID: WP4 Students apply for internships.
+    \end{itemize}
+
+    \item \textbf{Company Internship Management:} Companies post internship opportunities, define requirements, and review applications to select suitable candidates.
+    \begin{itemize}
+        \item ID: WP2 Companies post internship opportunities.
+        \item ID: WP5 Companies review applications and select candidates.
+    \end{itemize}
+
+    \item \textbf{University Oversight:} Universities maintain a supervisory role, monitoring and managing internship activities to ensure quality and compliance.
+    \begin{itemize}
+        \item ID: WP3 Universities monitor internship progress.
+    \end{itemize}
+
+    \item \textbf{Interview Coordination and Selection:} The platform facilitates the scheduling and management of interviews and other selection procedures to ensure a smooth hiring process.
+
+    \item \textbf{Feedback and Quality Assurance:} Feedback is collected from students, companies, and universities to ensure continuous improvement, enhanced user experience, and adherence to quality standards.
+    \begin{itemize}
+        \item ID: WP6 Feedback is collected from students and companies.
+    \end{itemize}
+
+    \item \textbf{Complaint Handling:} A robust complaint-handling system ensures issues are addressed efficiently, maintaining trust and transparency in all interactions.
+
+    \item \textbf{Fair and Transparent Interactions:} The system is designed to foster an environment of fairness, transparency, and accountability among students, companies, and universities.
+\end{enumerate}
+\newpage
+
+\subsection{Shared phenomena}
+\label{subsec:shared_phenomena}%
+\newcounter{sp}
+\setcounter{sp}{1}
+\newcommand{\csp} {\thesp\stepcounter{sp}}
+\textbf{Shared Phenomena:}
+The platform provides a suite of shared functionalities, ensuring seamless interaction and data exchange among all stakeholders (Students, Companies, and Universities):
+\begin{enumerate}
+    \item \textbf{User Account Management and Profiles:}
+    \begin{itemize}
+        \item \textbf{ID:} SP1 Students create accounts on the platform (Controller: Student, Observer: Platform).
+        \item \textbf{ID:} SP2 Companies create accounts on the platform (Controller: Company, Observer: Platform).
+        \item \textbf{ID:} SP3 Universities create accounts on the platform (Controller: University, Observer: Platform).
+    \end{itemize}
+
+\item Students maintain detailed profiles, including CVs, skills, and achievements, while companies and universities manage their respective institutional profiles.
+    
+\item \textbf{Internship Postings and Applications:}
+Students can apply directly to posted internships, and companies can review and manage these applications.
+\begin{itemize}
+    \item \textbf{ID:} SP4 Students apply for internships (Controller: Student, Observer: Platform).
+    \item \textbf{ID:} SP5 Companies review and manage applications (Controller: Company, Observer: Platform).
+    \item \textbf{ID:} SP6 Universities track student applications (Controller: University, Observer: Platform).
+\end{itemize}
+
+\item \textbf{Feedback and Rating System:}
+A comprehensive feedback mechanism enables stakeholders to exchange feedback, ratings, and reviews to ensure accountability and continuous improvement.
+\begin{itemize}
+    \item \textbf{ID:} SP7 Feedback is exchanged between stakeholders (Controller: All, Observer: Platform).
+\end{itemize}
+
+\item \textbf{Interview Scheduling and Notifications:}
+Interviews are coordinated efficiently, with automated reminders and updates for both students and companies.
+
+\item \textbf{Communication and Support Tools:}
+The platform offers seamless communication channels for queries, updates, and issue resolution among students, companies, and universities.
+\item \textbf{Document Management:}
+Secure storage and sharing capabilities for documents, such as internship agreements, certificates, and other relevant files, ensure easy access and proper record-keeping.
+
+\item \textbf{Analytics and Insights:}
+Real-time analytics and reporting tools help all parties make informed decisions, monitor internship progress, and assess performance metrics.
+
+\item \textbf{Multilingual Support:}
+The platform supports multiple languages, accommodating a diverse global user base.
+
+\item \textbf{Training and Preparation Resources:}
+Students have access to resources like training materials and interview preparation tools, aiding them in securing and succeeding in internships.
+\end{enumerate}
+
+
+\section{Definition, Acronyms, Abbreviations}
+\label{sec:definition_acronyms_abbreviations}%
+\begin{table}[H]
+    \centering
+    \begin{tabular}{ |l|p{0.7\linewidth}| }
+        \hline
+        \textbf{Term/Acronym} & \textbf{Definition} \\
+        \hline
+        S\&C  & Students \& Companies Platform \\
+        \hline
+        RASD  & Requirements Analysis \& Specification Document \\
+        \hline
+        CV    & Curriculum Vitae \\
+        \hline
+        UI    & User Interface \\
+        \hline
+        API   & Application Programming Interface \\
+        \hline
+        DBMS  & Database Management System \\
+        \hline
+        SLA   & Service Level Agreement \\
+        \hline
+        GDPR  & General Data Protection Regulation \\
+        \hline
+    \end{tabular}
+    \caption{Acronyms and terms used in the document.}
+    \label{tab:acronyms_sc}
+\end{table}
+
+\section{Revision History}
+\label{sec:revision_history}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{ |p{0.1\linewidth}|p{0.15\linewidth}|p{0.45\linewidth}|p{0.2\linewidth}| }
+        \hline
+        \textbf{Version} & \textbf{Date} & \textbf{Description} & \textbf{Authors} \\
+        \hline
+        0.1 & 8 December 2024 & Initial Release & 
+        Shreesh Kumar Jha, \newline
+        Samarth Bhatia, \newline
+        Satvik Sharma \\
+        \hline
+        1.0 & 17 December 2024 & Structure Fix and Added Use Cases & 
+        Shreesh Kumar Jha, \newline
+        Samarth Bhatia \\
+        \hline
+        2.0 & 19 December 2024 & Alloy Modelling & 
+        Shreesh Kumar Jha, \newline
+        Samarth Bhatia \\
+        \hline
+        3.0 & 21 December 2024 & Final Version & 
+        Shreesh Kumar Jha, \newline
+        Samarth Bhatia \newline
+        Satvik Sharma\\
+        \hline
+    \end{tabular}
+    \caption{Revision History}
+    \label{tab:revision_history}
+\end{table}
+
+
+\section{Reference Documents}
+\label{sec:reference_documents}%
+\begin{itemize}
+    \item Reference to Previous Year Student Projects for Structuring the Document
+    \item Specification Document Assignment
+    \item IEEE Standard Documentation For RASD 
+\end{itemize}
+
+\newpage
+
+\section{Document Structure}
+\label{sec:document_structure}%
+As shown below, the document is organized into six sections, each with a distinct focus:
+
+\paragraph{Introduction:} The project's goals, purpose, and a succinct analysis of common and worldwide occurrences are presented in the introduction, containing acronyms and definitions to help you grasp the problem domain.
+
+\paragraph{Overall Description:} Provides a thorough rundown of the issue, potential domains, and features of the product. explains limitations, dependencies, and assumptions as well.
+
+\paragraph{Specific Requirements:} Provides a detailed description of both functional and non-functional needs, including those pertaining to external interfaces.
+
+\paragraph{Formal Analysis Using Alloy:} Provides assertions and checks to validate the model outlined in previous parts.
+
+\paragraph{Effort Spent:} Describes how each team member contributed to the writing of this paper.
+
+\paragraph{References:} Provides a list of all the supplementary materials and references that were utilized to produce the document.
