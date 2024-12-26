@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const { Student, Recruiter } = require("../models/index");
+const { findStudent, findRecruiter } = require("../services/userService");
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
@@ -16,18 +16,35 @@ const authMiddleware = async (req, res, next) => {
     const decoded = jwt.verify(token, JWT_SECRET);
     const { email } = decoded;
 
-    const user = await User.findOne({ where: { email } });
+    const userType = req.headers.usertype;
+    if (!userType) {
+      return res.status(400).json({ message: 'UserType header is required.' });
+    }
 
-    if (!user) {
-      return res.status(403).json({ error: "User not found or unauthorized" });
+    var user;
+    var name;
+    var usertype;
+    if (userType === 'student') {
+      user = await findStudent(email);
+      name = user.firstName;
+      usertype = "student";
+    } else if (userType === 'recruiter') {
+      user = await findRecruiter(email);
+      name = user.companyName;
+      usertype = "recruiter";
+    } else {
+      return res.status(400).json({ message: 'Invalid userType passed.' });
+    }
+
+    if(!user) {
+      return res.status(404).json({ message: 'No user found.' });
     }
 
     req.user = {
       id: user.id,
-      firstName: user.firstName,
-      lastName: user.lastName,
       email: user.email,
-      role: user.role,
+      usertype: usertype,
+      name: name
     };
 
     next();

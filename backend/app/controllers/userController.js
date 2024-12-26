@@ -180,7 +180,7 @@ const generateAccessToken = async (req, res) => {
         if (!email) {
             return res.status(400).json({ message: 'Email is required' });
         }
-
+        console.log(email);
         const token = await generateToken(email, userType);
         res.json({
             message: "Token generated successfully",
