@@ -6,10 +6,12 @@ import ProtectedRoute from './components/ProtectedRoute';
 import AuthenticationScreen from './pages/AuthenticationScreen';  // Changed to lowercase 'pages'
 import AdminDashboard from './pages/AdminDashboard';
 import StudentDashboard from './pages/StudentDashboard';
-import CompanyDashboard from './pages/CompanyDashboard';
+import CompanyDashboard from './Pages/Company/CompanyDashboard';
 import ProfileBuilder from './pages/ProfileBuilder';
 import InternshipApplication from './pages/InternshipApplication';
 import SignupScreen from './Pages/SignupScreen';
+import AddInternship from './Pages/Company/AddInternship';
+import InternshipDetails from './Pages/Company/InternshipDetails';
 
 function App() {
   return (
@@ -19,7 +21,9 @@ function App() {
           {/* Public Routes */}
           <Route path="/login" element={<AuthenticationScreen />} />  {/* Changed to AuthenticationScreen */}
           <Route path="/register" element={<SignupScreen />} />  
-          
+          <Route path="/company" element={<CompanyDashboard/>} />
+          <Route path="/add-internship" element={<AddInternship/>} />
+          <Route path="/all-internships" element={<InternshipDetails/>} />
           {/* Protected Routes */}
           <Route
             path="/admin/*"

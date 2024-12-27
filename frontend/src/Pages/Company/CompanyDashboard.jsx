@@ -1,8 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Users, Briefcase, Bell, BarChart, Calendar, Plus } from 'lucide-react';
+import { Users, Briefcase, Bell, BarChart, Calendar, Plus, FileText } from 'lucide-react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const CompanyDashboard = () => {
+  const [internships, setInternships] = useState([]);
+  const navigate = useNavigate();
+
+  // Fetch all internships
+  // useEffect(() => {
+  //   const fetchInternships = async () => {
+  //     try {
+  //       const response = await axios.get('/fetch_all-internship', {
+  //         headers: { usertype: 'recruiter' }, // Adjust user type if required
+  //       });
+  //       setInternships(response.data.data);
+  //     } catch (error) {
+  //       console.error('Error fetching internships:', error);
+  //       alert('Failed to fetch internships');
+  //     }
+  //   };
+  //   fetchInternships();
+  // }, []);
   return (
     <div className="min-h-screen bg-gray-50 p-8">
       {/* Header */}
@@ -12,7 +32,7 @@ const CompanyDashboard = () => {
           <p className="text-gray-600">Manage your internship programs</p>
         </div>
         <div className="flex items-center gap-4">
-          <button className="px-4 py-2 bg-blue-500 text-white rounded-lg flex items-center gap-2 hover:bg-blue-600">
+          <button onClick={() => navigate('/add-internship')} className="px-4 py-2 bg-blue-500 text-white rounded-lg flex items-center gap-2 hover:bg-blue-600">
             <Plus className="h-5 w-5" />
             Post New Internship
           </button>
@@ -24,7 +44,9 @@ const CompanyDashboard = () => {
           </div>
         </div>
       </div>
-
+      {/* Internship Card */}
+      
+      
       {/* Quick Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
         <Card>
@@ -78,6 +100,24 @@ const CompanyDashboard = () => {
               <div className="ml-4">
                 <p className="text-sm text-gray-600">Hired This Month</p>
                 <h3 className="text-2xl font-bold">5</h3>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* All Internships Card */}
+        <Card
+          onClick={() => navigate('/all-internships')}
+          className="cursor-pointer hover:shadow-lg"
+        >
+          <CardContent className="pt-6">
+            <div className="flex items-center">
+              <div className="p-2 bg-gray-100 rounded-lg">
+                <FileText className="h-6 w-6 text-gray-600" />
+              </div>
+              <div className="ml-4">
+                <p className="text-sm text-gray-600">All Internships</p>
+                <h3 className="text-2xl font-bold">View</h3>
               </div>
             </div>
           </CardContent>
