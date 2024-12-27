@@ -14,6 +14,7 @@ const generateToken = async (email, userType) => {
             email: user.email,
             name: user.firstName,
             familyName: user.lastName,
+            usertype: "student"
         };
     } else if (userType === 'recruiter') {
         user = await findRecruiter(email);
@@ -21,6 +22,7 @@ const generateToken = async (email, userType) => {
             userId: user.id,
             email: user.email,
             name: user.companyName,
+            usertype: "recruiter"
         };
     } else {
         throw new Error("Invalid userType passed");

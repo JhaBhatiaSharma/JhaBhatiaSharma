@@ -1,13 +1,13 @@
 'use strict';
 
 module.exports = {
-  up: async (queryInterface, Sequelize) => {
+  async up(queryInterface, Sequelize) {
     await queryInterface.createTable('otps', {
       id: {
-        type: Sequelize.INTEGER,
+        allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        allowNull: false,
+        type: Sequelize.INTEGER,
       },
       otp: {
         type: Sequelize.STRING,
@@ -17,12 +17,12 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'students', // References the "students" table
-          key: 'id', // References the "id" column in the "students" table
+          model: 'students',
+          key: 'id',
         },
-        unique: true, // Ensures each student can only have one OTP at a time
-        onDelete: 'CASCADE', // Deletes the OTP if the student is deleted
-        onUpdate: 'CASCADE', // Updates the OTP if the student's id changes
+        unique: true,
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
       },
       expiresAt: {
         type: Sequelize.DATE,
@@ -41,7 +41,7 @@ module.exports = {
     });
   },
 
-  down: async (queryInterface, Sequelize) => {
+  async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('otps');
   },
 };
