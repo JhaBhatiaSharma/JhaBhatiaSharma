@@ -23,6 +23,8 @@ export default [
         JSX: 'readonly',
         process: 'readonly',
         __dirname: 'readonly',
+        localStorage: 'readonly',
+        console: 'readonly',
       },
     },
     plugins: {
@@ -46,8 +48,8 @@ export default [
       'no-unused-vars': [
         'warn',
         {
-          varsIgnorePattern: 'React|Book',
-          argsIgnorePattern: '^_',
+          varsIgnorePattern: 'React|Router|Route|Routes|Navigate|ProtectedRoute|AuthenticationScreen|UserProvider',
+          argsIgnorePattern: '^_', // Ignore unused arguments prefixed with '_'
         },
       ],
     },
@@ -58,3 +60,4 @@ export default [
     },
   },
 ];
+
