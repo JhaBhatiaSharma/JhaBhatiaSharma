@@ -15,7 +15,7 @@
     "lint:fix": "npm run lint:fix --workspaces",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md,yml,yaml}\"",
     "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json,md,yml,yaml}\"",
-    "prepare": "if [ -d \".git\" ]; then husky install; fi"
+    "prepare": "if [ -d \".git\" ] && [ -f \"node_modules/.bin/husky\" ]; then husky install; fi"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.8.1",
