@@ -9,6 +9,7 @@ import StudentDashboard from './pages/StudentDashboard';
 import CompanyDashboard from './pages/CompanyDashboard';
 import ProfileBuilder from './pages/ProfileBuilder';
 import InternshipApplication from './pages/InternshipApplication';
+import SignupScreen from './Pages/SignupScreen';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Routes>
           {/* Public Routes */}
           <Route path="/login" element={<AuthenticationScreen />} />  {/* Changed to AuthenticationScreen */}
+          <Route path="/register" element={<SignupScreen />} />  
           
           {/* Protected Routes */}
           <Route
