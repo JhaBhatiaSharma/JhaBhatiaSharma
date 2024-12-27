@@ -1,16 +1,16 @@
 name: Code Quality
-
 on:
   push:
     branches: [main, develop]
   pull_request:
     branches: [main, develop]
-
 jobs:
   setup:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -18,8 +18,17 @@ jobs:
           node-version: '20'
           cache: 'npm'
 
+      - name: Git Setup
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
       - name: Install root dependencies
-        run: npm ci || npm install
+        run: |
+          npm ci || npm install
+          npm install husky --save-dev
+          npx husky install
+          chmod +x .husky/*
 
   frontend:
     needs: setup
@@ -27,9 +36,10 @@ jobs:
     defaults:
       run:
         working-directory: frontend
-
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -53,9 +63,10 @@ jobs:
     defaults:
       run:
         working-directory: backend
-
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
