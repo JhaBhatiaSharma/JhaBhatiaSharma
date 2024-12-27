@@ -1,4 +1,4 @@
-const { Student, Recruiter } = require("../models/index");
+const { Student, Recruiter } = require('../models/index');
 
 const findStudentByEmail = async (email) => {
   return Student.findOne({ where: { email } });
@@ -8,9 +8,19 @@ const findRecruiterByEmail = async (email) => {
   return Recruiter.findOne({ where: { email } });
 };
 
-const registerStudent = async ({ firstName, lastName, email, mobileNumber, dateOfBirth, gender, profilePicture, linkedinProfile, githubProfile }) => {
+const registerStudent = async ({
+  firstName,
+  lastName,
+  email,
+  mobileNumber,
+  dateOfBirth,
+  gender,
+  profilePicture,
+  linkedinProfile,
+  githubProfile,
+}) => {
   const existingStudent = await findStudentByEmail(email);
-  
+
   if (existingStudent) {
     throw new Error('User with this email already exists');
   }
@@ -32,7 +42,7 @@ const registerStudent = async ({ firstName, lastName, email, mobileNumber, dateO
 
 const registerRecruiter = async ({ companyName, email, companyLogo, linkedinProfile }) => {
   const existingRecruiter = await findRecruiterByEmail(email);
-  
+
   if (existingRecruiter) {
     throw new Error('User with this email already exists');
   }

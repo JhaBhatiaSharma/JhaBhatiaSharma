@@ -4,21 +4,21 @@ const dbSettings = {
     password: process.env.PGPASSWORD,
     database: process.env.PGDATABASE,
     host: process.env.PGHOST,
-    dialect: "postgresql",
+    dialect: 'postgresql',
   },
   test: {
     username: process.env.PGUSER,
     password: process.env.PGPASSWORD,
     database: process.env.PGDATABASE,
     host: process.env.PGHOST,
-    dialect: "postgresql",
+    dialect: 'postgresql',
   },
   production: {
     username: process.env.PGUSER,
     password: process.env.PGPASSWORD,
     database: process.env.PGDATABASE,
     host: process.env.PGHOST,
-    dialect: "postgresql",
+    dialect: 'postgresql',
   },
 };
 

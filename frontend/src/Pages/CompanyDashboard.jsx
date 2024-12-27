@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Users, Briefcase, Bell, BarChart, Calendar, Plus } from 'lucide-react';
 
 const CompanyDashboard = () => {
@@ -106,8 +106,12 @@ const CompanyDashboard = () => {
                           <h4 className="font-semibold">Sarah Parker</h4>
                           <p className="text-sm text-gray-600">Frontend Developer Position</p>
                           <div className="flex gap-2 mt-2">
-                            <span className="px-2 py-1 bg-blue-100 text-blue-600 rounded text-xs">React</span>
-                            <span className="px-2 py-1 bg-blue-100 text-blue-600 rounded text-xs">3 Years Exp.</span>
+                            <span className="px-2 py-1 bg-blue-100 text-blue-600 rounded text-xs">
+                              React
+                            </span>
+                            <span className="px-2 py-1 bg-blue-100 text-blue-600 rounded text-xs">
+                              3 Years Exp.
+                            </span>
                           </div>
                         </div>
                       </div>

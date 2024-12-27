@@ -12,36 +12,36 @@ module.exports = (sequelize, DataTypes) => {
     {
       companyName: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
       },
       email: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true
+        unique: true,
       },
       companyLogo: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: true,
       },
       linkedinProfile: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: true,
       },
       createdAt: {
         type: DataTypes.DATE,
         allowNull: false,
-        defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
+        defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
       },
       updatedAt: {
         type: DataTypes.DATE,
         allowNull: false,
-        defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
-      }
+        defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
+      },
     },
     {
       sequelize,
       modelName: 'Recruiter',
-      tableName: "recruiters",
+      tableName: 'recruiters',
     }
   );
 

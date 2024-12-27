@@ -7,9 +7,9 @@ const AuthenticationScreen = () => {
   const [userType, setUserType] = useState('student');
   const [formData, setFormData] = useState({
     email: '',
-    password: ''
+    password: '',
   });
-  
+
   const { login } = useUser();
   const navigate = useNavigate();
 
@@ -39,9 +39,7 @@ const AuthenticationScreen = () => {
               type="button"
               onClick={() => setUserType('student')}
               className={`flex items-center justify-center gap-2 flex-1 px-4 py-2 rounded-lg text-sm transition-colors
-                ${userType === 'student' 
-                  ? 'bg-[#4F46E5] text-white' 
-                  : 'bg-[#1E1E1E] text-white'}`}
+                ${userType === 'student' ? 'bg-[#4F46E5] text-white' : 'bg-[#1E1E1E] text-white'}`}
             >
               <GraduationCap className="w-4 h-4" />
               Student
@@ -50,9 +48,7 @@ const AuthenticationScreen = () => {
               type="button"
               onClick={() => setUserType('company')}
               className={`flex items-center justify-center gap-2 flex-1 px-4 py-2 rounded-lg text-sm transition-colors
-                ${userType === 'company' 
-                  ? 'bg-[#4F46E5] text-white' 
-                  : 'bg-[#1E1E1E] text-white'}`}
+                ${userType === 'company' ? 'bg-[#4F46E5] text-white' : 'bg-[#1E1E1E] text-white'}`}
             >
               <Building2 className="w-4 h-4" />
               Company
@@ -105,7 +101,7 @@ const AuthenticationScreen = () => {
                 onClick={() => {
                   setFormData({
                     email: 'student@example.com',
-                    password: 'password123'
+                    password: 'password123',
                   });
                   setUserType('student');
                 }}
@@ -118,7 +114,7 @@ const AuthenticationScreen = () => {
                 onClick={() => {
                   setFormData({
                     email: 'company@example.com',
-                    password: 'password123'
+                    password: 'password123',
                   });
                   setUserType('company');
                 }}

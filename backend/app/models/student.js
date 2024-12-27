@@ -12,57 +12,57 @@ module.exports = (sequelize, DataTypes) => {
     {
       firstName: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
       },
       lastName: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
       },
       email: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true
+        unique: true,
       },
       mobileNumber: {
         type: DataTypes.STRING,
         allowNull: true,
-        unique: true
+        unique: true,
       },
       dateOfBirth: {
         type: DataTypes.DATE,
-        allowNull: true
+        allowNull: true,
       },
       gender: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: true,
       },
       profilePicture: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: true,
       },
       linkedinProfile: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: true,
       },
       githubProfile: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: true,
       },
       createdAt: {
         type: DataTypes.DATE,
         allowNull: false,
-        defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
+        defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
       },
       updatedAt: {
         type: DataTypes.DATE,
         allowNull: false,
-        defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
-      }
+        defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
+      },
     },
     {
       sequelize,
       modelName: 'Student',
-      tableName: "students",
+      tableName: 'students',
     }
   );
 

@@ -1,5 +1,10 @@
-const express = require("express");
-const { addInternship, deleteInternship, fetchAllInternship, fetchIdInternship } = require("../controllers/recruiterController");
+const express = require('express');
+const {
+  addInternship,
+  deleteInternship,
+  fetchAllInternship,
+  fetchIdInternship,
+} = require('../controllers/recruiterController');
 
 const router = express.Router();
 

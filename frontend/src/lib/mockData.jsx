@@ -12,4 +12,3 @@ export const mockData = {
     { id: 2, title: 'Backend Developer', company: 'WebSolutions', location: 'New York' },
   ],
 };
-

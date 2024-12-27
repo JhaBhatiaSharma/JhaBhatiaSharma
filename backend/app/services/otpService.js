@@ -1,11 +1,11 @@
-const nodemailer = require("nodemailer");
-const moment = require("moment");
+const nodemailer = require('nodemailer');
+const moment = require('moment');
 
-const { OTP } = require("../models/index");
+const { OTP } = require('../models/index');
 
 const generateOTP = () => {
-    return Math.floor(100000 + Math.random() * 900000).toString();
-  };
+  return Math.floor(100000 + Math.random() * 900000).toString();
+};
 
 const sendOTPEmail = async (email, otp) => {
   const transporter = nodemailer.createTransport({

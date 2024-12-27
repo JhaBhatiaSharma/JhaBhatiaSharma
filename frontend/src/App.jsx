@@ -3,7 +3,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { UserProvider } from './context/UserContext';
 import ProtectedRoute from './components/ProtectedRoute';
-import AuthenticationScreen from './pages/AuthenticationScreen';  // Changed to lowercase 'pages'
+import AuthenticationScreen from './pages/AuthenticationScreen'; // Changed to lowercase 'pages'
 import AdminDashboard from './pages/AdminDashboard';
 import StudentDashboard from './pages/StudentDashboard';
 import CompanyDashboard from './pages/CompanyDashboard';
@@ -16,33 +16,19 @@ function App() {
       <Router>
         <Routes>
           {/* Public Routes */}
-          <Route path="/login" element={<AuthenticationScreen />} />  {/* Changed to AuthenticationScreen */}
-          
+          <Route path="/login" element={<AuthenticationScreen />} />{' '}
+          {/* Changed to AuthenticationScreen */}
           {/* Protected Routes */}
-          <Route
-            path="/admin/*"
-            element={<ProtectedRoute component={AdminDashboard} />}
-          />
-          <Route
-            path="/student/*"
-            element={<ProtectedRoute component={StudentDashboard} />}
-          />
-          <Route
-            path="/company/*"
-            element={<ProtectedRoute component={CompanyDashboard} />}
-          />
-          <Route
-            path="/profile"
-            element={<ProtectedRoute component={ProfileBuilder} />}
-          />
+          <Route path="/admin/*" element={<ProtectedRoute component={AdminDashboard} />} />
+          <Route path="/student/*" element={<ProtectedRoute component={StudentDashboard} />} />
+          <Route path="/company/*" element={<ProtectedRoute component={CompanyDashboard} />} />
+          <Route path="/profile" element={<ProtectedRoute component={ProfileBuilder} />} />
           <Route
             path="/internship"
             element={<ProtectedRoute component={InternshipApplication} />}
           />
-
           {/* Redirect root to login */}
           <Route path="/" element={<Navigate to="/login" replace />} />
-          
           {/* Catch all route for 404s */}
           <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>

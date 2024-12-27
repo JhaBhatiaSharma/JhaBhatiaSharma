@@ -1,16 +1,16 @@
 import React from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { 
-  Users, 
-  AlertCircle, 
-  BarChart2, 
-  Settings, 
-  Search, 
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Users,
+  AlertCircle,
+  BarChart2,
+  Settings,
+  Search,
   Bell,
   FileText,
   UserCog,
   Filter,
-  Download
+  Download,
 } from 'lucide-react';
 
 const AdminDashboard = () => {
@@ -180,14 +180,14 @@ const AdminDashboard = () => {
                         Pending
                       </span>
                     </div>
-                    <p className="text-gray-600 mt-2">Supervisor not providing adequate guidance...</p>
+                    <p className="text-gray-600 mt-2">
+                      Supervisor not providing adequate guidance...
+                    </p>
                     <div className="flex gap-2 mt-4">
                       <button className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600">
                         Review
                       </button>
-                      <button className="px-3 py-1 border rounded hover:bg-gray-50">
-                        Assign
-                      </button>
+                      <button className="px-3 py-1 border rounded hover:bg-gray-50">Assign</button>
                     </div>
                   </div>
                 ))}

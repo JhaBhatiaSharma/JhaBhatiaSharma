@@ -9,7 +9,7 @@ const StudentDashboard = () => {
   ];
 
   const internships = [
-    { 
+    {
       title: 'Frontend Developer',
       company: 'TechCorp',
       location: 'San Francisco',
@@ -18,7 +18,7 @@ const StudentDashboard = () => {
       title: 'Backend Developer',
       company: 'WebSolutions',
       location: 'New York',
-    }
+    },
   ];
 
   const interviews = [
@@ -31,7 +31,7 @@ const StudentDashboard = () => {
       role: 'Frontend Developer',
       company: 'WebSolutions Ltd',
       time: 'Tomorrow at 10:00 AM',
-    }
+    },
   ];
 
   return (
@@ -58,8 +58,20 @@ const StudentDashboard = () => {
           const Icon = stat.icon;
           return (
             <div key={index} className="bg-white rounded-xl p-4 flex items-center">
-              <div className={`p-2 rounded-lg ${index === 0 ? 'bg-blue-50' : index === 1 ? 'bg-green-50' : 'bg-purple-50'}`}>
-                <Icon className={`h-6 w-6 ${index === 0 ? 'text-blue-500' : index === 1 ? 'text-green-500' : 'text-purple-500'}`} />
+              <div
+                className={`p-2 rounded-lg ${
+                  index === 0 ? 'bg-blue-50' : index === 1 ? 'bg-green-50' : 'bg-purple-50'
+                }`}
+              >
+                <Icon
+                  className={`h-6 w-6 ${
+                    index === 0
+                      ? 'text-blue-500'
+                      : index === 1
+                      ? 'text-green-500'
+                      : 'text-purple-500'
+                  }`}
+                />
               </div>
               <div className="ml-4">
                 <p className="text-sm text-[#666]">{stat.label}</p>
@@ -77,10 +89,13 @@ const StudentDashboard = () => {
           <div className="bg-white rounded-xl p-6">
             <h2 className="text-xl font-semibold text-[#1E1E1E] mb-1">Recent Internship Matches</h2>
             <p className="text-[#666] text-sm mb-6">Based on your profile and preferences</p>
-            
+
             <div className="space-y-4">
               {internships.map((internship, index) => (
-                <div key={index} className="p-4 border border-[#E5E7EB] rounded-lg hover:bg-gray-50">
+                <div
+                  key={index}
+                  className="p-4 border border-[#E5E7EB] rounded-lg hover:bg-gray-50"
+                >
                   <div className="flex justify-between items-start">
                     <div>
                       <h3 className="font-medium text-[#1E1E1E]">{internship.title}</h3>
@@ -105,7 +120,7 @@ const StudentDashboard = () => {
         <div>
           <div className="bg-white rounded-xl p-6">
             <h2 className="text-xl font-semibold text-[#1E1E1E] mb-6">Upcoming Interviews</h2>
-            
+
             <div className="space-y-4">
               {interviews.map((interview, index) => (
                 <div key={index} className="p-4 border border-[#E5E7EB] rounded-lg">

@@ -1,0 +1,39 @@
+{
+  "name": "jha-bhatia-sharma",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace=frontend",
+    "build": "npm run build --workspace=frontend",
+    "lint": "npm run lint --workspaces",
+    "lint:fix": "npm run lint:fix --workspaces",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
+    "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json,md}\"",
+    "prepare": "husky install"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^17.0.0",
+    "@commitlint/config-conventional": "^17.0.0",
+    "eslint-config-prettier": "^8.0.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "husky": "^8.0.0",
+    "lint-staged": "^13.0.0",
+    "prettier": "^2.0.0"
+  },
+  "lint-staged": {
+    "frontend/**/*.{js,jsx}": [
+      "cd frontend && eslint --fix",
+      "prettier --write"
+    ],
+    "backend/**/*.js": [
+      "cd backend && eslint --fix",
+      "prettier --write"
+    ],
+    "**/*.{json,md,yml,yaml}": [
+      "prettier --write"
+    ]
+  }
+}
