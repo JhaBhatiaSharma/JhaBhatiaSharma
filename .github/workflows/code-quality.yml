@@ -23,10 +23,12 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
+      - name: Install Husky first
+        run: npm install husky --save-dev
+
       - name: Install root dependencies
         run: |
           npm ci || npm install
-          npm install husky --save-dev
           npx husky install
           chmod +x .husky/*
 
