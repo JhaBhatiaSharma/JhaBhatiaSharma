@@ -11,10 +11,63 @@ const AddInternship = () => {
     stipend: '',
   });
 
+  const [errors, setErrors] = useState({
+    duration: '',
+    stipend: '',
+  });
+
   const navigate = useNavigate();
+
+  const validateDuration = (value) => {
+    const duration = parseInt(value);
+    if (isNaN(duration) || duration <= 0) {
+      return 'Duration must be a positive number';
+    }
+    if (duration > 24) { 
+      return 'Duration cannot exceed 24 months';
+    }
+    return '';
+  };
+
+  const validateStipend = (value) => {
+    const stipend = parseFloat(value);
+    if (isNaN(stipend) || stipend < 0) {
+      return 'Stipend must be a non-negative number';
+    }
+    if (stipend > 15000) { 
+      return 'Please verify stipend amount';
+    }
+    return '';
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+
+    // Validate duration and stipend on change
+    if (name === 'duration') {
+      setErrors(prev => ({ ...prev, duration: validateDuration(value) }));
+    }
+    if (name === 'stipend') {
+      setErrors(prev => ({ ...prev, stipend: validateStipend(value) }));
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Validate all fields before submission
+    const durationError = validateDuration(formData.duration);
+    const stipendError = validateStipend(formData.stipend);
+
+    if (durationError || stipendError) {
+      setErrors({
+        duration: durationError,
+        stipend: stipendError,
+      });
+      return;
+    }
+
     try {
       await axios.post('/add-internship', formData, {
         headers: { usertype: 'recruiter' },
@@ -26,8 +79,9 @@ const AddInternship = () => {
       alert('Failed to add internship');
     }
   };
+
   const handleCancel = () => {
-    navigate('/company'); // Navigate back to the dashboard
+    navigate('/');
   };
 
   return (
@@ -37,57 +91,81 @@ const AddInternship = () => {
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
             type="text"
+            name="title"
             placeholder="Title"
             value={formData.title}
-            onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+            onChange={handleChange}
             className="w-full bg-gray-100 p-3 rounded-lg focus:outline-none"
             required
           />
           <textarea
+            name="description"
             placeholder="Description"
             value={formData.description}
-            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-            className="w-full bg-gray-100 p-3 rounded-lg focus:outline-none"
+            onChange={handleChange}
+            className="w-full bg-gray-100 p-3 rounded-lg focus:outline-none min-h-[100px]"
             required
           />
           <input
             type="text"
+            name="location"
             placeholder="Location"
             value={formData.location}
-            onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+            onChange={handleChange}
             className="w-full bg-gray-100 p-3 rounded-lg focus:outline-none"
             required
           />
-          <input
-            type="number"
-            placeholder="Duration (in months)"
-            value={formData.duration}
-            onChange={(e) => setFormData({ ...formData, duration: e.target.value })}
-            className="w-full bg-gray-100 p-3 rounded-lg focus:outline-none"
-            required
-          />
-          <input
-            type="number"
-            placeholder="Stipend (in USD)"
-            value={formData.stipend}
-            onChange={(e) => setFormData({ ...formData, stipend: e.target.value })}
-            className="w-full bg-gray-100 p-3 rounded-lg focus:outline-none"
-            required
-          />
-          <div className="flex gap-4">
+          <div>
+            <input
+              type="number"
+              name="duration"
+              placeholder="Duration (in months)"
+              value={formData.duration}
+              onChange={handleChange}
+              min="1"
+              max="24"
+              className={`w-full bg-gray-100 p-3 rounded-lg focus:outline-none ${
+                errors.duration ? 'border border-red-500' : ''
+              }`}
+              required
+            />
+            {errors.duration && (
+              <p className="text-red-500 text-sm mt-1">{errors.duration}</p>
+            )}
+          </div>
+          <div>
+            <input
+              type="number"
+              name="stipend"
+              placeholder="Stipend (in USD)"
+              value={formData.stipend}
+              onChange={handleChange}
+              min="0"
+              step="0.01"
+              className={`w-full bg-gray-100 p-3 rounded-lg focus:outline-none ${
+                errors.stipend ? 'border border-red-500' : ''
+              }`}
+              required
+            />
+            {errors.stipend && (
+              <p className="text-red-500 text-sm mt-1">{errors.stipend}</p>
+            )}
+          </div>
+          <div className="flex gap-4 pt-4">
             <button
               type="button"
               onClick={handleCancel}
-              className="w-1/2 bg-gray-300 text-gray-700 py-2 rounded-lg hover:bg-gray-400"
+              className="w-1/2 bg-gray-200 text-gray-700 py-3 rounded-lg hover:bg-gray-300 transition-colors"
             >
               Cancel
             </button>
-          <button
-            type="submit"
-            className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600"
-          >
-            Post Internship
-          </button>
+            <button
+              type="submit"
+              className="w-1/2 bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 transition-colors disabled:bg-blue-300"
+              disabled={!!(errors.duration || errors.stipend)}
+            >
+              Post Internship
+            </button>
           </div>
         </form>
       </div>
