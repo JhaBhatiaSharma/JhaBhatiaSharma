@@ -26,6 +26,9 @@ const AddInternship = () => {
       alert('Failed to add internship');
     }
   };
+  const handleCancel = () => {
+    navigate('/company'); // Navigate back to the dashboard
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 p-8 flex items-center justify-center">
@@ -71,12 +74,21 @@ const AddInternship = () => {
             className="w-full bg-gray-100 p-3 rounded-lg focus:outline-none"
             required
           />
+          <div className="flex gap-4">
+            <button
+              type="button"
+              onClick={handleCancel}
+              className="w-1/2 bg-gray-300 text-gray-700 py-2 rounded-lg hover:bg-gray-400"
+            >
+              Cancel
+            </button>
           <button
             type="submit"
             className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600"
           >
             Post Internship
           </button>
+          </div>
         </form>
       </div>
     </div>
