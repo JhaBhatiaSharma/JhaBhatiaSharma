@@ -23,7 +23,7 @@ InternHub Students & Companies (S&C) is a comprehensive platform designed to rev
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/shreeshjha/JhaBhatiaSharma.git
+git clone https://github.com/JhaBhatiaSharma/JhaBhatiaSharma.git
 cd JhaBhatiaSharma/frontend
 ```
 
