@@ -1,9 +1,14 @@
 import React, { useState } from 'react';
 import { Briefcase, Calendar, MessageSquare, Bell, FileText } from 'lucide-react';
 import CVBuilder from './CVBuilder';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const StudentDashboard = () => {
   const [showCVBuilder, setShowCVBuilder] = useState(false);
+  const [selectedInterview, setSelectedInterview] = useState(null);
+  const [rescheduleDate, setRescheduleDate] = useState(null);
+
   const stats = [
     { icon: Briefcase, label: 'Active Applications', value: 2 },
     { icon: Calendar, label: 'Upcoming Interviews', value: 2 },
@@ -11,30 +16,24 @@ const StudentDashboard = () => {
   ];
 
   const internships = [
-    { 
-      title: 'Frontend Developer',
-      company: 'TechCorp',
-      location: 'San Francisco',
-    },
-    {
-      title: 'Backend Developer',
-      company: 'WebSolutions',
-      location: 'New York',
-    }
+    { title: 'Frontend Developer', company: 'TechCorp', location: 'San Francisco' },
+    { title: 'Backend Developer', company: 'WebSolutions', location: 'New York' },
   ];
 
   const interviews = [
-    {
-      role: 'Frontend Developer',
-      company: 'WebSolutions Ltd',
-      time: 'Tomorrow at 10:00 AM',
-    },
-    {
-      role: 'Backend Developer',
-      company: 'TechCorp',
-      time: 'Friday at 3:00 PM',
-    }
+    { role: 'Frontend Developer', company: 'WebSolutions Ltd', time: 'Tomorrow at 10:00 AM' },
+    { role: 'Backend Developer', company: 'TechCorp', time: 'Friday at 3:00 PM' },
   ];
+
+  const handleReschedule = () => {
+    console.log(`Rescheduled ${selectedInterview?.role} to ${rescheduleDate}`);
+    setSelectedInterview(null); // Close modal after rescheduling
+  };
+
+  const handleCancel = () => {
+    console.log(`Canceled interview for ${selectedInterview?.role}`);
+    setSelectedInterview(null); // Close modal after canceling
+  };
 
   return (
     <div className="min-h-screen bg-[#F8F9FA] p-8">
@@ -45,7 +44,6 @@ const StudentDashboard = () => {
           <p className="text-[#666]">Computer Science Student</p>
         </div>
         <div className="flex items-center gap-4">
-          {/* Add CV Builder Button */}
           <button 
             onClick={() => setShowCVBuilder(true)}
             className="flex items-center gap-2 px-4 py-2 bg-[#4A72FF] text-white rounded-lg hover:bg-[#3A5FE6]"
@@ -115,10 +113,13 @@ const StudentDashboard = () => {
         <div>
           <div className="bg-white rounded-xl p-6">
             <h2 className="text-xl font-semibold text-[#1E1E1E] mb-6">Upcoming Interviews</h2>
-            
             <div className="space-y-4">
               {interviews.map((interview, index) => (
-                <div key={index} className="p-4 border border-[#E5E7EB] rounded-lg">
+                <div 
+                  key={index} 
+                  className="p-4 border border-[#E5E7EB] rounded-lg hover:bg-gray-50 cursor-pointer"
+                  onClick={() => setSelectedInterview(interview)}
+                >
                   <div className="flex gap-4">
                     <div className="p-2 bg-gray-50 rounded">
                       <Calendar className="h-6 w-6 text-[#666]" />
@@ -135,6 +136,48 @@ const StudentDashboard = () => {
           </div>
         </div>
       </div>
+
+      {/* Reschedule/Cancel Modal */}
+      {selectedInterview && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white rounded-xl p-6 w-[90%] max-w-md">
+            <h2 className="text-xl font-semibold text-[#1E1E1E] mb-4">Manage Interview</h2>
+            <p className="text-sm text-[#666] mb-4">
+              {`Role: ${selectedInterview.role}`} <br />
+              {`Company: ${selectedInterview.company}`}
+            </p>
+            <div className="mb-4">
+              <label className="block text-sm text-[#1E1E1E] mb-2">Reschedule Date</label>
+              <DatePicker
+                selected={rescheduleDate}
+                onChange={(date) => setRescheduleDate(date)}
+                className="border border-gray-300 rounded-lg px-4 py-2 w-full bg-white text-gray-800"
+              />
+            </div>
+            <div className="flex gap-4">
+              <button 
+                onClick={handleReschedule}
+                className="px-4 py-2 bg-[#4A72FF] text-white rounded-lg"
+              >
+                Reschedule
+              </button>
+              <button 
+                onClick={handleCancel}
+                className="px-4 py-2 bg-red-500 text-white rounded-lg"
+              >
+                Cancel Interview
+              </button>
+              <button 
+                onClick={() => setSelectedInterview(null)}
+                className="px-4 py-2 bg-gray-300 text-[#666] rounded-lg"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <CVBuilder 
         isOpen={showCVBuilder} 
         onClose={() => setShowCVBuilder(false)} 
