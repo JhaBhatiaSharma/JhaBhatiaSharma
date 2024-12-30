@@ -1,7 +1,9 @@
-import React from 'react';
-import { Briefcase, Calendar, MessageSquare, Bell } from 'lucide-react';
+import React, { useState } from 'react';
+import { Briefcase, Calendar, MessageSquare, Bell, FileText } from 'lucide-react';
+import CVBuilder from './CVBuilder';
 
 const StudentDashboard = () => {
+  const [showCVBuilder, setShowCVBuilder] = useState(false);
   const stats = [
     { icon: Briefcase, label: 'Active Applications', value: 2 },
     { icon: Calendar, label: 'Upcoming Interviews', value: 2 },
@@ -28,9 +30,9 @@ const StudentDashboard = () => {
       time: 'Tomorrow at 10:00 AM',
     },
     {
-      role: 'Frontend Developer',
-      company: 'WebSolutions Ltd',
-      time: 'Tomorrow at 10:00 AM',
+      role: 'Backend Developer',
+      company: 'TechCorp',
+      time: 'Friday at 3:00 PM',
     }
   ];
 
@@ -43,6 +45,14 @@ const StudentDashboard = () => {
           <p className="text-[#666]">Computer Science Student</p>
         </div>
         <div className="flex items-center gap-4">
+          {/* Add CV Builder Button */}
+          <button 
+            onClick={() => setShowCVBuilder(true)}
+            className="flex items-center gap-2 px-4 py-2 bg-[#4A72FF] text-white rounded-lg hover:bg-[#3A5FE6]"
+          >
+            <FileText className="h-4 w-4" />
+            Build CV
+          </button>
           <button className="p-2 rounded-full hover:bg-gray-100">
             <Bell className="h-6 w-6 text-[#666]" />
           </button>
@@ -125,6 +135,10 @@ const StudentDashboard = () => {
           </div>
         </div>
       </div>
+      <CVBuilder 
+        isOpen={showCVBuilder} 
+        onClose={() => setShowCVBuilder(false)} 
+      />
     </div>
   );
 };
