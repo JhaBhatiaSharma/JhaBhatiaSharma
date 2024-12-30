@@ -22,6 +22,7 @@ function App() {
           <Route path="/login" element={<AuthenticationScreen />} />  {/* Changed to AuthenticationScreen */}
           <Route path="/register" element={<SignupScreen />} />  
           <Route path="/company" element={<CompanyDashboard/>} />
+          <Route path="/admin" element={<AdminDashboard/>} />
           <Route path="/add-internship" element={<AddInternship/>} />
           <Route path="/all-internships" element={<InternshipDetails/>} />
           {/* Protected Routes */}
