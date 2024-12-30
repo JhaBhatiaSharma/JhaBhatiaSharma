@@ -13,23 +13,52 @@ const AuthenticationScreen = () => {
   
   const { login } = useUser();
   const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // API call to your backend
+      // First make the API call
       const response = await axios.get('/login', {
         params: { email: formData.email },
-        headers: { usertype: userType }, // Send userType in headers as per backend requirement
+        headers: { usertype: userType },
       });
 
       console.log('Login successful:', response.data);
 
-      // Navigate to the dashboard based on userType
+      // Then use the context's login function to set the user
+      await login({
+        email: formData.email,
+        type: userType,
+        name: response.data.name || 'User',
+      });
+
+      // Only navigate after successful login
       navigate(`/${userType}`);
     } catch (err) {
       console.error('Login failed:', err.response?.data?.message || err.message);
       alert(err.response?.data?.message || 'Login failed. Please try again.');
     }
+  };
+
+  const handleDemoAccount = (type) => {
+    const demoAccounts = {
+      student: {
+        email: 'student@example.com',
+        password: 'password123',
+        type: 'student'
+      },
+      company: {
+        email: 'company@example.com',
+        password: 'password123',
+        type: 'company'
+      }
+    };
+
+    setUserType(type);
+    setFormData({
+      email: demoAccounts[type].email,
+      password: demoAccounts[type].password
+    });
   };
 
   return (
@@ -111,26 +140,14 @@ const AuthenticationScreen = () => {
             <p className="text-center text-sm text-gray-500 mb-4">Try demo accounts:</p>
             <div className="space-y-2">
               <button
-                onClick={() => {
-                  setFormData({
-                    email: 'student@example.com',
-                    password: 'password123'
-                  });
-                  setUserType('student');
-                }}
+                onClick={() => handleDemoAccount('student')}
                 className="w-full flex items-center justify-center gap-2 p-2 bg-[#F3F4F6] rounded-lg text-sm hover:bg-gray-200 transition-colors"
               >
                 <GraduationCap className="w-4 h-4" />
                 Demo Student Account
               </button>
               <button
-                onClick={() => {
-                  setFormData({
-                    email: 'company@example.com',
-                    password: 'password123'
-                  });
-                  setUserType('company');
-                }}
+                onClick={() => handleDemoAccount('company')}
                 className="w-full flex items-center justify-center gap-2 p-2 bg-[#F3F4F6] rounded-lg text-sm hover:bg-gray-200 transition-colors"
               >
                 <Building2 className="w-4 h-4" />
@@ -138,6 +155,7 @@ const AuthenticationScreen = () => {
               </button>
             </div>
           </div>
+
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-500">Don't have an account?</p>
             <button
@@ -154,4 +172,3 @@ const AuthenticationScreen = () => {
 };
 
 export default AuthenticationScreen;
-
