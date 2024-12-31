@@ -1,9 +1,8 @@
-// src/App.jsx
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { UserProvider } from './context/UserContext';
 import ProtectedRoute from './components/ProtectedRoute';
-import AuthenticationScreen from './pages/AuthenticationScreen';  // Changed to lowercase 'pages'
+import AuthenticationScreen from './pages/AuthenticationScreen'; 
 import AdminDashboard from './pages/AdminDashboard';
 import StudentDashboard from './pages/StudentDashboard';
 import CompanyDashboard from './Pages/Company/CompanyDashboard';

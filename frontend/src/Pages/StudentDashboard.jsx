@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Briefcase, Calendar, MessageSquare, Bell, FileText } from 'lucide-react';
 import CVBuilder from './CVBuilder';
+import MessagingSystem from './MessagingSystem';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -8,7 +9,7 @@ const StudentDashboard = () => {
   const [showCVBuilder, setShowCVBuilder] = useState(false);
   const [selectedInterview, setSelectedInterview] = useState(null);
   const [rescheduleDate, setRescheduleDate] = useState(null);
-
+  const [showMessaging, setShowMessaging] = useState(false);
   const stats = [
     { icon: Briefcase, label: 'Active Applications', value: 2 },
     { icon: Calendar, label: 'Upcoming Interviews', value: 2 },
@@ -50,6 +51,15 @@ const StudentDashboard = () => {
           >
             <FileText className="h-4 w-4" />
             Build CV
+          </button>
+          <button 
+            onClick={() => setShowMessaging(true)}
+            className="p-2 rounded-full hover:bg-gray-100 relative"
+          >
+          <MessageSquare className="h-6 w-6 text-[#666]" />
+          <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+            3
+          </span>
           </button>
           <button className="p-2 rounded-full hover:bg-gray-100">
             <Bell className="h-6 w-6 text-[#666]" />
@@ -137,7 +147,7 @@ const StudentDashboard = () => {
         </div>
       </div>
 
-      {/* Reschedule/Cancel Modal */}
+      {/* Reschedule/Cancel Model */}
       {selectedInterview && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
           <div className="bg-white rounded-xl p-6 w-[90%] max-w-md">
@@ -181,6 +191,10 @@ const StudentDashboard = () => {
       <CVBuilder 
         isOpen={showCVBuilder} 
         onClose={() => setShowCVBuilder(false)} 
+      />
+      <MessagingSystem 
+        isOpen={showMessaging} 
+        onClose={() => setShowMessaging(false)} 
       />
     </div>
   );
