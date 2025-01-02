@@ -1,3 +1,4 @@
+// frontend/src/Pages/Company/CompanyDashboard.jsx
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users, Briefcase, Bell, BarChart, Calendar, Plus, FileText } from 'lucide-react';

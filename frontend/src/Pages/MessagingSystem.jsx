@@ -1,3 +1,4 @@
+//frontend/src/Pages/MessagingSystem.jsx
 import React, { useState } from 'react';
 import { MessageSquare, Search, Send, User, X } from 'lucide-react';
 

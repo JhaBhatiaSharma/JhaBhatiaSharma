@@ -1,3 +1,4 @@
+//frontend/src/Pages/InternshipApplication.jsx
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Building2, MapPin, Clock, Calendar, Users, ChevronLeft, Share2 } from 'lucide-react';

@@ -1,3 +1,4 @@
+//frontend/src/App.jsx
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { UserProvider } from './context/UserContext';

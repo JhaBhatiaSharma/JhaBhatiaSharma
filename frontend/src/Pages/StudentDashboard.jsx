@@ -1,3 +1,4 @@
+//frontend/src/Pages/StudentDashboard.jsx
 import React, { useState } from 'react';
 import { Briefcase, Calendar, MessageSquare, Bell, FileText } from 'lucide-react';
 import CVBuilder from './CVBuilder';

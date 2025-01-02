@@ -1,4 +1,4 @@
-// src/context/UserContext.jsx
+// frontend/src/context/UserContext.jsx
 import React, { createContext, useState, useContext, useEffect } from 'react';
 
 // Define types for our context
