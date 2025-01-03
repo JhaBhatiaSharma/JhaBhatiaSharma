@@ -1,26 +1,25 @@
 //frontend/src/Pages/StudentDashboard.jsx
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Briefcase, Calendar, MessageSquare, Bell, FileText } from 'lucide-react';
 import CVBuilder from './CVBuilder';
 import MessagingSystem from './MessagingSystem';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import API from '../api';
 
 const StudentDashboard = () => {
   const [showCVBuilder, setShowCVBuilder] = useState(false);
   const [selectedInterview, setSelectedInterview] = useState(null);
   const [rescheduleDate, setRescheduleDate] = useState(null);
   const [showMessaging, setShowMessaging] = useState(false);
+  const [internships, setInternships] = useState([]); // State for internships
   const stats = [
     { icon: Briefcase, label: 'Active Applications', value: 2 },
     { icon: Calendar, label: 'Upcoming Interviews', value: 2 },
     { icon: MessageSquare, label: 'New Messages', value: 3 },
   ];
 
-  const internships = [
-    { title: 'Frontend Developer', company: 'TechCorp', location: 'San Francisco' },
-    { title: 'Backend Developer', company: 'WebSolutions', location: 'New York' },
-  ];
+  
 
   const interviews = [
     { role: 'Frontend Developer', company: 'WebSolutions Ltd', time: 'Tomorrow at 10:00 AM' },
@@ -36,6 +35,20 @@ const StudentDashboard = () => {
     console.log(`Canceled interview for ${selectedInterview?.role}`);
     setSelectedInterview(null); // Close modal after canceling
   };
+
+  useEffect(() => {
+    const fetchInternships = async () => {
+      try {
+        const response = await API.get('/internships/allinternships'); // Fetch internships from backend
+        setInternships(response.data); // Populate state with fetched internships
+      } catch (error) {
+        console.error('Error fetching internships:', error.response?.data?.message || error.message);
+      }
+    };
+
+    fetchInternships();
+  }, []);
+
 
   return (
     <div className="min-h-screen bg-[#F8F9FA] p-8">
