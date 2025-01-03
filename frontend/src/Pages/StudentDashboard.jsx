@@ -12,7 +12,9 @@ const StudentDashboard = () => {
   const [selectedInterview, setSelectedInterview] = useState(null);
   const [rescheduleDate, setRescheduleDate] = useState(null);
   const [showMessaging, setShowMessaging] = useState(false);
+  const [showApplyModal, setShowApplyModal] = useState(false);
   const [internships, setInternships] = useState([]); // State for internships
+  const [selectedInternship, setSelectedInternship] = useState(null);
   const stats = [
     { icon: Briefcase, label: 'Active Applications', value: 2 },
     { icon: Calendar, label: 'Upcoming Interviews', value: 2 },
@@ -48,6 +50,26 @@ const StudentDashboard = () => {
 
     fetchInternships();
   }, []);
+
+  const handleApplyClick = (internship) => {
+    setSelectedInternship(internship); // Set selected internship
+    setShowApplyModal(true); // Show modal
+  };
+
+  const handleConfirmApply = async () => {
+    if (!selectedInternship) return;
+
+    try {
+      await API.post(`/internships/${selectedInternship._id}/apply`);
+      alert('Application submitted successfully!');
+    } catch (error) {
+      console.error('Error applying to internship:', error.response?.data?.message || error.message);
+      alert('Failed to apply. Please try again.');
+    } finally {
+      setShowApplyModal(false); // Close modal
+      setSelectedInternship(null); // Reset selected internship
+    }
+  };
 
 
   return (
@@ -123,7 +145,7 @@ const StudentDashboard = () => {
                         </span>
                       </div>
                     </div>
-                    <button className="px-4 py-2 bg-[#4A72FF] text-white rounded-lg text-sm hover:bg-[#3A5FE6]">
+                    <button onClick={() => handleApplyClick(internship)} className="px-4 py-2 bg-[#4A72FF] text-white rounded-lg text-sm hover:bg-[#3A5FE6]">
                       Apply Now
                     </button>
                   </div>
@@ -132,6 +154,32 @@ const StudentDashboard = () => {
             </div>
           </div>
         </div>
+        {/* Apply Modal */}
+      {showApplyModal && selectedInternship && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white rounded-xl p-6 w-[90%] max-w-md">
+            <h2 className="text-xl font-semibold text-[#1E1E1E] mb-4">Confirm Application</h2>
+            <p className="text-sm text-[#666] mb-6">
+              Are you sure you want to apply to the <strong>{selectedInternship.title}</strong> position at{' '}
+              <strong>{selectedInternship.recruiter?.companyName || 'N/A'}</strong>?
+            </p>
+            <div className="flex gap-4">
+              <button
+                onClick={handleConfirmApply}
+                className="px-4 py-2 bg-[#4A72FF] text-white rounded-lg hover:bg-[#3A5FE6]"
+              >
+                Yes, Apply
+              </button>
+              <button
+                onClick={() => setShowApplyModal(false)}
+                className="px-4 py-2 bg-gray-300 text-[#666] rounded-lg hover:bg-gray-400"
+              >
+                No, Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
         {/* Upcoming Interviews */}
         <div>
