@@ -1,27 +1,38 @@
 // frontend/src/Pages/Company/CompanyDashboard.jsx
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users, Briefcase, Bell, BarChart, Calendar, Plus, FileText } from 'lucide-react';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import API from '../../api';
 
 const CompanyDashboard = () => {
+  const [internships, setInternships] = useState([]);
+  const navigate = useNavigate();
+
+  // Fetch internships for the recruiter
+  useEffect(() => {
+    const fetchInternships = async () => {
+      try {
+        const response = await API.get('/internships/recruiter/list'); // Fetch internships from the backend
+        setInternships(response.data); // Update state with fetched internships
+      } catch (error) {
+        console.error('Error fetching internships:', error.response?.data?.message || error.message);
+      }
+    };
+
+    fetchInternships();
+  }, []);
   const [applicants, setApplicants] = useState([
     { id: 1, name: "Sarah Parker", position: "Frontend Developer", skills: ["React"], experience: "3 Years", status: "Pending" },
     { id: 2, name: "John Doe", position: "Backend Developer", skills: ["Node.js"], experience: "5 Years", status: "Pending" },
     { id: 3, name: "Alice Johnson", position: "Full Stack Developer", skills: ["React", "Node.js"], experience: "4 Years", status: "Pending" },
   ]);
-  const [internships, setInternships] = useState([
-    { id: 1, title: "Frontend Developer", location: "Remote", applicants: 50 },
-    { id: 2, title: "Backend Developer", location: "New York", applicants: 30 },
-    { id: 3, title: "Full Stack Developer", location: "San Francisco", applicants: 20 },
-  ]);
   const [selectedApplicant, setSelectedApplicant] = useState(null);
   const [showScheduleModal, setShowScheduleModal] = useState(false);
   const [scheduleDate, setScheduleDate] = useState(null);
-  const navigate = useNavigate();
 
   // Handle View Details
   const handleViewDetails = (applicant) => {
@@ -126,7 +137,7 @@ const CompanyDashboard = () => {
       </div>
 
       {/* Internships Section */}
-      <div className="mb-8">
+      {/* <div className="mb-8">
         <Card>
           <CardHeader>
             <CardTitle>Open Internships</CardTitle>
@@ -147,6 +158,36 @@ const CompanyDashboard = () => {
                 </div>
               ))}
             </div>
+          </CardContent>
+        </Card>
+      </div> */}
+       <div className="mb-8">
+        <Card>
+          <CardHeader>
+            <CardTitle>Posted Internships</CardTitle>
+          </CardHeader>
+          <CardContent>
+            {internships.length > 0 ? (
+              <div className="space-y-4">
+                {internships.map((internship) => (
+                  <div key={internship._id} className="p-4 border rounded-lg hover:bg-gray-50">
+                    <h4 className="font-semibold">{internship.title}</h4>
+                    <p className="text-sm text-gray-600">Location: {internship.location}</p>
+                    <p className="text-sm text-gray-600">
+                      Applicants: {internship.applicants?.length || 0}
+                    </p>
+                    <button
+                      onClick={() => navigate(`/internships/${internship._id}`)}
+                      className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg text-sm hover:bg-blue-600"
+                    >
+                      View Details
+                    </button>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-gray-600">No internships posted yet. Start by posting one!</p>
+            )}
           </CardContent>
         </Card>
       </div>

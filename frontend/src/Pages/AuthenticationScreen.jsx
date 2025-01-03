@@ -196,12 +196,13 @@ const AuthenticationScreen = () => {
     e.preventDefault();
     try {
       // Make API call to backend login endpoint
-      const response = await API.post(`/${userType}/login`, {
+      const response = await API.post(`/auth/${userType}/login`, {
         email: formData.email,
         password: formData.password,
       });
 
       const { token } = response.data;
+      localStorage.setItem('token', token);
 
       // Decode token (if needed) or use response data to get user type and other info
       const user = {

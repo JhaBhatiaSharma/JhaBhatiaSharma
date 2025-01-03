@@ -185,7 +185,7 @@ const SignupScreen = () => {
       };
 
       // Make POST request to /register endpoint
-      const response = await API.post(`/${userType}/register`, payload);
+      const response = await API.post(`/auth/${userType}/register`, payload);
 
       console.log('Signup successful:', response.data);
 

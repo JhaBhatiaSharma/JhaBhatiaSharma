@@ -248,7 +248,9 @@ const AddInternship = () => {
 
     try {
       // Make API request to add internship
-      const response = await API.post('/addinternship', formData);
+      const token=localStorage.getItem('token')
+      console.log(token)
+      const response = await API.post('/internships/addinternship', formData);
 
       alert('Internship added successfully!');
       navigate('/'); // Redirect to dashboard or homepage

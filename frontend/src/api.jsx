@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API = axios.create({
-  baseURL: 'http://localhost:5001/api/auth', // Update with your backend's base URL
+  baseURL: 'http://localhost:5001/api', // Update with your backend's base URL
 });
 
 // Attach token for authenticated requests
