@@ -11,6 +11,7 @@ const authRoutes = require('./routes/authRoutes');
 const internshipRoutes = require('./routes/internshipRoutes');
 const userRoutes = require('./routes/userRoutes');
 const messagingRoutes = require('./routes/messagingRoutes');
+const cvRoutes = require('./routes/cvRoutes')
 
 // Initialize the app
 const app = express();
@@ -27,6 +28,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/internships', internshipRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/messages', messagingRoutes);
+app.use('/api/cv', cvRoutes);
 
 // Error handling middleware
 app.use(errorHandler);
