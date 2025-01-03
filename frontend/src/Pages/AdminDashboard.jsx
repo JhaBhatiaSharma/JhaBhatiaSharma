@@ -13,6 +13,7 @@ import {
   Filter,
   Download
 } from 'lucide-react';
+import UserMenuDropdown from '../components/UserMenuDropdown';
 
 const AdminDashboard = () => {
   return (
@@ -28,9 +29,12 @@ const AdminDashboard = () => {
             <button className="p-2 rounded-full hover:bg-gray-100">
               <Bell className="h-6 w-6 text-gray-600" />
             </button>
-            <div className="h-10 w-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-semibold">
-              AD
-            </div>
+            <div className="flex items-center gap-4">
+            <button className="p-2 rounded-full hover:bg-gray-100">
+              <Bell className="h-6 w-6 text-gray-600" />
+            </button>
+            <UserMenuDropdown role="admin" initials="AD" />
+          </div>
           </div>
         </div>
       </div>

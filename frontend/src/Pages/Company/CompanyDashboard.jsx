@@ -7,6 +7,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import API from '../../api';
+import UserMenuDropdown from '../../components/UserMenuDropdown';
 
 const CompanyDashboard = () => {
   const [internships, setInternships] = useState([]);
@@ -71,9 +72,10 @@ const CompanyDashboard = () => {
           <button className="p-2 rounded-full hover:bg-gray-100">
             <Bell className="h-6 w-6 text-gray-600" />
           </button>
-          <div className="h-10 w-10 rounded-full bg-indigo-500 flex items-center justify-center text-white font-semibold">
-            TC
-          </div>
+          <button className="p-2 rounded-full hover:bg-gray-100">
+            <Bell className="h-6 w-6 text-gray-600" />
+          </button>
+          <UserMenuDropdown role="company" initials="TC" />
         </div>
       </div>
 
