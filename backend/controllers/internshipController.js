@@ -1,4 +1,5 @@
 const Internship = require('../models/Internship');
+const Student=require('../models/Student')
 
 exports.addInternship = async (req, res) => {
   try {
@@ -31,6 +32,22 @@ exports.getInternshipById = async (req, res) => {
   }
 };
 
+// exports.applyToInternship = async (req, res) => {
+//   try {
+//     const internship = await Internship.findById(req.params.id);
+//     if (!internship) {
+//       return res.status(404).json({ message: 'Internship not found' });
+//     }
+
+//     internship.applicants = internship.applicants || [];
+//     internship.applicants.push(req.user.id);
+//     await internship.save();
+
+//     res.json({ message: 'Application submitted successfully' });
+//   } catch (error) {
+//     res.status(500).json({ message: error.message });
+//   }
+// };
 exports.applyToInternship = async (req, res) => {
   try {
     const internship = await Internship.findById(req.params.id);
@@ -38,15 +55,30 @@ exports.applyToInternship = async (req, res) => {
       return res.status(404).json({ message: 'Internship not found' });
     }
 
-    internship.applicants = internship.applicants || [];
+    // Check if the user has already applied
+    if (internship.applicants.includes(req.user.id)) {
+      return res.status(400).json({ message: 'You have already applied for this internship' });
+    }
+
+    // Add the user to the internship's applicants list
     internship.applicants.push(req.user.id);
     await internship.save();
 
+    // Optionally update the student's profile
+    const student = await Student.findById(req.user.id);
+    if (student) {
+      student.appliedInternships = student.appliedInternships || [];
+      student.appliedInternships.push(internship._id);
+      await student.save();
+    }
+
     res.json({ message: 'Application submitted successfully' });
   } catch (error) {
+    console.error('Error in applyToInternship:', error);
     res.status(500).json({ message: error.message });
   }
 };
+
 
 exports.getRecruiterInternships = async (req, res) => {
   try {
@@ -57,3 +89,22 @@ exports.getRecruiterInternships = async (req, res) => {
   }
 };
 
+
+exports.getStudentInternships = async (req, res) => {
+  try {
+    // Find the logged-in student and populate applied internships
+    const student = await Student.findById(req.user.id).populate({
+      path: 'appliedInternships',
+      populate: { path: 'recruiter', select: 'firstName lastName email' }, // Populate recruiter details if needed
+    });
+
+    if (!student) {
+      return res.status(404).json({ message: 'Student not found' });
+    }
+
+    res.json(student.appliedInternships);
+  } catch (error) {
+    console.error('Error fetching student internships:', error);
+    res.status(500).json({ message: error.message });
+  }
+};

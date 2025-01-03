@@ -7,6 +7,9 @@ const studentSchema = new mongoose.Schema({
     skills: [String],
     experience: [{ company: String, title: String, description: String }],
   },
+  appliedInternships: [
+    { type: mongoose.Schema.Types.ObjectId, ref: 'Internship' } // List of applied internships
+  ],
 });
 
 module.exports = User.discriminator('Student', studentSchema);
