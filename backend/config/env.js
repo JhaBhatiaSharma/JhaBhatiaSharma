@@ -1,6 +1,7 @@
-// config/env.js
-module.exports = {
-  PORT: 5001,
-  MONGO_URI: 'mongodb+srv://shreeshkumar2:Herapheri@cluster0.cwtfd.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', 
-};
+require('dotenv').config();
 
+module.exports = {
+  PORT: process.env.PORT || 5000,
+  MONGO_URI: process.env.MONGO_URI,
+  JWT_SECRET: process.env.JWT_SECRET,
+};
