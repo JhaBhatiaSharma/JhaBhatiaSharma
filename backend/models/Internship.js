@@ -6,7 +6,7 @@ const internshipSchema = new mongoose.Schema({
   location: String,
   duration: Number,
   stipend: Number,
-  recruiter: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  recruiter: { type: mongoose.Schema.Types.ObjectId, ref: 'User', index: true },
   applicants: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
 });
 

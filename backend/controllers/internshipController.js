@@ -108,3 +108,38 @@ exports.getStudentInternships = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+
+
+// Fetch applicants for recruiter's internships
+exports.getApplicantsForRecruiter = async (req, res) => {
+  try {
+    console.log('Recruiter ID from req.user:', req.user.id);
+
+    const internships = await Internship.find({ recruiter: req.user.id }).populate({
+      path: 'applicants',
+      select: 'firstName lastName email profile.skills profile.experience',
+    });
+
+    console.log('Internships:', internships);
+
+    const applicants = internships.flatMap((internship) =>
+      internship.applicants.map((applicant) => ({
+        internshipTitle: internship.title,
+        applicantId: applicant._id,
+        firstName: applicant.firstName,
+        lastName: applicant.lastName,
+        email: applicant.email,
+        skills: applicant.profile.skills,
+        experience: applicant.profile.experience,
+      }))
+    );
+
+    console.log('Applicants:', applicants);
+
+    res.status(200).json(applicants);
+  } catch (error) {
+    console.error('Error fetching applicants:', error);
+    res.status(500).json({ message: 'Failed to fetch applicants' });
+  }
+};

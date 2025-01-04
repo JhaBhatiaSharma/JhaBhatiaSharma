@@ -11,6 +11,7 @@ import UserMenuDropdown from '../../components/UserMenuDropdown';
 
 const CompanyDashboard = () => {
   const [internships, setInternships] = useState([]);
+  
   const navigate = useNavigate();
 
   // Fetch internships for the recruiter
@@ -26,11 +27,31 @@ const CompanyDashboard = () => {
 
     fetchInternships();
   }, []);
-  const [applicants, setApplicants] = useState([
-    { id: 1, name: "Sarah Parker", position: "Frontend Developer", skills: ["React"], experience: "3 Years", status: "Pending" },
-    { id: 2, name: "John Doe", position: "Backend Developer", skills: ["Node.js"], experience: "5 Years", status: "Pending" },
-    { id: 3, name: "Alice Johnson", position: "Full Stack Developer", skills: ["React", "Node.js"], experience: "4 Years", status: "Pending" },
-  ]);
+
+  useEffect(() => {
+    const fetchApplicants = async () => {
+      try {
+        console.log('Fetching applicants...');
+      const response = await API.get('/internships/applicants', {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+      console.log('Applicants fetched:', response.data);
+      setApplicants(response.data);
+      } catch (error) {
+        console.error('Error fetching applicants:', error.response?.data?.message || error.message);
+      }
+    };
+
+    fetchApplicants();
+  }, []);
+  // const [applicants, setApplicants] = useState([
+  //   { id: 1, name: "Sarah Parker", position: "Frontend Developer", skills: ["React"], experience: "3 Years", status: "Pending" },
+  //   { id: 2, name: "John Doe", position: "Backend Developer", skills: ["Node.js"], experience: "5 Years", status: "Pending" },
+  //   { id: 3, name: "Alice Johnson", position: "Full Stack Developer", skills: ["React", "Node.js"], experience: "4 Years", status: "Pending" },
+  // ]);
+  const [applicants, setApplicants] = useState([]);
   const [selectedApplicant, setSelectedApplicant] = useState(null);
   const [showScheduleModal, setShowScheduleModal] = useState(false);
   const [scheduleDate, setScheduleDate] = useState(null);
@@ -138,31 +159,6 @@ const CompanyDashboard = () => {
         </Card>
       </div>
 
-      {/* Internships Section */}
-      {/* <div className="mb-8">
-        <Card>
-          <CardHeader>
-            <CardTitle>Open Internships</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {internships.map((internship) => (
-                <div key={internship.id} className="p-4 border rounded-lg hover:bg-gray-50">
-                  <h4 className="font-semibold">{internship.title}</h4>
-                  <p className="text-sm text-gray-600">{internship.location}</p>
-                  <p className="text-sm text-gray-600">{internship.applicants} Applicants</p>
-                  <button
-                    onClick={() => navigate(`/internships/${internship.id}`)}
-                    className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg text-sm hover:bg-blue-600"
-                  >
-                    View Details
-                  </button>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-      </div> */}
        <div className="mb-8">
         <Card>
           <CardHeader>
@@ -197,7 +193,7 @@ const CompanyDashboard = () => {
       {/* Main Content */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Recent Applications */}
-        <div className="lg:col-span-2">
+        {/* <div className="lg:col-span-2">
           <Card>
             <CardHeader>
               <CardTitle>Recent Applications</CardTitle>
@@ -252,7 +248,55 @@ const CompanyDashboard = () => {
               </div>
             </CardContent>
           </Card>
-        </div>
+        </div> */}
+        {/* Recent Applications */}
+      <div className="lg:col-span-2 mb-8">
+        <Card>
+          <CardHeader>
+            <CardTitle>Recent Applications</CardTitle>
+            <CardDescription>Review and manage candidate applications</CardDescription>
+          </CardHeader>
+          <CardContent>
+            {applicants.length > 0 ? (
+              <div className="space-y-4">
+                {applicants.map((applicant, index) => (
+                  <div key={index} className="p-4 border rounded-lg hover:bg-gray-50">
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <h4 className="font-semibold">{`${applicant.firstName} ${applicant.lastName}`}</h4>
+                        <p className="text-sm text-gray-600">{applicant.internshipTitle}</p>
+                        <div className="flex gap-2 mt-2">
+                          {applicant.skills.map((skill, idx) => (
+                            <span
+                              key={idx}
+                              className="px-2 py-1 bg-blue-100 text-blue-600 rounded text-xs"
+                            >
+                              {skill}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => {
+                            setSelectedApplicant(applicant);
+                            setShowScheduleModal(true);
+                          }}
+                          className="px-4 py-2 bg-green-500 text-white rounded-lg text-sm hover:bg-green-600"
+                        >
+                          Schedule
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-gray-600">No applications received yet.</p>
+            )}
+          </CardContent>
+        </Card>
+      </div>
 
         {/* Today's Interviews */}
         <div>
