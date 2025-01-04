@@ -159,15 +159,26 @@ exports.scheduleInterview = async (req, res) => {
       return res.status(404).json({ message: "Internship not found" });
     }
 
-    const interview = {
-      applicantId,
-      scheduleDate,
-    };
-
-    // Save the interview to the internship's interviews field or as a separate model
-    internship.interviews = internship.interviews || [];
-    internship.interviews.push(interview);
+    // Add interview to the internship's scheduledInterviews field
+    internship.scheduledInterviews = internship.scheduledInterviews || [];
+    internship.scheduledInterviews.push({
+      student: applicantId,
+      dateTime: scheduleDate,
+    });
     await internship.save();
+
+    // Add the interview to the student's scheduledInterviews field
+    const student = await Student.findById(applicantId);
+    if (!student) {
+      return res.status(404).json({ message: "Student not found" });
+    }
+
+    student.scheduledInterviews = student.scheduledInterviews || [];
+    student.scheduledInterviews.push({
+      internship: internshipId,
+      dateTime: scheduleDate,
+    });
+    await student.save();
 
     res.status(200).json({ message: "Interview scheduled successfully" });
   } catch (error) {

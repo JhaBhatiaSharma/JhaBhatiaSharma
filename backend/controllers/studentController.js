@@ -78,7 +78,7 @@ exports.loginStudent = async (req, res) => {
       if (!student) {
         return res.status(404).json({ message: 'Student not found' });
       }
-  
+      console.log('Scheduled Interviews:', student.scheduledInterviews);
       res.status(200).json(student.scheduledInterviews);
     } catch (error) {
       console.error('Error fetching student interviews:', error);

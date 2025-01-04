@@ -1,5 +1,4 @@
-//frontend/src/Pages/StudentDashboard.jsx
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Briefcase, Calendar, MessageSquare, Bell, FileText } from 'lucide-react';
 import CVBuilder from './CVBuilder';
 import MessagingSystem from './MessagingSystem';
@@ -14,47 +13,43 @@ const StudentDashboard = () => {
   const [rescheduleDate, setRescheduleDate] = useState(null);
   const [showMessaging, setShowMessaging] = useState(false);
   const [showApplyModal, setShowApplyModal] = useState(false);
-  const [showActiveInternshipsModal, setShowActiveInternshipsModal] = useState(false); // Modal for active internships
+  const [showActiveInternshipsModal, setShowActiveInternshipsModal] = useState(false);
   const [activeInternships, setActiveInternships] = useState([]);
-  const [internships, setInternships] = useState([]); // State for internships
+  const [internships, setInternships] = useState([]);
   const [selectedInternship, setSelectedInternship] = useState(null);
+  const [scheduledInterviews, setScheduledInterviews] = useState([]);
+
   const stats = [
     { icon: Briefcase, label: 'Active Applications', value: 2 },
     { icon: Calendar, label: 'Upcoming Interviews', value: 2 },
     { icon: MessageSquare, label: 'New Messages', value: 3 },
   ];
 
-  
-
-  const interviews = [
-    { role: 'Frontend Developer', company: 'WebSolutions Ltd', time: 'Tomorrow at 10:00 AM' },
-    { role: 'Backend Developer', company: 'TechCorp', time: 'Friday at 3:00 PM' },
-  ];
-
   const handleReschedule = () => {
     console.log(`Rescheduled ${selectedInterview?.role} to ${rescheduleDate}`);
-    setSelectedInterview(null); // Close modal after rescheduling
+    setSelectedInterview(null);
   };
 
   const handleCancel = () => {
     console.log(`Canceled interview for ${selectedInterview?.role}`);
-    setSelectedInterview(null); // Close modal after canceling
+    setSelectedInterview(null);
   };
 
   useEffect(() => {
     const fetchInternships = async () => {
       try {
-        const response = await API.get('/internships/allinternships'); // Fetch internships from backend
-        setInternships(response.data); // Populate state with fetched internships
+        const response = await API.get('/internships/allinternships');
+        setInternships(response.data);
       } catch (error) {
         console.error('Error fetching internships:', error.response?.data?.message || error.message);
       }
     };
+
     const fetchActiveInternships = async () => {
       try {
-        const response = await API.get('/internships/my-internships'); // Fetch active internships from backend
-        console.log(response)
-        setActiveInternships(response.data); // Populate state with fetched active internships
+        const response = await API.get('/internships/my-internships');
+        console.log(response);
+        setActiveInternships(response.data);
       } catch (error) {
         console.error('Error fetching active internships:', error.response?.data?.message || error.message);
       }
@@ -64,9 +59,28 @@ const StudentDashboard = () => {
     fetchActiveInternships();
   }, []);
 
+  useEffect(() => {
+    const fetchScheduledInterviews = async () => {
+      try {
+        const response = await API.get('/internships/student/interviews', {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        });
+        console.log('Scheduled Interviews Response:', response.data);
+        setScheduledInterviews(response.data);
+      } catch (error) {
+        console.error('Error fetching scheduled interviews:', error.response?.data?.message || error.message);
+      }
+    };
+  
+    fetchScheduledInterviews();
+  }, []);
+  
+
   const handleApplyClick = (internship) => {
-    setSelectedInternship(internship); // Set selected internship
-    setShowApplyModal(true); // Show modal
+    setSelectedInternship(internship);
+    setShowApplyModal(true);
   };
 
   const handleConfirmApply = async () => {
@@ -79,11 +93,10 @@ const StudentDashboard = () => {
       console.error('Error applying to internship:', error.response?.data?.message || error.message);
       alert('Failed to apply. Please try again.');
     } finally {
-      setShowApplyModal(false); // Close modal
-      setSelectedInternship(null); // Reset selected internship
+      setShowApplyModal(false);
+      setSelectedInternship(null);
     }
   };
-
 
   return (
     <div className="min-h-screen bg-[#F8F9FA] p-8">
@@ -105,13 +118,10 @@ const StudentDashboard = () => {
             onClick={() => setShowMessaging(true)}
             className="p-2 rounded-full hover:bg-gray-100 relative"
           >
-          <MessageSquare className="h-6 w-6 text-[#666]" />
-          <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-            3
-          </span>
-          </button>
-          <button className="p-2 rounded-full hover:bg-gray-100">
-            <Bell className="h-6 w-6 text-[#666]" />
+            <MessageSquare className="h-6 w-6 text-[#666]" />
+            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+              3
+            </span>
           </button>
           <button className="p-2 rounded-full hover:bg-gray-100">
             <Bell className="h-6 w-6 text-[#666]" />
@@ -141,7 +151,7 @@ const StudentDashboard = () => {
           );
         })}
       </div>
-      
+
       {/* Main Content */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Recent Internship Matches */}
@@ -163,7 +173,10 @@ const StudentDashboard = () => {
                         </span>
                       </div>
                     </div>
-                    <button onClick={() => handleApplyClick(internship)} className="px-4 py-2 bg-[#4A72FF] text-white rounded-lg text-sm hover:bg-[#3A5FE6]">
+                    <button 
+                      onClick={() => handleApplyClick(internship)} 
+                      className="px-4 py-2 bg-[#4A72FF] text-white rounded-lg text-sm hover:bg-[#3A5FE6]"
+                    >
                       Apply Now
                     </button>
                   </div>
@@ -172,8 +185,48 @@ const StudentDashboard = () => {
             </div>
           </div>
         </div>
-        {/* Apply Modal */}
-        {showActiveInternshipsModal && (
+
+        {/* Upcoming Interviews */}
+        <div>
+          <div className="bg-white rounded-xl p-6">
+            <h2 className="text-xl font-semibold text-[#1E1E1E] mb-6">
+              Upcoming Interviews
+            </h2>
+            {scheduledInterviews.length > 0 ? (
+              <div className="space-y-4">
+                {scheduledInterviews.map((interview, index) => (
+                  <div
+                    key={index}
+                    className="p-4 border border-[#E5E7EB] rounded-lg hover:bg-gray-50 cursor-pointer"
+                    onClick={() => setSelectedInterview(interview)}
+                  >
+                    <div className="flex gap-4">
+                      <div className="p-2 bg-gray-50 rounded">
+                        <Calendar className="h-6 w-6 text-[#666]" />
+                      </div>
+                      <div>
+                        <h3 className="font-medium text-[#1E1E1E]">
+                        {interview.internship?.title || 'N/A'}
+                        </h3>
+                        
+                        <p className="text-sm text-[#4A72FF] mt-1">
+                        {new Date(interview.dateTime).toLocaleString()}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-gray-600">No upcoming interviews scheduled.</p>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Modals */}
+      {/* Active Internships Modal */}
+      {showActiveInternshipsModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
           <div className="bg-white rounded-xl p-6 w-[90%] max-w-lg">
             <h2 className="text-xl font-semibold text-[#1E1E1E] mb-4">Your Active Internships</h2>
@@ -196,6 +249,8 @@ const StudentDashboard = () => {
           </div>
         </div>
       )}
+
+      {/* Apply Modal */}
       {showApplyModal && selectedInternship && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
           <div className="bg-white rounded-xl p-6 w-[90%] max-w-md">
@@ -222,35 +277,7 @@ const StudentDashboard = () => {
         </div>
       )}
 
-        {/* Upcoming Interviews */}
-        <div>
-          <div className="bg-white rounded-xl p-6">
-            <h2 className="text-xl font-semibold text-[#1E1E1E] mb-6">Upcoming Interviews</h2>
-            <div className="space-y-4">
-              {interviews.map((interview, index) => (
-                <div 
-                  key={index} 
-                  className="p-4 border border-[#E5E7EB] rounded-lg hover:bg-gray-50 cursor-pointer"
-                  onClick={() => setSelectedInterview(interview)}
-                >
-                  <div className="flex gap-4">
-                    <div className="p-2 bg-gray-50 rounded">
-                      <Calendar className="h-6 w-6 text-[#666]" />
-                    </div>
-                    <div>
-                      <h3 className="font-medium text-[#1E1E1E]">{interview.role}</h3>
-                      <p className="text-sm text-[#666]">{interview.company}</p>
-                      <p className="text-sm text-[#4A72FF] mt-1">{interview.time}</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Reschedule/Cancel Model */}
+      {/* Interview Management Modal */}
       {selectedInterview && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
           <div className="bg-white rounded-xl p-6 w-[90%] max-w-md">
