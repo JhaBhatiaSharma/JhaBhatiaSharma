@@ -10,6 +10,12 @@ const studentSchema = new mongoose.Schema({
   appliedInternships: [
     { type: mongoose.Schema.Types.ObjectId, ref: 'Internship' } // List of applied internships
   ],
+  scheduledInterviews: [
+    {
+      internship: { type: mongoose.Schema.Types.ObjectId, ref: 'Internship' },
+      dateTime: { type: Date },
+    },
+  ],
 });
 
 module.exports = User.discriminator('Student', studentSchema);

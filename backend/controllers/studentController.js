@@ -70,3 +70,19 @@ exports.loginStudent = async (req, res) => {
       res.status(500).json({ message: error.message });
     }
   };
+
+
+  exports.getStudentInterviews = async (req, res) => {
+    try {
+      const student = await Student.findById(req.user.id).populate('scheduledInterviews.internship');
+      if (!student) {
+        return res.status(404).json({ message: 'Student not found' });
+      }
+  
+      res.status(200).json(student.scheduledInterviews);
+    } catch (error) {
+      console.error('Error fetching student interviews:', error);
+      res.status(500).json({ message: 'Failed to fetch interviews' });
+    }
+  };
+  

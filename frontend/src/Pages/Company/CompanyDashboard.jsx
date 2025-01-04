@@ -62,13 +62,43 @@ const CompanyDashboard = () => {
   };
 
   // Handle Schedule Interview
-  const handleScheduleInterview = () => {
-    if (selectedApplicant && scheduleDate) {
-      console.log(`Scheduled interview for ${selectedApplicant.name} on ${scheduleDate}`);
+  // const handleScheduleInterview = () => {
+  //   if (selectedApplicant && scheduleDate) {
+  //     console.log(`Scheduled interview for ${selectedApplicant.name} on ${scheduleDate}`);
+  //     setShowScheduleModal(false);
+  //     setScheduleDate(null);
+  //   }
+  // };
+  const handleScheduleInterview = async () => {
+    if (!selectedApplicant || !scheduleDate) {
+      console.error("Selected applicant or schedule date is missing");
+      return;
+    }
+  
+    try {
+      const { internshipId, applicantId } = selectedApplicant; // Ensure internshipId is included
+      if (!internshipId) {
+        console.error("Internship ID is missing");
+        return;
+      }
+  
+      const response = await API.post(`/internships/${internshipId}/schedule`, {
+        applicantId,
+        scheduleDate,
+      });
+  
+      console.log("Interview scheduled successfully:", response.data);
+  
+      // Close modal and reset state
       setShowScheduleModal(false);
       setScheduleDate(null);
+      alert("Interview scheduled successfully!");
+    } catch (error) {
+      console.error("Error scheduling interview:", error.response?.data?.message || error.message);
+      alert("Failed to schedule interview. Please try again.");
     }
   };
+  
 
   // Handle Reject Applicant
   const handleRejectApplicant = (id) => {
@@ -192,63 +222,7 @@ const CompanyDashboard = () => {
 
       {/* Main Content */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Recent Applications */}
-        {/* <div className="lg:col-span-2">
-          <Card>
-            <CardHeader>
-              <CardTitle>Recent Applications</CardTitle>
-              <CardDescription>Review and manage candidate applications</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {applicants.map((applicant) => (
-                  <div key={applicant.id} className="p-4 border rounded-lg hover:bg-gray-50">
-                    <div className="flex justify-between items-start">
-                      <div className="flex gap-4">
-                        <div className="h-12 w-12 rounded-full bg-gray-200 flex items-center justify-center">
-                          <Users className="h-6 w-6 text-gray-600" />
-                        </div>
-                        <div>
-                          <h4 className="font-semibold">{applicant.name}</h4>
-                          <p className="text-sm text-gray-600">{applicant.position}</p>
-                          <div className="flex gap-2 mt-2">
-                            {applicant.skills.map((skill, idx) => (
-                              <span key={idx} className="px-2 py-1 bg-blue-100 text-blue-600 rounded text-xs">{skill}</span>
-                            ))}
-                            <span className="px-2 py-1 bg-blue-100 text-blue-600 rounded text-xs">{applicant.experience}</span>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="flex gap-2">
-                      <button
-                        onClick={() => handleViewDetails(applicant)}
-                        className="px-4 py-2 bg-gray-100 text-gray-800 rounded-lg text-sm hover:bg-gray-200"
-                      >
-                      View Details
-                      </button>
-                        <button
-                          onClick={() => {
-                            setSelectedApplicant(applicant);
-                            setShowScheduleModal(true);
-                          }}
-                          className="px-4 py-2 bg-green-500 text-white rounded-lg text-sm hover:bg-green-600"
-                        >
-                          Schedule
-                        </button>
-                        <button
-                          onClick={() => handleRejectApplicant(applicant.id)}
-                          className="px-4 py-2 bg-red-500 text-white rounded-lg text-sm hover:bg-red-600"
-                        >
-                          Reject
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </div> */}
+        
         {/* Recent Applications */}
       <div className="lg:col-span-2 mb-8">
         <Card>
@@ -275,6 +249,11 @@ const CompanyDashboard = () => {
                             </span>
                           ))}
                         </div>
+                        {applicant.scheduledDateTime && (
+                          <p className="text-sm text-green-600 mt-2">
+                            Scheduled: {new Date(applicant.scheduledDateTime).toLocaleString()}
+                          </p>
+                        )}
                       </div>
                       <div className="flex gap-2">
                         <button
@@ -325,39 +304,58 @@ const CompanyDashboard = () => {
       </div>
 
       {/* Schedule Modal */}
+     
       {showScheduleModal && selectedApplicant && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white rounded-lg p-6 w-[90%] max-w-md">
-            <h2 className="text-lg font-semibold">Schedule Interview</h2>
-            <p className="text-sm text-gray-600">For: {selectedApplicant.name}</p>
-            <div className="mt-4">
-            <DatePicker
-              selected={scheduleDate}
-              onChange={(date) => setScheduleDate(date)}
-              className="border border-gray-300 rounded-lg px-4 py-2 w-full bg-white text-gray-800"
-            />
-
-            </div>
-            <div className="flex gap-4 mt-6">
-              <button
-                onClick={handleScheduleInterview}
-                className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
-              >
-                Confirm
-              </button>
-              <button
-                onClick={() => setShowScheduleModal(false)}
-                className="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400"
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+  <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+    <div className="bg-white rounded-lg p-6 w-[90%] max-w-md shadow-lg">
+      <h2 className="text-lg font-semibold text-gray-800">Schedule Interview</h2>
+      <p className="text-sm text-gray-600 mt-1">
+        For: <span className="font-medium">{`${selectedApplicant.firstName} ${selectedApplicant.lastName}`}</span>
+      </p>
+      <p className="text-sm text-gray-600 mt-1">
+        Internship: <span className="font-medium">{selectedApplicant.internshipTitle}</span>
+      </p>
+      <div className="mt-4">
+        <label htmlFor="scheduleDate" className="block text-sm font-medium text-gray-800 mb-2">
+          Select Date and Time
+        </label>
+        <DatePicker
+          id="scheduleDate"
+          selected={scheduleDate}
+          onChange={(date) => setScheduleDate(date)}
+          showTimeSelect
+          dateFormat="Pp"
+          className="border border-gray-300 rounded-lg px-4 py-2 w-full bg-white text-gray-800"
+        />
+      </div>
+      <div className="flex gap-4 mt-6 justify-end">
+        <button
+          onClick={handleScheduleInterview}
+          className={`px-4 py-2 text-white rounded-lg ${
+            scheduleDate
+              ? 'bg-green-500 hover:bg-green-600'
+              : 'bg-green-300 cursor-not-allowed'
+          }`}
+          disabled={!scheduleDate}
+        >
+          Confirm
+        </button>
+        <button
+          onClick={() => {
+            setShowScheduleModal(false);
+            setScheduleDate(null); // Clear the selected date
+          }}
+          className="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400"
+        >
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+)}
 
       {/* View Details Modal */}
-      {selectedApplicant && !showScheduleModal && (
+      {/* {selectedApplicant && !showScheduleModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
           <div className="bg-white rounded-lg p-6 w-[90%] max-w-md">
             <h2 className="text-lg font-semibold">Applicant Details</h2>
@@ -383,7 +381,7 @@ const CompanyDashboard = () => {
             </div>
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 };

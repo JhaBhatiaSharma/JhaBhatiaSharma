@@ -6,8 +6,11 @@ const {
   applyToInternship,
   getRecruiterInternships,
   getStudentInternships,
-  getApplicantsForRecruiter
+  getApplicantsForRecruiter,
+  scheduleInterview
 } = require('../controllers/internshipController');
+const {getStudentInterviews} = require('../controllers/studentController')
+const {getRecruiterInterviews} = require('../controllers/recruiterController')
 const { authMiddleware, roleMiddleware } = require('../middleware/authMiddleware');
 const router = express.Router();
 
@@ -20,6 +23,24 @@ router.get(
   authMiddleware,
   roleMiddleware(['recruiter']),
   getApplicantsForRecruiter
+);
+router.post(
+  '/:id/schedule',
+  authMiddleware,
+  roleMiddleware(['recruiter']),
+  scheduleInterview
+);
+router.get(
+  '/student/interviews',
+  authMiddleware,
+  roleMiddleware(['student']),
+  getStudentInterviews
+);
+router.get(
+  '/recruiter/interviews',
+  authMiddleware,
+  roleMiddleware(['recruiter']),
+  getRecruiterInterviews
 );
 
 router.post('/addinternship', authMiddleware, roleMiddleware(['recruiter']), addInternship);

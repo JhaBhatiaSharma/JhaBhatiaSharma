@@ -125,6 +125,7 @@ exports.getApplicantsForRecruiter = async (req, res) => {
 
     const applicants = internships.flatMap((internship) =>
       internship.applicants.map((applicant) => ({
+        internshipId: internship._id,
         internshipTitle: internship.title,
         applicantId: applicant._id,
         firstName: applicant.firstName,
@@ -141,5 +142,36 @@ exports.getApplicantsForRecruiter = async (req, res) => {
   } catch (error) {
     console.error('Error fetching applicants:', error);
     res.status(500).json({ message: 'Failed to fetch applicants' });
+  }
+};
+
+exports.scheduleInterview = async (req, res) => {
+  try {
+    const { id: internshipId } = req.params;
+    const { applicantId, scheduleDate } = req.body;
+
+    if (!applicantId || !scheduleDate) {
+      return res.status(400).json({ message: "Applicant ID and schedule date are required" });
+    }
+
+    const internship = await Internship.findById(internshipId);
+    if (!internship) {
+      return res.status(404).json({ message: "Internship not found" });
+    }
+
+    const interview = {
+      applicantId,
+      scheduleDate,
+    };
+
+    // Save the interview to the internship's interviews field or as a separate model
+    internship.interviews = internship.interviews || [];
+    internship.interviews.push(interview);
+    await internship.save();
+
+    res.status(200).json({ message: "Interview scheduled successfully" });
+  } catch (error) {
+    console.error("Error scheduling interview:", error);
+    res.status(500).json({ message: "Failed to schedule interview" });
   }
 };
