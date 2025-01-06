@@ -1,7 +1,7 @@
 \section{Overview}
 \label{sec:overview}
 
-Here we represent an overview of how the entire InternHub S\&C architecture is composed of:
+Here we represent an overview of how the entire \textbf{InternHub S\&C}architecture is composed of:
 
 \begin{figure}[H]
     \begin{center}
@@ -27,6 +27,8 @@ Here we represent an overview of how the entire InternHub S\&C architecture is c
     \item \textbf{Analytics Engine API:} Enables stakeholders to make data-driven decisions by offering insights and producing reports about internships, applications, and platform usage.
     \item \textbf{External Tools API:} Enables the safe storage and retrieval of internship-related files, including contracts and certificates, by facilitating integration with document management systems and other outside services.
 \end{itemize}
+
+\newpage
 
 \section{Component View}
 \label{subsec:component_view}
@@ -89,15 +91,22 @@ The external components of S\&C are depicted in the high-level component diagram
 The figure above represents the detailed architecture of the InternHub – Students \& Companies (S\&C) platform, showing the key components within the InternHub Server and their interactions.
 
 \begin{itemize}
-    \item \textbf{Dashboard Manager:} Routes user queries to the appropriate parts of InternHub. The Dashboard Interface is how users engage with the platform.
-    \item \textbf{Model Component:} Acts as a bridge to the DBMS Server and ensures all components use the DBMS API for secure and effective data access.
-    \item \textbf{Registration Manager:} Handles the registration of new users, including companies, universities, and students.
-    \item \textbf{Login Manager:} Manages the login process for registered users.
-    \item \textbf{Profile Manager:} Enables users to manage their profiles and browse other users' profiles.
+    \item \textbf{Dashboard Manager:} The essential element that plans out all user-platform communication. The Dashboard Manager routes user queries to the appropriate parts of InternHub, while the Dashboard Interface is how users engage with the platform. User activities including managing profiles, looking for internships, and receiving notifications all take place there.
+
+    \item \textbf{Model Component:} Acts as a bridge interface to the DBMS Server and represents the data on the server. It guarantees that all components use the DBMS API to safely and effectively access data.
+
+    \item \textbf{Registration Manager:} Manages the registration of new users, including companies, universities, and students. The Registration Manager handles requests made through the Registration Interface. It interacts with the Model Component to add new user information to the database and with the Mail Server via the Mail API to deliver confirmation emails.
+
+    \item \textbf{Login Manager:} Oversees the registered users' login procedure. The Login Manager handles user login requests sent through the Login Interface. It collects user data from the Model Component and verifies credentials.
+
+    \item \textbf{Profile Manager:} Enables users to search for and browse other users' profiles in addition to managing their own. In order to retrieve or change profile data, the Profile Manager interacts with the Model Component via the Profile Interface.
+
     \item \textbf{Internship Manager:} Oversees all internship-related activities, such as job advertisements, applications, and status reports.
-    \item \textbf{Application Manager:} Manages internship applications, including submission, alerts, and status monitoring.
+    \item \textbf{Application Manager:} Manages internship applications, including submission, alerts, and status monitoring. It interacts with the Model Component to retrieve and update data and handles requests through the Application Interface.
+
     \item \textbf{Evaluation Manager:} Handles the evaluation of students' success during internships.
-    \item \textbf{Notification Manager:} Manages all notifications sent to users, including application updates and internship postings.
+    \item \textbf{Notification Manager:} In charge of managing every notification that users get. It handles requests through the Notification Interface, including alerting users to platform events, application updates, and internship postings. It interacts with other managers for event triggers and the Model Component for storing notification data.
+
 \end{itemize}
 
 \subsection{Evaluation Manager}
@@ -115,9 +124,9 @@ The InternHub – Students \& Companies (S\&C) platform's Evaluation Manager is 
 The Automated Evaluation component is utilized by the InternHub system to automatically assess a student’s performance or task completion during their internship. The workflow is as follows:
 \begin{enumerate}
     \item Through the Evaluation Interface, the system notifies the Automated Evaluation Component when an internship milestone or work submission takes place.
-    \item Through the External Tools API, the Automated Evaluation Component forwards the submitted work to external tools for evaluation, testing, or scoring (e.g., project testing or task completion verification).
-    \item The Automated Evaluation Component uses the Model Interface to communicate with the Model Component after receiving the evaluation results from the external tools.
-    \item The Model Component uses the DBMS API to update the student's score in the database, ensuring that the evaluation results are appropriately recorded.
+    \item Through the External Tools API, the Automated Evaluation component forwards the submitted work to outside tools for evaluation, testing, or scoring (e.g., project testing or task completion verification).
+    \item The Automated Evaluation component uses the Model Interface to communicate with the Model Component after receiving the evaluation results from the external tools.
+    \item In turn, the Model Component uses the DBMS API to update the student's score in the database, guaranteeing that the evaluation results are appropriately recorded in the appropriate database area.
 \end{enumerate}
 
 \subsubsection{Manual Evaluation Component}
@@ -125,9 +134,9 @@ The Manual Evaluation component allows companies or university administrators to
 \begin{enumerate}
     \item The evaluator (company or administrator) initiates a request via the WebApp, which connects to the Dashboard Interface.
     \item Through the Evaluation Interface, the request is sent to the Manual Evaluation Component.
-    \item The Manual Evaluation Component retrieves the student's submitted work or internship data using the GitHub API or other integrated technologies.
-    \item The evaluator's manual analysis and scoring results are provided to the Model Component via the Model Interface.
-    \item The Model Component updates the scores or evaluations in the database using the DBMS API, ensuring the results are accurately documented.
+    \item The GitHub API or other integrated technologies are used by the Manual Evaluation component to retrieve the student's submitted work or internship data.
+    \item The Manual Evaluation component uses the Model Interface to provide the updated results to the Model Component following the evaluator's manual analysis and scoring.
+    \item The Model Component ensures that the outcomes of the manual evaluation are accurately documented by updating the scores or evaluations in the database using the DBMS API.
 \end{enumerate}
 
 \subsection{Dashboard Manager}
@@ -146,13 +155,13 @@ The Dashboard Manager is a pivotal component in the InternHub – Students \& Co
 \paragraph{Profile Management}
 Users can manage and update their profiles, which include contact details, preferences, and resumes.
 \begin{itemize}
-    \item The Model Component communicates with the database to retrieve or update user data related to profile management.
+    \item In order to retrieve or change user data, the Model Component communicates with the Database and receives requests pertaining to profile management.
 \end{itemize}
 
 \paragraph{Internship Search}
 Allows users to search and filter internships based on location, preferences, and skills.
 \begin{itemize}
-    \item Requests are handled by the Search Component, which queries the database and provides users with relevant results through the Dashboard Interface.
+    \item These requests are handled by the Search Component, which queries the database and provides users with pertinent results through the Dashboard Interface.
 \end{itemize}
 
 \paragraph{Notifications}
@@ -164,13 +173,13 @@ Oversees the distribution of user notifications, including critical system messa
 \paragraph{Application Tracking}
 Allows users to keep track of the acceptance, rejection, and company updates on their internship applications.
 \begin{itemize}
-    \item The Application Tracking Component communicates with the database to retrieve and present current application statuses.
+    \itemIn order to retrieve and present current application statuses, the Application Tracking Component communicates with the database.
 \end{itemize}
 
 \paragraph{Messaging}
 Facilitates direct communication between administration, businesses, and students to address questions or discuss internships.
 \begin{itemize}
-    \item Communicates with the Messaging Component, ensuring that every conversation is recorded and securely stored in the database.
+    \item Communicates with the Messaging Component, which guarantees that every conversation is recorded and safely kept in the database.
 \end{itemize}
 
 \subsection{Profile Manager}
@@ -297,17 +306,17 @@ The platform's deployment architecture is composed of the following layers:
 
 \paragraph{Client Side}
 \begin{itemize}
-    \item The Client Side is composed of user devices, primarily accessed via web browsers. These devices represent platform users, including businesses, academic institutions, and students.
+    \item User devices, which are mostly accessed through web browsers, make up the client side. These devices stand in for platform users, which include companies, educational institutions, and students.
     \item Users engage with platform services such as applications, notifications, internship posts, profile management, registration, and login using their browsers.
-    \item Communication between the user and platform is secured using HTTPS, ensuring data privacy and protection.
+    \item HTTPS ensures data privacy and protection by securing communication between the user and the platform.
 \end{itemize}
 
 \paragraph{Server Side}
 \begin{itemize}
-    \item \textbf{Web Server:} Acts as the entry point for all client requests. It manages static content delivery (HTML, CSS, and JavaScript), ensures secure HTTPS connections, and performs load balancing by distributing incoming requests to multiple application server replicas.
-    \item \textbf{Application Server:} Serves as the core backend, processing business logic and coordinating with other components. It handles user management, internship management, and notification delivery. It integrates with the DBMS Server for data storage and retrieval and with the Email Server for automated communication.
-    \item \textbf{DBMS Server:} Stores user data, internship-related data, and application data. It logs notifications and ensures efficient data storage, retrieval, and updates.
-    \item \textbf{Email Server:} Manages outgoing communications such as registration confirmations and application updates using the SMTP protocol.
+    \item \textbf{Web Server:} serves as the gateway for all requests from clients. By allocating incoming requests to several application server replicas, it performs load balancing, guarantees secure HTTPS connections, and controls the delivery of static content (HTML, CSS, and JavaScript).
+    \item \textbf{Application Server:} acts as the main backend, coordinating with other parts and processing business logic. Notification delivery, internship management, and user management are all handled by it. For data storage and retrieval, it interfaces with the DBMS Server; for automated communication, it integrates with the Email Server.
+    \item \textbf{DBMS Server:} keeps application, user, and internship-related data. Notifications are recorded, and effective data updates, retrieval, and storage are guaranteed.
+    \item \textbf{Email Server:} uses the SMTP protocol to handle outward messages, including application updates and registration confirmations.
 \end{itemize}
 
 \section{Runtime View}
@@ -325,11 +334,11 @@ The platform's deployment architecture is composed of the following layers:
 
 The platform's sign-up process allows new users (students, companies, or university administrators) to register. The process is as follows:
 \begin{enumerate}
-    \item The user enters their information via the WebApp’s sign-up form, including name, email address, password, and user role.
-    \item The Web Server verifies the inputs and forwards the data securely to the Application Server.
-    \item The Application Server’s Registration Manager component checks for duplicate records in the database using the DBMS Server.
-    \item If the user is unique, a verification email is sent via the Email Server.
-    \item Upon verifying the email, the Application Server stores the user’s data in the database and confirms successful registration.
+    \item Through the WebApp's sign-up form, the user provides their name, email address, password, and user role.
+    \item After confirming the inputs, the Web Server securely sends the data to the Application Server.
+    \item The DBMS Server is used by the Application Server's Registration Manager component to search the database for duplicate records.
+    \item The Email Server sends a verification email if the user is unique.
+    \item The Application Server validates successful registration and saves the user's information in the database after confirming the email.
 \end{enumerate}
 
 \subsection{Login Process}
@@ -346,10 +355,10 @@ The platform's sign-up process allows new users (students, companies, or univers
 The login process ensures secure access for registered users. The steps are as follows:
 \begin{enumerate}
     \item The user inputs their credentials on the WebApp’s login form.
-    \item The Web Server forwards the data securely to the Application Server.
-    \item The Application Server’s Login Manager verifies the credentials against database entries via the DBMS Server.
-    \item If the credentials match, the system generates a session token and logs the user into the platform.
-    \item The user is redirected to their dashboard, ensuring seamless and secure access.
+    \item The Application Server receives the data safely from the Web Server.
+    \item Through the DBMS Server, the Application Server's Login Manager compares the credentials against database entries.
+    \item The system creates a session token and logs the user into the platform if the credentials match.
+    \item To ensure easy and safe access, the user is taken to their dashboard.
 \end{enumerate}
 
 \subsection{Post Internship}
@@ -363,10 +372,10 @@ The login process ensures secure access for registered users. The steps are as f
 \end{figure}
 Posting an internship is an essential function for company users. The process is as follows:
 \begin{enumerate}
-    \item The company user initiates the process by filling out internship details via the WebApp, including the job title, description, prerequisites, and duration.
-    \item The Web Server receives this data and forwards it to the Application Server for verification.
-    \item The Internship Manager component processes the data and communicates with the DBMS Server to store the new internship posting in the database.
-    \item Once the data has been successfully stored, the company user receives a confirmation message.
+    \item By completing the internship details using the WebApp, including the job title, description, requirements, and duration, the company user starts the process.
+    \item After receiving this data, the Web Server sends it to the Application Server for validation.
+    \item The new internship posting is stored in the database by the Internship Manager component, which handles data processing and communication with the DBMS Server.
+    \item A confirmation message is sent to the company user when the data has been successfully stored.
 \end{enumerate}
 This process ensures that the posted internship is immediately visible to qualified students looking for opportunities.
 
@@ -382,11 +391,11 @@ This process ensures that the posted internship is immediately visible to qualif
 
 The interview management process streamlines scheduling and coordination between students and companies. The steps involved are:
 \begin{enumerate}
-    \item Companies propose interview times through the WebApp. The data is sent to the Web Server and then to the Application Server.
-    \item The Interview Manager component verifies the proposed timeslots and stores them in the database via the DBMS Server.
-    \item Students are notified of the suggested timeslots through the Notification Manager and Email Server.
-    \item Students can respond to the proposed timeslots via the WebApp, and their responses are updated in the database by the Interview Manager.
-    \item Notifications confirming the student's selection are sent to the company.
+    \item Employers use the WebApp to suggest interview schedules. After passing via the Web Server, the data is sent to the Application Server.
+    \item The DBMS Server is used by the Interview Manager component to store the suggested timeslots in the database after verifying them.
+    \item The Notification Manager and Email Server are used to inform students of the recommended timeslots.
+    \item Through the WebApp, students can reply to the suggested timeslots, and the Interview Manager updates their answers in the database.
+    \item The business receives notifications verifying the student's choice.
 \end{enumerate}
 This efficient process ensures seamless scheduling and communication for both parties.
 
@@ -402,11 +411,11 @@ This efficient process ensures seamless scheduling and communication for both pa
 The complaint-handling process is designed to efficiently address user complaints. The steps are as follows:
 
 \begin{enumerate}
-    \item Users file complaints through the WebApp, which are sent to the Web Server and then forwarded to the Application Server.
-    \item The Complaint Manager component verifies the complaint and stores it in the database via the DBMS Server.
-    \item The appropriate university official is notified of the complaint and examines it to provide a resolution.
-    \item The resolution is communicated to the user via the Notification Manager and Email Server.
-    \item The resolution is recorded in the database for future reference.
+    \item Complaints submitted by users via the WebApp are routed to the Web Server and subsequently to the Application Server.
+    \item The Complaint Manager component uses the DBMS Server to store the complaint in the database after verifying it.
+    \item After being informed of the complaint, the relevant university representative investigates it and offers a remedy.
+    \item The user is informed of the resolution through the Email Server and Notification Manager.
+    \item For future use, the resolution is noted in the database.
 \end{enumerate}
 This transparent process ensures that all complaints are handled promptly and efficiently.
 
@@ -422,10 +431,10 @@ This transparent process ensures that all complaints are handled promptly and ef
 
 Profile management allows users to update and maintain their personal information. The process includes:
 \begin{enumerate}
-    \item Users initiate updates through the WebApp's profile page by entering details such as contact information, skills, and educational history.
-    \item The Web Server forwards these updates to the Application Server.
-    \item The Profile Manager verifies the modifications and communicates with the DBMS Server to store the updated data in the database.
-    \item Once the changes are saved, the user receives a success message.
+    \item Updates are started by users by inputting information including contact data, talents, and educational background on the WebApp's profile page.
+    \item The Application Server receives these changes from the Web Server.
+    \item In order to store the updated data in the database, the Profile Manager contacts the DBMS Server and confirms the changes.
+    \item A success message is displayed to the user when the modifications have been saved.
 \end{enumerate}
 This feature ensures that user profiles remain up-to-date and relevant for internship matching and application processes.
 
@@ -442,10 +451,10 @@ This feature ensures that user profiles remain up-to-date and relevant for inter
 
 The search and filter process enables users to quickly find relevant information. The workflow is as follows:
 \begin{enumerate}
-    \item Users apply filters such as location, required skills, and duration when searching for internships via the WebApp.
-    \item The Web Server forwards these filters to the Application Server.
-    \item The Search Component interacts with the DBMS Server to process the query and retrieve matching results.
-    \item The Web Server sends the results back to the WebApp, where users can view them.
+    \item Using the WebApp, users may search for internships by using filters like location, needed skills, and duration.
+    \item These filters are sent to the Application Server by the Web Server.
+    \item In order to process the query and obtain relevant results, the Search Component communicates with the DBMS Server.
+    \item The WebApp receives the results from the Web Server and displays them for users to see.
 \end{enumerate}
 This functionality helps users efficiently navigate the platform's data and find the most relevant opportunities.
 
@@ -471,61 +480,61 @@ This functionality helps users efficiently navigate the platform's data and find
 
 \paragraph{Internship Manager}
 \begin{itemize}
-    \item \textbf{addInternship(Map<String, String> internshipDetails):} Allows recruiters to add a new internship after validating permissions.
-    \item \textbf{deleteInternship(String internshipID):} Deletes a specified internship after validating recruiter permissions.
-    \item \textbf{fetchAllInternships(String recruiterID):} Fetches all internships posted by a specific recruiter.
-    \item \textbf{fetchInternshipById(String internshipID):} Retrieves details of a specific internship using its ID.
+    \item \textbf{addInternship(Map<String, String> internshipDetails):} enables recruiters to add a new internship following authorization validation.
+    \item \textbf{deleteInternship(String internshipID):} After verifying recruiter rights, a specified internship is deleted.
+    \item \textbf{fetchAllInternships(String recruiterID):} retrieves every internship that a particular recruiter has posted.
+    \item \textbf{fetchInternshipById(String internshipID):} uses its ID to retrieve information on a particular internship.
 \end{itemize}
 
 \paragraph{Application Manager}
 \begin{itemize}
-    \item \textbf{SubmitApplication(String internshipID, String studentNickname, String resume):} Allows students to submit their application for a specific internship.
-    \item \textbf{ViewApplications(String internshipID):} Retrieves all applications for a particular internship.
-    \item \textbf{UpdateApplicationStatus(String applicationID, String status):} Updates the status of a submitted application.
+    \item \textbf{SubmitApplication(String internshipID, String studentNickname, String resume):} gives students the opportunity to apply for a particular internship.
+    \item \textbf{ViewApplications(String internshipID):} retrieves every applicant submitted for a specific internship.
+    \item \textbf{UpdateApplicationStatus(String applicationID, String status):} updates a submitted application's status.
 \end{itemize}
 
 \paragraph{Interview Manager}
 \begin{itemize}
-    \item \textbf{ProposeInterview(String internshipID, List<Date> availableDates):} Allows companies to propose interview slots for a specific internship.
-    \item \textbf{RespondToInterview(String interviewID, String response):} Allows students to accept or decline an interview invitation.
+    \item \textbf{ProposeInterview(String internshipID, List<Date> availableDates):} enables companies to suggest times for interviews for a particular internship.
+    \item \textbf{RespondToInterview(String interviewID, String response):} gives students the option to accept or reject an invitation to an interview.
     \item \textbf{GetInterviewDetails(String interviewID):} Retrieves details about a specific interview.
 \end{itemize}
 
 \paragraph{Complaint Manager}
 \begin{itemize}
-    \item \textbf{SubmitComplaint(String userID, String description):} Allows users to file a complaint about an issue.
-    \item \textbf{ViewComplaint(String complaintID):} Retrieves details about a specific complaint.
-    \item \textbf{ResolveComplaint(String complaintID, String resolution):} Updates the status and resolution of a complaint.
+    \item \textbf{SubmitComplaint(String userID, String description):} enables people to complain about a problem.
+    \item \textbf{ViewComplaint(String complaintID):} brings up information on a certain complaint.
+    \item \textbf{ResolveComplaint(String complaintID, String resolution):} provides an update on the complaint's status and outcome.
 \end{itemize}
 
 \paragraph{Profile Manager}
 \begin{itemize}
     \item \textbf{EditProfile(String nickname, Map<String, String> updatedDetails):} Updates the user’s profile information.
-    \item \textbf{ViewProfile(String nickname):} Retrieves the profile details of a user.
-    \item \textbf{SearchProfiles(String keyword):} Searches for profiles based on the provided keyword.
+    \item \textbf{ViewProfile(String nickname):} retrieves a user's profile information.
+    \item \textbf{SearchProfiles(String keyword):} uses the supplied keyword to search for profiles.
 \end{itemize}
 
 \paragraph{Notification Manager}
 \begin{itemize}
-    \item \textbf{SendNotification(String userID, String message):} Sends a notification to a user.
-    \item \textbf{ViewNotifications(String userID):} Retrieves all notifications for a specific user.
+    \item \textbf{SendNotification(String userID, String message):} gives a user a notification.
+    \item \textbf{ViewNotifications(String userID):} brings up every notification for a particular user.
 \end{itemize}
 
 \paragraph{OTP Manager}
 \begin{itemize}
     \item \textbf{requestOTP(String email):} Requests an OTP for email-based authentication.
-    \item \textbf{verifyOTP(String email, String otp):} Verifies the provided OTP for email authentication.
+    \item \textbf{verifyOTP(String email, String otp):} confirms the OTP supplied for email authentication.
 \end{itemize}
 
 \paragraph{Token Manager}
 \begin{itemize}
-    \item \textbf{generateAccessToken(String email, String userType):} Generates a secure access token for the user based on their email and type.
+    \item \textbf{generateAccessToken(String email, String userType):} confirms the OTP supplied for email authentication.
 \end{itemize}
 
 \paragraph{Dashboard Manager}
 \begin{itemize}
-    \item \textbf{GetDashboardData(String userID):} Retrieves an overview of the dashboard for the logged-in user.
-    \item \textbf{ViewStatistics(String userID):} Fetches statistical insights relevant to the user’s activity.
+    \item \textbf{GetDashboardData(String userID):} gives the user who is logged in a summary of the dashboard.
+    \item \textbf{ViewStatistics(String userID):} retrieves statistics information pertinent to the user's actions.
 \end{itemize}
 
 \section{Architectural Styles and Patterns}
@@ -536,59 +545,59 @@ This functionality helps users efficiently navigate the platform's data and find
 \begin{itemize}
     \item Implements responsive web interfaces for three distinct user types:
     \begin{itemize}
-        \item \textbf{Student Portal:} Focuses on internship search, application management, and profile maintenance.
-        \item \textbf{Company Portal:} Handles posting internships, reviewing applications, and managing candidates.
-        \item \textbf{Admin Portal:} Provides oversight tools, complaint management, and system monitoring.
+        \item \textbf{Student Portal:} focuses on managing applications, searching for internships, and maintaining profiles.
+        \item \textbf{Company Portal:} manages prospects, reviews applications, and posts internships.
+        \item \textbf{Admin Portal:} offers system monitoring, complaint handling, and oversight tools.
     \end{itemize}
     \item Uses modern web technologies with responsive design principles.
-    \item Implements client-side validation and state management.
+    \item carries out state management and client-side validation.
 \end{itemize}
 
 \paragraph{Services Layer (Business Logic)}
 \begin{itemize}
-    \item \textbf{User Management Service:} Handles authentication, authorization, user profiles, and permissions.
-    \item \textbf{Matching Engine Service:} Implements advanced algorithms for internship-student matching, processes search queries, and handles filtering and sorting of results.
-    \item \textbf{Recommendation System:} Analyzes student profiles and internship requirements, generates personalized recommendations, and updates suggestions based on user interactions.
-    \item \textbf{Interview Management Service:} Coordinates interview scheduling, manages interview status updates, and handles feedback collection.
+    \item \textbf{User Management Service:} manages user profiles, rights, authorization, and authentication.
+    \item \textbf{Matching Engine Service:} carries out the filtering and sorting of results, processes search queries, and applies sophisticated algorithms for matching internship students.
+    \item \textbf{Recommendation System:} evaluates internship requirements and student profiles to provide tailored recommendations that are updated in response to user interactions.
+    \item \textbf{Interview Management Service:} oversees the scheduling of interviews, keeps track of interview status updates, and collects feedback.
 \end{itemize}
 
 \paragraph{Data Layer}
 \begin{itemize}
-    \item \textbf{Database Management System:} Stores structured data like user profiles, applications, and internships. Maintains relationship mappings and ensures data integrity and consistency.
-    \item \textbf{File Storage System:} Manages document storage (CVs, certificates), handles secure file uploads/downloads, and implements file versioning.
+    \item \textbf{Database Management System:} keeps organized information such as applications, internships, and user profiles. preserves relationship mappings and guarantees the consistency and integrity of data.
+    \item \textbf{File Storage System:} oversees the safe uploading and downloading of files, manages the storage of documents (certificates, resumes), and applies file versioning.
 \end{itemize}
 
 \subsection{Client-Server Architecture}
 \paragraph{Client Side Implementation}
 \begin{itemize}
-    \item Implements browser-based responsive UI adaptable to different screen sizes and devices.
-    \item Provides consistent user experience and implements client-side validations.
+    \item uses a browser-based responsive user interface that can be adjusted to fit various screen sizes and devices.
+    \item applies client-side validations and offers a consistent user experience.
 \end{itemize}
 
 \paragraph{Real-Time Updates}
 \begin{itemize}
     \item Uses WebSocket connections for instant notifications.
-    \item Updates UI states without page refresh and maintains synchronized views.
+    \item Updates UI states that preserve synchronized views without requiring a page refresh.
 \end{itemize}
 
 \paragraph{Server Side Implementation}
 \begin{itemize}
-    \item \textbf{RESTful API Services:} Implements standardized HTTP endpoints, manages API versioning, and processes request/response.
+    \item \textbf{RESTful API Services:} handles request/response processing, API versioning, and the implementation of defined HTTP endpoints.
     \item \textbf{Backend Processing:} Executes business logic operations, processes data transformations, and manages system state.
 \end{itemize}
 
 \subsection{Event-Driven Architecture}
 \paragraph{Event Publishers}
 \begin{itemize}
-    \item \textbf{Application System:} Generates events for status changes, triggers notification workflows, and updates related entities.
-    \item \textbf{Interview System:} Creates scheduling events, sends reminder notifications, and updates calendar integrations.
-    \item \textbf{Complaint System:} Triggers escalation events, notifies relevant administrators, and updates tracking status.
+    \item \textbf{Application System:} activates notification workflows, creates events for status changes, and updates relevant entities.
+    \item \textbf{Interview System:} creates events, notifies users of reminders, and modifies calendar integrations.
+    \item \textbf{Complaint System:} Notifies the appropriate administrators, initiates escalation events, and modifies the tracking status.
 \end{itemize}
 
 \paragraph{Event Subscribers}
 \begin{itemize}
-    \item \textbf{Notification Service:} Processes event notifications, sends emails/alerts, and updates user dashboards.
-    \item \textbf{Analytics Service:} Tracks system events, generates usage statistics, and updates reporting metrics.
+    \item \textbf{Notification Service:} sends emails and alerts, handles event notifications, and modifies user dashboards.
+    \item \textbf{Analytics Service:} maintains reporting metrics, creates usage statistics, and keeps track of system occurrences.
 \end{itemize}
 
 \subsection{Design Patterns}
@@ -754,11 +763,11 @@ This functionality helps users efficiently navigate the platform's data and find
 \subsection{Availability}
 \label{subsec:availability}
 \begin{itemize}
-    \item Redundant systems ensure continuous, round-the-clock platform operation.
-    \item Failover mechanism enables automatic switching to backup systems during disruptions.
-    \item Error handling mechanisms ensure data integrity.
+    \item Redundant systems guarantee uninterrupted, 24/7 platform operation.
+    \item During interruptions, a failover mechanism allows for automatic shift to backup systems.
+    \item Data integrity is guaranteed by error handling procedures.
     \item System recovery procedures after failures.
-    \item Transaction integrity for critical processes like application submissions and interview scheduling.
+    \item Transaction integrity for important procedures such as scheduling interviews and submitting applications.
 \end{itemize}
 
 \subsection{Scalability}
@@ -772,7 +781,7 @@ This functionality helps users efficiently navigate the platform's data and find
         \item Recommendation System.
         \item Interview Management Service.
     \end{itemize}
-    \item Database and storage systems designed for growing data volumes.
+    \item Systems for databases and storage that can handle increasing amounts of data.
     \item API-first approach enabling future mobile app development.
 \end{itemize}
 
@@ -780,33 +789,33 @@ This functionality helps users efficiently navigate the platform's data and find
 \label{subsec:security}
 \begin{itemize}
     \item Robust authentication systems for user verification.
-    \item Role-based authorization for sensitive operations.
+    \item authorization for sensitive operations based on roles.
     \item End-to-end data encryption.
     \item GDPR compliance measures.
     \item Secure document storage and handling.
-    \item Regular security audits and monitoring.
+    \item routine security monitoring and audits.
 \end{itemize}
 
 \subsection{Notification Handling}
 \label{subsec:notification_handling}
 \begin{itemize}
-    \item Real-time notifications for application status changes.
+    \item Notifications in real time when the status of an application changes.
     \item Interview scheduling alerts.
     \item Complaint status updates.
-    \item Email notifications for critical events.
-    \item Calendar integration for interview scheduling.
+    \item Notifications about important occurrences via email.
+    \item Integration of a calendar to schedule interviews.
     \item Platform-wide announcements capability.
 \end{itemize}
 
 \subsection{Document Management}
 \label{subsec:document_management}
 \begin{itemize}
-    \item Secure storage for CVs, certificates, and official documents.
+    \item Certificates, formal documents, and resumes should all be stored securely.
     \item Version control for user documents.
     \item Document validation and verification.
     \item Format standardization.
     \item Access control based on user roles.
-    \item Automated document processing capabilities.
+    \item Automated capacity for processing documents.
 \end{itemize}
 
 \subsection{Data Persistence}

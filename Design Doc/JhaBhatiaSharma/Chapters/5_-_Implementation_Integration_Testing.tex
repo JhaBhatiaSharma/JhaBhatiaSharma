@@ -3,12 +3,12 @@
 
 This chapter describes the InternHub – Students \& Companies (S\&C) platform's integration strategy, test plan, and implementation procedure. A systematic and effective development process will be ensured by using the \textbf{Bottom-Up approach}.
 
-The implementation will start with basic, independent modules that do not need additional modules to work. Drivers for testing each module separately will be created. Modules will gradually be added to the system, taking the place of their associated drivers as they are implemented and tested. For further testing, each integrated module will need its own driver.
+The implementation will start with basic, independent modules that do not need additional modules to work. Drivers for testing each module separately will be created. Modules will gradually be added to the system, taking the place of their associated drivers as they are put into place and tested. For further testing, each integrated module will need its own driver.
 
 Before a system is fully integrated, smaller functional subsystems can be created using the Bottom-Up approach. With this incremental approach:
 \begin{itemize}
     \item Testing is performed on smaller parts of the system initially and continues for each module as it becomes ready, making debugging and error tracking easier.
-    \item Parallel development is facilitated, allowing separate teams to work on various elements simultaneously.
+    \item Parallel development is facilitated, allowing separate teams to work on various elements at the same time.
 \end{itemize}
 
 \section{Features Identification}
@@ -41,11 +41,8 @@ The features of the platform are prioritized based on their dependencies and imp
 
 \subsection{[F4] Search and Filter Features}
 \begin{itemize}
-    \item Includes advanced search and filter functionalities:
-    \begin{itemize}
-        \item Students can find relevant internships.
-        \item Companies can search through applicants.
-    \end{itemize}
+    \item This includes submitting applications, reviewing them, scheduling interviews, and notifying users about interview updates.
+    
     \item These features depend on the successful implementation of profile and internship management ([F2] and [F3]).
 \end{itemize}
 
@@ -64,12 +61,7 @@ The features of the platform are prioritized based on their dependencies and imp
 
 \subsection{[F7] Notification Features}
 \begin{itemize}
-    \item Ensures that students, companies, and administrators are notified about critical events:
-    \begin{itemize}
-        \item Interview schedules.
-        \item Application updates.
-        \item Complaint resolutions.
-    \end{itemize}
+    \item Ensure that students, companies, and administrators are notified about critical events such as interview schedules, application updates, and complaint resolutions.
     \item These features will be developed last as they depend on the correct functioning of all other features.
 \end{itemize}
 
@@ -114,7 +106,7 @@ The following crucial areas will be included in the integration process:
 
 \paragraph{Core Model Integration}
 
-The core model integration serves as the system's cornerstone, incorporating the data models necessary for the platform's operation. These include:
+The core model integration, which includes the data models necessary for the platform's operation, serves as the system's cornerstone. These include:
 \begin{itemize}
     \item \textbf{User Model:} Manages user-related information.
     \item \textbf{Resume Model:} Handles CVs and profile details.
@@ -130,11 +122,11 @@ The core model integration serves as the system's cornerstone, incorporating the
         \label{fig:coreModelIntegration}
     \end{center}
 \end{figure}
-Each model will communicate with the database layer to perform CRUD operations and ensure data consistency and integrity. A \textbf{Model Driver} will be implemented to test these models individually and verify their efficient interaction with the database layer. Once validated, these models will be integrated into their corresponding manager components.
+In order to carry out CRUD activities and guarantee data consistency and integrity, each of these data models communicates with the database layer. To test each of these models separately and confirm that they can manage database layer interactions efficiently, a Model Driver will be put in place. These models will be incorporated into the corresponding manager components after they have been validated.
 
 \paragraph{Authentication Integration}
 
-Authentication integration focuses on user registration and login procedures. The \textbf{Authentication Manager} will handle interactions between the data models and the user interfaces for registration and login. Key functionalities include:
+The procedures involved in user registration and login are the main focus of the authentication integration. Interactions between the data models and the user interfaces for registration and login will be managed by the \textbf{Authentication Manager}. Key functionalities include:
 \begin{itemize}
     \item Secure communication with the Registration System.
     \item Data validation.
@@ -148,10 +140,11 @@ Authentication integration focuses on user registration and login procedures. Th
     \end{center}
 \end{figure}
 
-A driver will test the authentication workflows, ensuring stability before integrating the Authentication Manager with the larger system to facilitate secure user authentication and seamless login.
+Workflows for authentication, such as the creation of access tokens and credential validation, will be tested using a driver. The Authentication Manager will be connected with the larger system to facilitate user authentication and smooth login once it is stable.
+
 
 \paragraph{Profile Management Integration}
-The \textbf{Profile Manager} handles the creation and management of profiles for administrators, companies, and students. This module will interact directly with the Authentication Manager to ensure only authorized users can manage profiles. Key features include:
+The \textbf{Profile Manager}, which manages the creation and administration of admin, company, and student profiles, is implemented as part of the Profile Management Integration. To guarantee that only authorized users are able to manage their profiles, this module communicates directly with the Authentication Manager. Key features include:
 \begin{itemize}
     \item Profile creation.
     \item Profile editing.
@@ -167,7 +160,8 @@ The \textbf{Profile Manager} handles the creation and management of profiles for
 The \textbf{Profile Driver} will test these features to validate functionality. This integration is critical for enabling personalized user experiences and creating user identification across the platform.
 
 \paragraph{Internship Management Integration}
-The \textbf{Internship Manager} is central to coordinating the posting and management of internship opportunities. It integrates with:
+
+The \textbf{Internship Manager} is at the center of the Internship Management Integration, coordinating the posting and administration of internship opportunities. It integrates with:
 \begin{itemize}
     \item The Profile Manager to verify recruiter responsibilities and permissions.
     \item The Application System to manage student applications and facilitate filtering and internship searches.
@@ -194,7 +188,8 @@ The \textbf{Interview Manager} and \textbf{Communication Manager} are responsibl
         \label{fig:internshipManagement}
     \end{center}
 \end{figure}
-The Communication Manager ensures smooth communication and notifications. A \textbf{Communication Driver} will test information flow between the user interface and interview management systems.
+The Communication Manager oversees the coordination of these systems, guaranteeing smooth communications and notifications. The integration of these elements will be tested by a Communication Driver, which will confirm that information is flowing between the user interface and interview management.
+
 
 \paragraph{Administrative Features Integration}
 The \textbf{Admin Manager} is integrated with the following systems:
@@ -210,10 +205,11 @@ The \textbf{Admin Manager} is integrated with the following systems:
         \label{fig:adminstrativefeatures}
     \end{center}
 \end{figure}
-This integration includes the Communication Manager to facilitate administrative communication. Functionalities such as complaint management, platform activity monitoring, and report generation will be tested using the \textbf{Admin Driver}. This ensures stability and efficiency in administrative functions.
+This integration also includes the Communication Manager to provide efficient communication for administrative duties. Functionalities like managing complaints, keeping an eye on platform activity, and producing reports are tested using the Admin Driver. This guarantees the stability and effectiveness of the platform's administrative functions.
+
 
 \paragraph{Final System Integration}
-In the final integration phase, all primary managers—Authentication Manager, Profile Manager, Internship Manager, Interview Manager, Communication Manager, and Admin Manager—will be connected to the \textbf{Dashboard Manager}. This integration ensures:
+All of the primary managers—Authentication Manager, Profile Manager, Internship Manager, Interview Manager, Communication Manager, and Admin Manager—must be connected to the \textbf{Dashboard Manager} as part of the last integration. This integration ensures:
 \begin{itemize}
     \item Seamless coordination of data and processes across the platform.
     \item A unified user experience.
@@ -226,15 +222,15 @@ In the final integration phase, all primary managers—Authentication Manager, P
     \end{center}
 \end{figure}
 
-The Dashboard Manager acts as the main interface, consolidating data and system processes. This phase marks the completion of the integration process, delivering a fully functional and user-friendly platform.
-
+Coordinating data and system processes, the Dashboard Manager acts as the main interface. With this phase, the integration process is complete, and the platform is completely functional and easy to use.
 \section{System Testing Strategy}
 \label{sec:system_testing_strategy}
 
-Every newly created component will go through extensive testing before being incorporated into the system to guarantee the platform's accuracy and dependability. To verify each component's unique functionality, drivers will be utilized. After integration, a new driver will test the compatibility of the new component with the existing system, ensuring that module properties are maintained and the overall workflow remains unaffected. Once all components have been integrated, the entire system will undergo testing to confirm its proper operation and ensure the absence of flaws. The following testing methods will be employed:
+Every newly created component will go through extensive testing before being incorporated into the system in order to guarantee the platform's accuracy and dependability. To verify each component's unique functionality, drivers will be used. To make sure that module properties are maintained and the workflow as a whole is unaffected, a new driver will be utilized to test the new component's compatibility with the current system after integration. Testing of the entire system will be done once all the components have been integrated to ensure correct operation and the lack of flaws. The testing methods listed below will be used:
+
 
 \subsection{Functional Testing}
-Functional testing will confirm that all objectives, specifications, and use cases are satisfied and that the platform complies with the capabilities described in the RASD document. This testing will simulate user scenarios and confirm the system's proper workflow by verifying expected results. Key elements that will be tested include:
+Functional testing will confirm that all objectives, specifications, and use cases are satisfied and that the platform complies with the capabilities described in the RASD document. This testing will check expected results by simulating user scenarios and confirming the system's proper workflow. Key elements that will be tested include:
 \begin{itemize}
     \item Applications
     \item Internship postings
@@ -251,7 +247,7 @@ The system's behavior under various workloads will be evaluated through load tes
     \item Buffer overflows
     \item Inefficient memory management
 \end{itemize}
-This testing ensures that the platform can efficiently manage multiple requests simultaneously and remains stable during periods of high user activity.
+This testing is necessary to confirm that the platform can efficiently manage several requests at once and remains stable during periods of high user activity.
 
 \subsection{Performance Testing}
 Performance testing will identify bottlenecks and assess how quickly the system responds to demanding workloads. This ensures that:
@@ -261,12 +257,8 @@ Performance testing will identify bottlenecks and assess how quickly the system 
 \end{itemize}
 
 \subsection{Stress Testing}
-Stress testing will simulate extreme scenarios such as:
-\begin{itemize}
-    \item A large number of users accessing the system simultaneously.
-    \item A reduction in processing power.
-\end{itemize}
-This testing will confirm the platform's robustness and resilience, ensuring minimal user disruption during emergencies or unexpected peak loads.
+To make sure the system can bounce back from errors, stress testing will mimic harsh scenarios like a large number of people using the system at once or a reduction in processing power. Through this testing, the platform's robustness and resilience will be confirmed, guaranteeing that users will experience the least amount of disturbance possible in emergency situations.
+
 
 \subsection{User Interface Testing}
 User interface testing will validate the platform's usability and accessibility across a variety of devices and browsers. This testing will:
