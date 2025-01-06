@@ -1,0 +1,142 @@
+\section{Purpose}
+\label{sec:purpose}%
+This Design Document provides a comprehensive overview of the InternHub - Students \& Companies (S\&C) platform. Its primary purpose is to serve as a guide for developers responsible for implementing the system’s architecture and design and as a reference for clients and stakeholders to ensure alignment with the agreed-upon requirements and goals.
+Additionally, it offers a clear, precise, and unambiguous explanation of the platform’s features, design decisions, and constraints. This ensures that all stakeholders, including students, companies, and academic institutions, have a shared understanding of how the system will function and deliver value.
+The S\&C platform’s overarching goal is to transform how university students connect with companies for internships. To this end, it focuses on:
+
+\begin{enumerate}
+    \item Establishing an efficient system that matches students with suitable internship opportunities.
+    \item Streamlining the entire internship lifecycle—from application through completion—to simplify both student and company workflows. 
+    \item Utilizing smart recommendation algorithms to align student skills with company requirements, ensuring more accurate and beneficial matches.
+    \item Providing robust monitoring and feedback tools to enhance transparency, accountability, and continuous improvement.
+    \item Ensuring effective complaint management and maintaining high-quality standards throughout the internship process.
+\end{enumerate}
+
+By offering a seamless and impactful experience, the S\&C platform aims to serve as a trusted solution that addresses the requirements of all stakeholders—students, businesses, and universities—thereby ensuring a more efficient, productive, and rewarding internship ecosystem.
+
+\subsection{Scope}
+\label{subsec:scope}%
+\newcounter{g}
+\setcounter{g}{1}
+\newcommand{\cg}{\theg\stepcounter{g}}
+By connecting students, businesses, and academic institutions, InternHub - Students \& Companies (S&C) is a platform that aims to improve and expedite the internship experience. It seeks to match students with appropriate internships, allowing universities to manage the full internship lifecycle and businesses to identify the best candidates.
+
+Companies may post extensive internship openings, analyze applications, and oversee the selection process on the site, while students can create detailed profiles, apply for internships, and follow their progress. Universities serve as supervisors, guaranteeing adherence to academic standards and offering systems for observation and criticism.
+
+The platform aims to streamline processes and promote openness and cooperation among stakeholders with features like intelligent recommendations, feedback and quality assurance tools, and strong communication channels. In order to guarantee a smooth, equitable, and effective experience for every user, it also incorporates analytics, training materials, and a grievance management system.
+
+\subsection{Goals}
+\label{subsec:goals}%
+\newcounter{g}
+\setcounter{g}{1}
+\newcommand{\cg}{\theg\stepcounter{g}}
+
+Below is a table that lists all the goals of the S\&C platform:
+
+\begin{center}
+    \begin{longtable}{ |l|p{0.9\linewidth}| }
+        \hline
+        \textbf{ID} & \textbf{Description} \\
+        \hline
+        G\cg & Enable students to create detailed profiles, including their CVs, skills, academic achievements, and interests. \\
+        \hline
+        G\cg & Allow companies to post comprehensive internship opportunities, detailing roles, requirements, benefits, and timelines. \\
+        \hline
+        G\cg & Provide intelligent recommendations that align student skills and preferences with internship opportunities. \\
+        \hline
+        G\cg & Equip universities with tools to effectively monitor, manage, and track student internship progress and performance. \\
+        \hline
+        G\cg & Implement feedback and rating systems to promote accountability and continuous improvement for both students and companies. \\
+        \hline
+        G\cg & Facilitate seamless communication between students, companies, and universities for better collaboration and coordination. \\
+        \hline
+        G\cg & Integrate a secure document management system for handling internship-related paperwork, such as contracts and certificates. \\
+        \hline
+        G\cg & Offer analytics and reporting tools to provide insights into internship trends, success rates, and areas for improvement. \\
+        \hline
+        G\cg & Support multilingual functionality to ensure accessibility for a diverse user base across regions. \\
+        \hline
+        G\cg & Implement a grievance redressal mechanism to resolve disputes and ensure fair treatment for all users. \\
+        \hline
+        G\cg & Provide training modules or resources to prepare students for internships, such as interview tips and skill-building exercises. \\
+        \hline
+        \caption{Goals table.}
+        \label{tab:goals_tab}%
+    \end{longtable}
+\end{center}
+
+\section{Definition, Acronyms, Abbreviations}
+\label{sec:definition_acronyms_abbreviations}%
+\begin{table}[H]
+    \centering
+    \begin{tabular}{ |l|p{0.7\linewidth}| }
+        \hline
+        \textbf{Term/Acronym} & \textbf{Definition} \\
+        \hline
+        S\&C  & Students \& Companies Platform \\
+        \hline
+        RASD  & Requirements Analysis \& Specification Document \\
+        \hline
+        CV    & Curriculum Vitae \\
+        \hline
+        UI    & User Interface \\
+        \hline
+        API   & Application Programming Interface \\
+        \hline
+        DBMS  & Database Management System \\
+        \hline
+        SLA   & Service Level Agreement \\
+        \hline
+        GDPR  & General Data Protection Regulation \\
+        \hline
+    \end{tabular}
+    \caption{Acronyms and terms used in the document.}
+    \label{tab:acronyms_sc}
+\end{table}
+
+\section{Revision History}
+\label{sec:revision_history}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{ |p{0.1\linewidth}|p{0.15\linewidth}|p{0.45\linewidth}|p{0.2\linewidth}| }
+        \hline
+        \textbf{Version} & \textbf{Date} & \textbf{Description} & \textbf{Authors} \\
+        \hline
+        1.0 & 03 January 2025 & Initial Release & 
+        Shreesh Kumar Jha, \newline
+        Samarth Bhatia \\
+        \hline
+        2.0 & 04 January 2025 & LaTeX Format and Minor Fixes & 
+        Shreesh Kumar Jha, \newline
+        Samarth Bhatia \\
+        \hline
+    \end{tabular}
+    \caption{Revision History}
+    \label{tab:revision_history}
+\end{table}
+
+\section{Reference Documents}
+\label{sec:reference_documents}%
+\begin{itemize}
+    \item Reference to Previous Year Student Projects for Structuring the Document
+    \item \href{https://github.com/JhaBhatiaSharma/JhaBhatiaSharma/tree/main/RASD\%20Doc}{\textbf{\textcolor{blue}{\underline{Specification Document Assignment}}}}
+\end{itemize}
+
+\section{Document Structure}
+\label{sec:document_structure}%
+As shown below, the document is organized into seven sections, each with a distinct focus:
+
+\paragraph{Introduction:} In the first section, the importance of the Design Document is established, and acronyms and abbreviations are defined and explained in detail. The InternHub - Students \& Companies (S\&C) platform's goals, scope, and purpose are also described.
+
+\paragraph{Architectural Design:} A thorough explanation of the system's primary parts and how they work together is given in the second section. In order to guarantee scalability, dependability, and efficiency, this section also covers important design choices, architectural styles, patterns, and paradigms.
+
+\paragraph{User Interface Design:} The platform's user interface is described in the third section, which includes mockups and thorough explanations of the main pages and user workflows. The goal of this part is to make sure that everyone involved has an easy-to-use and accessible experience.
+
+\paragraph{Requirements Traceability:} The fourth step ensures that all functionality and restrictions are sufficiently addressed by the design decisions made by mapping the system's design back to the established requirements.
+
+\paragraph{Implementation, Integration, and Testing Plan:} The strategy for implementing the platform's components and integrating them into a unified system is described in the fifth section. Additionally, it offers a thorough testing strategy to confirm the platform's performance and functioning.
+
+\paragraph{Effort Spent:} In the sixth section are included information about the number of hours each group member has worked for this document.
+
+\paragraph{References:} The publications, resources, and standards consulted in the production of this Design Document are listed in the last section. It is a tool for comprehending the rationale behind and background of the design choices.

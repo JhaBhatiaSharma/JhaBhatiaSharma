@@ -1,0 +1,118 @@
+\section{System Requirements}
+\label{sec:system_requirements}
+
+This section outlines the functional requirements of the InternHub – Students \& Companies (S\&C) platform, categorized by the major system components.
+
+\subsection{Login Manager}
+\label{subsec:login_manager}
+\begin{enumerate}[label=R\arabic*:, itemsep=0.2em]
+    \item The system allows registered students to log in.
+    \item The system allows registered companies to log in.
+    \item The system ensures secure access to accounts through credential verification.
+    \item The system validates user input during login.
+    \item The system provides error messages for invalid credentials.
+\end{enumerate}
+
+\subsection{Registration Manager}
+\label{subsec:registration_manager}
+\begin{enumerate}[label=R\arabic*:, itemsep=0.2em, start=6]
+    \item The system allows unregistered users (students and companies) to sign up.
+    \item The system verifies user details before creating accounts.
+    \item The system communicates with the mailing system to send verification emails during registration.
+    \item The system ensures unique email addresses during registration.
+    \item The system allows recruiters to register company profiles with required information fields.
+\end{enumerate}
+
+\subsection{Internship Manager}
+\label{subsec:internship_manager}
+\begin{enumerate}[label=R\arabic*:, itemsep=0.2em, start=11]
+    \item The system allows companies to create new internship postings.
+    \item The system allows companies to update existing internship details.
+    \item The system enables recruiters to delete internships.
+    \item The system fetches all internship postings associated with a specific recruiter.
+    \item The system provides students with the ability to search and filter internships based on preferences.
+    \item The system supports adding multiple job roles under a single internship posting.
+    \item The system tracks the total number of internships posted by a company.
+\end{enumerate}
+
+\subsection{Application Manager}
+\label{subsec:application_manager}
+\begin{enumerate}[label=R\arabic*:, itemsep=0.2em, start=18]
+    \item The system allows students to submit applications for internships.
+    \item The system enables recruiters to review student applications.
+    \item The system tracks the status of submitted applications.
+    \item The system supports updating the status of an application (e.g., accepted, rejected).
+    \item The system provides recruiters with filters to search through applications.
+    \item The system notifies students of changes in their application status.
+\end{enumerate}
+
+\subsection{Interview Manager}
+\label{subsec:interview_manager}
+\begin{enumerate}[label=R\arabic*:, itemsep=0.2em, start=24]
+    \item The system allows recruiters to schedule interviews for shortlisted candidates.
+    \item The system notifies students of upcoming interviews.
+    \item The system tracks interview details and schedules.
+    \item The system sends reminders to students and recruiters for scheduled interviews.
+    \item The system allows students to view interview details, including time and interviewer.
+    \item The system supports rescheduling of interviews by recruiters.
+\end{enumerate}
+
+\subsection{Complaint Manager}
+\label{subsec:complaint_manager}
+\begin{enumerate}[label=R\arabic*:, itemsep=0.2em, start=30]
+    \item The system allows users (students and companies) to file complaints regarding issues.
+    \item The system ensures proper logging of all complaints for administrative review.
+    \item The system enables administrators to resolve complaints and update their status.
+    \item The system notifies users about updates to their complaints.
+    \item The system maintains a history of resolved complaints for audit purposes.
+\end{enumerate}
+
+\subsection{Profile Manager}
+\label{subsec:profile_manager}
+\begin{enumerate}[label=R\arabic*:, itemsep=0.2em, start=35]
+    \item The system allows students to manage their profiles, including uploading resumes and updating details.
+    \item The system allows companies to manage their profiles and update organization details.
+    \item The system supports the ability to view profiles of other users (students or companies).
+    \item The system provides recommendations for internships based on student profiles.
+    \item The system highlights incomplete profiles for users and prompts them to complete missing details.
+\end{enumerate}
+
+\subsection{Search and Filter}
+\label{subsec:search_and_filter}
+\begin{enumerate}[label=R\arabic*:, itemsep=0.2em, start=40]
+    \item The system provides students and companies with advanced search and filter options for internships, candidates, or postings.
+    \item The system ensures search results are relevant and aligned with user preferences.
+    \item The system supports search by location, duration, stipend, and skills.
+    \item The system allows recruiters to filter student applications by skills and experience.
+    \item The system enables sorting of search results by relevance or other criteria.
+\end{enumerate}
+
+\subsection{Dashboard Manager}
+\label{subsec:dashboard_manager}
+\begin{enumerate}[label=R\arabic*:, itemsep=0.2em, start=45]
+    \item The system provides students with an overview of their active applications, upcoming interviews, and recent internship matches.
+    \item The system provides companies with an overview of active postings, total applicants, and scheduled interviews.
+    \item The system allows administrators to monitor platform activities, including user engagement and complaint handling.
+    \item The system displays key metrics for students, such as total applications and new messages.
+    \item The system allows companies to see statistics on applicants and hires.
+\end{enumerate}
+
+\subsection{Notification Manager}
+\label{subsec:notification_manager}
+\begin{enumerate}[label=R\arabic*:, itemsep=0.2em, start=50]
+    \item The system sends notifications to students when their application status is updated.
+    \item The system notifies students and companies of scheduled interviews.
+    \item The system sends reminders for upcoming deadlines, including applications and interviews.
+    \item The system notifies users about updates to their complaints.
+    \item The system alerts students about new internship matches based on their profiles.
+\end{enumerate}
+
+\subsection{Model}
+\label{subsec:model}
+\begin{enumerate}[label=R\arabic*:, itemsep=0.2em, start=55]
+    \item The system securely stores user data, including profiles, applications, and complaints.
+    \item The system ensures the integrity and security of all data through encryption and access controls.
+    \item The system logs all user actions for security and audit purposes.
+    \item The system supports scalable storage for managing increasing user data.
+    \item The system ensures efficient data retrieval for dashboard and search functionalities.
+\end{enumerate}
