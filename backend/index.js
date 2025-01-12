@@ -8,7 +8,6 @@ const authMiddleware = require('./app/middlewares/jwtMiddleware');
 
 const healthRouter = require('./app/routes/healthRoute');
 const userRouter = require('./app/routes/userRoute');
-const recruiterRouter = require('./app/routes/recruiterRoute');
 
 const app = express();
 const port = process.env.PORT || 8000;
@@ -22,8 +21,9 @@ app.use(rateLimiter);
 app.use('/api/v1', healthRouter);
 app.use('/api/v1', userRouter);
 app.use(authMiddleware);
-app.use('/api/v1', recruiterRouter);
 
 app.listen(port, host, () => {
+  console.log("STARTING BACKEND SERVER");
+  console.log("ENV: ", process.env.ENVIRONMENT);
   console.log(`Server listening on http://${host}:${port}`);
 });

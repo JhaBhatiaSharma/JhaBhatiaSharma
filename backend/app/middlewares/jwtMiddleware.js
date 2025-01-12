@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
-const { findStudent, findRecruiter } = require('../services/userService');
+const { getStudent } = require('../services/studentService');
+const { getRecruiter } = require('../services/recruiterService');
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
@@ -24,16 +25,14 @@ const authMiddleware = async (req, res, next) => {
     var user;
     var name;
     var usertype;
-    if (userType === 'student') {
-      user = await findStudent(email);
+    user = await getStudent(email);
+    if(!user) {
       name = user.firstName;
-      usertype = 'student';
-    } else if (userType === 'recruiter') {
-      user = await findRecruiter(email);
-      name = user.companyName;
-      usertype = 'recruiter';
+      role = 'student';
     } else {
-      return res.status(400).json({ message: 'Invalid userType passed.' });
+      user = await getRecruiter(email);
+      name = user.companyName;
+      role = 'recruiter';
     }
 
     if (!user) {

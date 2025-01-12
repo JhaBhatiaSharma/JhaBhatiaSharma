@@ -1,85 +1,73 @@
-const {
-  addInternshipService,
-  deleteInternshipService,
-  modifyInternshipService,
-  fetchAllInternshipsService,
-  fetchInternshipByIdService,
-} = require('../services/recruiterService');
+const { registerRecruiter, loginRecruiter, updateRecruiter } = require('../services/recruiterService');
 
-const checkRecruiterPermission = async (body) => {
-  if (body.usertype === 'recuiter') {
-    return true;
-  }
-  return false;
-};
-
-const addInternship = async (req, res) => {
+const registerRecruiterController = async (req, res) => {
   try {
-    const userPermission = checkRecruiterPermission(req.user);
-    if (!userPermission) {
-      return res.status(400).json({ message: 'User does not have sufficient permissions' });
-    }
+    const { firstName, lastName, email, mobileNumber, password } = req.body;
 
-    const internshipData = req.body;
-    const result = await addInternshipService(internshipData);
-    res.status(201).json({ message: 'Internship added successfully', data: result });
+    const user = await registerRecruiter({ firstName, lastName, email, mobileNumber, password });
+
+    return res.status(201).json({
+      message: 'Recruiter successfully registered',
+      user,
+    });
   } catch (error) {
-    res.status(500).json({ message: 'Error adding internship', error: error.message });
+    console.error(error);
+    return res.status(500).json({ message: 'Error registering recruiter', error: error.message });
   }
 };
 
-const deleteInternship = async (req, res) => {
+const loginRecruiterController = async (req, res) => {
   try {
-    const userPermission = checkRecruiterPermission(req.user);
-    if (!userPermission) {
-      return res.status(400).json({ message: 'User does not have sufficient permissions' });
-    }
+    const { email, password } = req.body;
 
-    const internshipId = req.query.id;
+    const user = await loginRecruiter({ email, password });
 
-    if (!internshipId) {
-      return res.status(400).json({ message: 'Internship ID is required' });
-    }
-    await deleteInternshipService(internshipId);
-    res.status(200).json({ message: 'Internship deleted successfully' });
+    return res.status(200).json({
+      message: 'Recruiter found',
+      userData: user,
+      sessionData: sessionData
+    });
   } catch (error) {
-    res.status(500).json({ message: 'Error deleting internship', error: error.message });
+    console.error(error);
+    return res.status(500).json({ message: 'Error logging recruiter', error: error.message });
   }
 };
 
-const fetchAllInternship = async (req, res) => {
+const getRecruiterController = async (req,res) => {
   try {
-    const userPermission = checkRecruiterPermission(req.user);
-    if (!userPermission) {
-      return res.status(400).json({ message: 'User does not have sufficient permissions' });
-    }
+    const email = req.query.email;
+    const user = await getrecruiter(email);
 
-    const recruiterId = req.query.id;
-    if (!recruiterId) {
-      return res.status(400).json({ message: 'Recruiter ID is required' });
-    }
+    return res.status(200).json({
+      message: 'recruiter found',
+      userData: user
+    });
 
-    const internships = await fetchAllInternshipsService(recruiterId);
-    res.status(200).json({ message: 'Internships fetched successfully', data: internships });
   } catch (error) {
-    res.status(500).json({ message: 'Error fetching internships', error: error.message });
+    console.error(error);
+    return res.status(500).json({ message: 'Error fetching recruiter', error: error.message });
   }
-};
+}
 
-const fetchIdInternship = async (req, res) => {
+const updateRecruiterController = async (req, res) => {
   try {
-    const internshipId = req.query.id;
-    if (!internshipId) {
-      return res.status(400).json({ message: 'Internship ID is required' });
+    const { email, ...updateData } = req.body;
+
+    if (!email) {
+      return res.status(400).json({ message: 'Validation error: Email is required to identify the recruiter.' });
     }
-    const internship = await fetchInternshipByIdService(internshipId);
-    if (!internship) {
-      return res.status(404).json({ message: 'Internship not found' });
+
+    const result = await updateRecruiter(email, updateData);
+
+    if (result[0] > 0) {
+      return res.status(200).json({ message: 'Recruiter updated successfully.' });
+    } else {
+      return res.status(404).json({ message: 'Recruiter not found or no changes were made.' });
     }
-    res.status(200).json({ message: 'Internship fetched successfully', data: internship });
   } catch (error) {
-    res.status(500).json({ message: 'Error fetching internship', error: error.message });
+    console.error(error);
+    return res.status(500).json({ message: 'Error updating recruiter.', error: error.message });
   }
 };
 
-module.exports = { addInternship, deleteInternship, fetchAllInternship, fetchIdInternship };
+module.exports = { registerRecruiterController, loginRecruiterController, getRecruiterController, updateRecruiterController };

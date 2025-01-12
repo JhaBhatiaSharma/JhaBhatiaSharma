@@ -1,32 +1,59 @@
-const { Internship } = require('../models/index');
+const { Recruiter } = require('../models/index');
+const { encrypt , decrypt } = require('../utils/encryptDecrypt'); 
 
-const addInternshipService = async (internshipData) => {
-  const newInternship = await Internship.create(internshipData);
-  return newInternship;
+const findRecruiterByEmail = async (email) => {
+  return Recruiter.findOne({ where: { email } });
 };
 
-const deleteInternshipService = async (internshipId) => {
-  const deleted = await Internship.destroy({ where: { id: internshipId } });
-  if (!deleted) {
-    throw new Error(`Internship with ID ${internshipId} not found`);
+const registerRecruiter = async ({ firstName, lastName, email, mobileNumber, password }) => {
+
+  const existingRecruiter = await findRecruiterByEmail(email);
+  if (existingRecruiter) {
+    throw new Error('User with this email already exists');
   }
-};
 
-const fetchAllInternshipsService = async (recruiterId) => {
-  const internships = await Internship.findAll({
-    where: { recruiterId: recruiterId },
+  passwordEncrypt = encrypt(password);
+
+  const newRecruiter = await Recruiter.create({
+    firstName,
+    lastName,
+    email,
+    mobileNumber,
+    passwordEncrypt
   });
-  return internships;
+
+  return newRecruiter;
 };
 
-const fetchInternshipByIdService = async (internshipId) => {
-  const internship = await Internship.findByPk(internshipId);
-  return internship;
+const loginRecruiter = async ({ email, password }) => {
+
+    const existingRecruiter = await findRecruiterByEmail(email);
+    if (!existingRecruiter) {
+      throw new Error('User with this email does not exist');
+    }
+
+    const passwordMatch = decrypt(password, existingStudent.password);
+    if(passwordMatch) {
+        return existingRecruiter;
+    }
+    return null;
 };
 
-module.exports = {
-  addInternshipService,
-  deleteInternshipService,
-  fetchAllInternshipsService,
-  fetchInternshipByIdService,
+const getRecruiter = async (email) => {
+  const user = await findRecruiterByEmail(email);
+  if (!existingStudent) {
+    throw new Error('User with this email does not exist');
+  }
+  return user;
 };
+
+const updateRecruiter = async (email, updateData) => {
+  const user = await findRecruiterByEmail(email);
+  const id = user.id;
+  const result = await Recruiter.update(updateData, {
+    where: { id },
+  });
+  return result;
+};
+
+module.exports = { registerRecruiter, loginRecruiter, getRecruiter, updateRecruiter };
