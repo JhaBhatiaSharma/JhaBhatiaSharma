@@ -685,27 +685,38 @@ const CVBuilder = ({ isOpen, onClose }) => {
 
           {/* Right Panel - Preview */}
           <div className="w-1/3 bg-gray-50 rounded-lg p-6">
-            <h3 className="text-lg font-medium mb-4">Preview</h3>
-            <div className="prose max-w-none">
-              {formData.personalInfo.fullName && (
-                <h1 className="text-2xl font-bold mb-2">{formData.personalInfo.fullName}</h1>
-              )}
-              {formData.personalInfo.email && (
-                <p className="text-gray-600 mb-4">{formData.personalInfo.email}</p>
-              )}
+  <h3 className="text-lg font-medium mb-4">Preview</h3>
+  <div className="prose max-w-none">
+    {/* Personal Information */}
+    <div className="mb-6">
+      {formData.personalInfo.fullName && (
+        <h1 className="text-2xl font-bold mb-2">{formData.personalInfo.fullName}</h1>
+      )}
+      <div className="text-gray-600 space-y-1">
+        {formData.personalInfo.email && (
+          <p>{formData.personalInfo.email}</p>
+        )}
+        {formData.personalInfo.phone && (
+          <p>{formData.personalInfo.phone}</p>
+        )}
+        {formData.personalInfo.location && (
+          <p>{formData.personalInfo.location}</p>
+        )}
+      </div>
+    </div>
               
-              {formData.skills.length > 0 && (
-                <>
-                  <h2 className="text-xl font-semibold mt-6 mb-3">Skills</h2>
-                  <div className="flex flex-wrap gap-2">
-                    {formData.skills.map((skill, index) => (
-                      <span key={index} className="px-2 py-1 bg-blue-100 text-blue-700 rounded">
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
-                </>
-              )}
+    {formData.skills.length > 0 && (
+      <>
+        <h2 className="text-xl font-semibold mt-6 mb-3">Skills</h2>
+        <div className="flex flex-wrap gap-2">
+          {formData.skills.map((skill, index) => (
+            <span key={index} className="px-2 py-1 bg-blue-100 text-blue-700 rounded">
+              {skill}
+            </span>
+          ))}
+        </div>
+      </>
+    )}
 
               {formData.education.length > 0 && (
                 <>
