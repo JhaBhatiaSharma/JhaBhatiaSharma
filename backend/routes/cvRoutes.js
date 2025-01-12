@@ -8,12 +8,15 @@ const {
 } = require("../controllers/cvController");
 
 // Route to create or update a CV
-router.post("/cv", authMiddleware, createOrUpdateCV);
+router.post("/", authMiddleware, createOrUpdateCV);  // Changed from "/cv"
+
+// Route to fetch the latest CV
+router.get("/latest", authMiddleware, getCV);  // Added this route
 
 // Route to fetch the CV of a logged-in user
-router.get("/cv", authMiddleware, getCV);
+router.get("/", authMiddleware, getCV);
 
 // Route to delete a CV
-router.delete("/cv", authMiddleware, deleteCV);
+router.delete("/", authMiddleware, deleteCV);
 
 module.exports = router;

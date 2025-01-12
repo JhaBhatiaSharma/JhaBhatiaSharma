@@ -187,6 +187,8 @@ const AddInternship = () => {
     location: '',
     duration: '',
     stipend: '',
+    requiredSkills: [],
+    newSkill: ''
   });
 
   const [errors, setErrors] = useState({
@@ -231,6 +233,24 @@ const AddInternship = () => {
     }
   };
 
+  const handleAddSkill = () => {
+    if (formData.newSkill.trim()) {
+      setFormData(prev => ({
+        ...prev,
+        requiredSkills: [...prev.requiredSkills, prev.newSkill.trim()],
+        newSkill: '' // Clear input after adding
+      }));
+    }
+  };
+
+  const handleRemoveSkill = (skillToRemove) => {
+    setFormData(prev => ({
+      ...prev,
+      requiredSkills: prev.requiredSkills.filter(skill => skill !== skillToRemove)
+    }));
+  };
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -246,14 +266,32 @@ const AddInternship = () => {
       return;
     }
 
-    try {
-      // Make API request to add internship
-      const token=localStorage.getItem('token')
-      console.log(token)
-      const response = await API.post('/internships/addinternship', formData);
+    const submissionData = {
+      ...formData,
+      requiredSkills: formData.requiredSkills, // Include skills in submission
+      duration: parseInt(formData.duration),
+      stipend: parseFloat(formData.stipend)
+    };
 
+    delete submissionData.newSkill;
+
+    // try {
+    //   // Make API request to add internship
+    //   const token=localStorage.getItem('token')
+    //   console.log(token)
+    //   const response = await API.post('/internships/addinternship', formData);
+
+    //   alert('Internship added successfully!');
+    //   navigate('/'); // Redirect to dashboard or homepage
+    // } catch (error) {
+    //   console.error('Error adding internship:', error.response?.data?.message || error.message);
+    //   alert(error.response?.data?.message || 'Failed to add internship');
+    // }
+
+    try {
+      const response = await API.post('/internships/addinternship', submissionData);
       alert('Internship added successfully!');
-      navigate('/'); // Redirect to dashboard or homepage
+      navigate('/');
     } catch (error) {
       console.error('Error adding internship:', error.response?.data?.message || error.message);
       alert(error.response?.data?.message || 'Failed to add internship');
@@ -330,6 +368,45 @@ const AddInternship = () => {
             {errors.stipend && (
               <p className="text-red-500 text-sm mt-1">{errors.stipend}</p>
             )}
+          </div>
+          {/* Add this new section for skills */}
+          <div className="space-y-2">
+            <label className="block text-sm font-medium text-gray-700">Required Skills</label>
+            <div className="flex gap-2">
+              <input
+                type="text"
+                name="newSkill"
+                placeholder="Add a required skill"
+                value={formData.newSkill}
+                onChange={(e) => setFormData(prev => ({ ...prev, newSkill: e.target.value }))}
+                onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddSkill())}
+                className="flex-1 bg-gray-100 p-3 rounded-lg focus:outline-none"
+              />
+              <button
+                type="button"
+                onClick={handleAddSkill}
+                className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+              >
+                Add
+              </button>
+            </div>
+            <div className="flex flex-wrap gap-2 mt-2">
+              {formData.requiredSkills.map((skill, index) => (
+                <span
+                  key={index}
+                  className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full flex items-center gap-2"
+                >
+                  {skill}
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveSkill(skill)}
+                    className="hover:text-blue-900"
+                  >
+                    ×
+                  </button>
+                </span>
+              ))}
+            </div>
           </div>
           <div className="flex gap-4 pt-4">
             <button

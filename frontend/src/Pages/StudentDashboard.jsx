@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Briefcase, Calendar, MessageSquare, Bell, FileText } from 'lucide-react';
+import { Briefcase, Calendar, MessageSquare, Bell, FileText, Sparkles, MapPin } from 'lucide-react';
 import CVBuilder from './CVBuilder';
 import MessagingSystem from './MessagingSystem';
 import DatePicker from 'react-datepicker';
@@ -9,6 +9,7 @@ import UserMenuDropdown from '../components/UserMenuDropdown';
 
 const StudentDashboard = () => {
   const [showCVBuilder, setShowCVBuilder] = useState(false);
+  const [hasCV, setHasCV] = useState(false);
   const [selectedInterview, setSelectedInterview] = useState(null);
   const [rescheduleDate, setRescheduleDate] = useState(null);
   const [showMessaging, setShowMessaging] = useState(false);
@@ -18,6 +19,9 @@ const StudentDashboard = () => {
   const [internships, setInternships] = useState([]);
   const [selectedInternship, setSelectedInternship] = useState(null);
   const [scheduledInterviews, setScheduledInterviews] = useState([]);
+  const [recommendedInternships, setRecommendedInternships] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const stats = [
     { icon: Briefcase, label: 'Active Applications', value: 2 },
@@ -35,6 +39,21 @@ const StudentDashboard = () => {
     setSelectedInterview(null);
   };
 
+  const fetchRecommendations = async () => {
+    try {
+      setIsLoading(true);
+      const response = await API.get('/internships/recommended');
+      setRecommendedInternships(response.data.recommendations);
+      setError(null);
+    } catch (error) {
+      console.error('Error fetching recommendations:', error);
+      setError(error.response?.data?.message || 'Failed to fetch recommendations');
+      setRecommendedInternships([]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  
   useEffect(() => {
     const fetchInternships = async () => {
       try {
@@ -60,6 +79,29 @@ const StudentDashboard = () => {
   }, []);
 
   useEffect(() => {
+    const checkCV = async () => {
+      try {
+        const response = await API.get('/cv/latest');
+        setHasCV(!!response.data);
+        if (response.data) {
+          fetchRecommendations();
+        }
+      } catch (error) {
+        setHasCV(false);
+        console.error('Error checking CV:', error);
+      }
+    };
+      
+    checkCV();
+  }, []);
+
+  const handleCVBuilderClose = () => {
+    setShowCVBuilder(false);
+    // Refresh recommendations when CV builder is closed
+    checkCV();
+  };
+
+  useEffect(() => {
     const fetchScheduledInterviews = async () => {
       try {
         const response = await API.get('/internships/student/interviews', {
@@ -76,7 +118,31 @@ const StudentDashboard = () => {
   
     fetchScheduledInterviews();
   }, []);
+
+  useEffect(() => {
+    const checkCVAndFetchRecommendations = async () => {
+      try {
+        const cvResponse = await API.get('/cv/latest');
+        setHasCV(!!cvResponse.data);
+        
+        if (cvResponse.data) {
+          // Only fetch recommendations if user has a CV
+          fetchRecommendations();
+        }
+      } catch (error) {
+        setHasCV(false);
+        console.error('Error checking CV:', error);
+      }
+    };
   
+    checkCVAndFetchRecommendations();
+  }, []); // Empty dependency array means this runs once on mount
+  
+  const getMatchScoreColor = (score) => {
+    if (score >= 80) return 'bg-green-100 text-green-800';
+    if (score >= 60) return 'bg-blue-100 text-blue-800';
+    return 'bg-gray-100 text-gray-800';
+  };
 
   const handleApplyClick = (internship) => {
     setSelectedInternship(internship);
@@ -155,37 +221,104 @@ const StudentDashboard = () => {
       {/* Main Content */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Recent Internship Matches */}
-        <div className="lg:col-span-2">
-          <div className="bg-white rounded-xl p-6">
-            <h2 className="text-xl font-semibold text-[#1E1E1E] mb-1">Recent Internship Matches</h2>
-            <p className="text-[#666] text-sm mb-6">Based on your profile and preferences</p>
-            
-            <div className="space-y-4">
-              {internships.map((internship, index) => (
-                <div key={index} className="p-4 border border-[#E5E7EB] rounded-lg hover:bg-gray-50">
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <h3 className="font-medium text-[#1E1E1E]">{internship.title}</h3>
-                      <p className="text-sm text-[#666]">{internship.company}</p>
-                      <div className="mt-2">
-                        <span className="px-2 py-1 bg-blue-50 text-blue-600 rounded text-xs">
-                          {internship.location}
-                        </span>
-                      </div>
-                    </div>
-                    <button 
-                      onClick={() => handleApplyClick(internship)} 
-                      className="px-4 py-2 bg-[#4A72FF] text-white rounded-lg text-sm hover:bg-[#3A5FE6]"
-                    >
-                      Apply Now
-                    </button>
-                  </div>
+<div className="lg:col-span-2">
+  <div className="bg-white rounded-xl p-6">
+    <div className="flex items-center justify-between mb-6">
+      <div>
+        <h2 className="text-xl font-semibold text-[#1E1E1E]">Recent Internship Matches</h2>
+        <p className="text-[#666] text-sm">Based on your profile and preferences</p>
+      </div>
+      <button
+        onClick={() => fetchRecommendations()}
+        className="p-2 text-gray-400 hover:text-gray-600"
+        title="Refresh recommendations"
+      >
+        <Sparkles className="w-5 h-5" />
+      </button>
+    </div>
+
+    {!hasCV ? (
+  <div className="text-center py-8">
+    <div className="mb-4">
+      <FileText className="h-12 w-12 text-gray-400 mx-auto" />
+    </div>
+    <p className="text-gray-600 mb-4">
+      Please create a CV first to get personalized recommendations
+    </p>
+    <button
+      onClick={() => setShowCVBuilder(true)}
+      className="px-4 py-2 bg-[#4A72FF] text-white rounded-lg hover:bg-[#3A5FE6]"
+    >
+      Build CV Now
+    </button>
+  </div>
+) : isLoading ? (
+  <div className="flex justify-center items-center h-40">
+    <div className="text-gray-500">Loading recommendations...</div>
+  </div>
+) : error ? (
+  <div className="text-red-500 text-center p-4">{error}</div>
+) : recommendedInternships.length === 0 ? (
+  <div className="text-center py-8">
+    <p className="text-gray-500">No matching internships found.</p>
+    <p className="text-sm text-gray-400">
+      Try updating your CV with more skills.
+    </p>
+  </div>
+    ) : (
+      <div className="space-y-4">
+        {recommendedInternships.map((internship) => (
+          <div key={internship._id} className="p-4 border border-[#E5E7EB] rounded-lg hover:bg-gray-50">
+            <div className="flex justify-between items-start">
+              <div>
+                <h3 className="font-medium text-[#1E1E1E]">{internship.title}</h3>
+                <p className="text-sm text-[#666]">{internship.recruiter?.companyName}</p>
+                
+                <div className="mt-2 flex items-center gap-2 flex-wrap">
+                  <span className={`px-2.5 py-0.5 rounded-full text-sm font-medium ${getMatchScoreColor(internship.matchScore)}`}>
+                    {Math.round(internship.matchScore)}% Match
+                  </span>
+                  <span className="px-2 py-1 bg-blue-50 text-blue-600 rounded text-xs flex items-center">
+                    <MapPin className="w-3 h-3 mr-1" />
+                    {internship.location}
+                  </span>
+                  {internship.stipend && (
+                    <span className="px-2 py-1 bg-green-50 text-green-600 rounded text-xs">
+                      ${internship.stipend}/month
+                    </span>
+                  )}
                 </div>
-              ))}
+
+                {internship.matchingSkills?.length > 0 && (
+                  <div className="mt-3">
+                    <div className="flex flex-wrap gap-2">
+                      {internship.matchingSkills.map((skill, idx) => (
+                        <span key={idx} className="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded">
+                          {skill}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {internship.recommendationReason && (
+                  <p className="mt-2 text-sm text-gray-600">{internship.recommendationReason}</p>
+                )}
+              </div>
+              
+              <button
+                onClick={() => handleApplyClick(internship)}
+                className="px-4 py-2 bg-[#4A72FF] text-white rounded-lg text-sm hover:bg-[#3A5FE6]"
+              >
+                Apply Now
+              </button>
             </div>
           </div>
-        </div>
-
+        ))}
+      </div>
+    )}
+  </div>
+</div>
         {/* Upcoming Interviews */}
         <div>
           <div className="bg-white rounded-xl p-6">
@@ -251,31 +384,42 @@ const StudentDashboard = () => {
       )}
 
       {/* Apply Modal */}
-      {showApplyModal && selectedInternship && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white rounded-xl p-6 w-[90%] max-w-md">
-            <h2 className="text-xl font-semibold text-[#1E1E1E] mb-4">Confirm Application</h2>
-            <p className="text-sm text-[#666] mb-6">
-              Are you sure you want to apply to the <strong>{selectedInternship.title}</strong> position at{' '}
-              <strong>{selectedInternship.recruiter?.companyName || 'N/A'}</strong>?
+{showApplyModal && selectedInternship && (
+  <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+    <div className="bg-white rounded-xl p-6 w-[90%] max-w-md">
+      <h2 className="text-xl font-semibold text-[#1E1E1E] mb-4">Confirm Application</h2>
+      <div className="mb-6">
+        <p className="text-sm text-[#666] mb-2">
+          Are you sure you want to apply to the <strong>{selectedInternship.title}</strong> position?
+        </p>
+        <div className="mt-4 p-3 bg-blue-50 rounded-lg">
+          <p className="text-sm text-blue-700">
+            Your profile has a {Math.round(selectedInternship.matchScore)}% match with this role
+          </p>
+          {selectedInternship.matchingSkills?.length > 0 && (
+            <p className="text-sm text-blue-600 mt-2">
+              Matching skills: {selectedInternship.matchingSkills.join(', ')}
             </p>
-            <div className="flex gap-4">
-              <button
-                onClick={handleConfirmApply}
-                className="px-4 py-2 bg-[#4A72FF] text-white rounded-lg hover:bg-[#3A5FE6]"
-              >
-                Yes, Apply
-              </button>
-              <button
-                onClick={() => setShowApplyModal(false)}
-                className="px-4 py-2 bg-gray-300 text-[#666] rounded-lg hover:bg-gray-400"
-              >
-                No, Cancel
-              </button>
-            </div>
-          </div>
+          )}
         </div>
-      )}
+      </div>
+      <div className="flex gap-4">
+        <button
+          onClick={handleConfirmApply}
+          className="px-4 py-2 bg-[#4A72FF] text-white rounded-lg hover:bg-[#3A5FE6]"
+        >
+          Yes, Apply
+        </button>
+        <button
+          onClick={() => setShowApplyModal(false)}
+          className="px-4 py-2 bg-gray-300 text-[#666] rounded-lg hover:bg-gray-400"
+        >
+          No, Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+)}
 
       {/* Interview Management Modal */}
       {selectedInterview && (
@@ -318,10 +462,11 @@ const StudentDashboard = () => {
         </div>
       )}
 
-      <CVBuilder 
-        isOpen={showCVBuilder} 
-        onClose={() => setShowCVBuilder(false)} 
-      />
+      {/* Replace the existing CVBuilder component with: */}
+<CVBuilder 
+  isOpen={showCVBuilder} 
+  onClose={handleCVBuilderClose}  // Changed from setShowCVBuilder(false)
+/>
       <MessagingSystem 
         isOpen={showMessaging} 
         onClose={() => setShowMessaging(false)} 

@@ -1,16 +1,23 @@
+// src/api.js
 import axios from 'axios';
 
 const API = axios.create({
-  baseURL: 'http://localhost:5001/api', // Update with your backend's base URL
+  baseURL: 'http://localhost:5001/api',
+  headers: {
+    'Content-Type': 'application/json'
+  }
 });
 
-// Attach token for authenticated requests
-API.interceptors.request.use((req) => {
+API.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
   if (token) {
-    req.headers.Authorization = `Bearer ${token}`;
+    config.headers.Authorization = `Bearer ${token}`;
   }
-  return req;
+  return config;
 });
+
+export const fetchRecommendedInternships = () => API.get('/internships/recommended');
+export const fetchUserCV = () => API.get('/cv/latest');  // This matches the new route
+export const createCV = (cvData) => API.post('/cv', cvData);  // Add this function
 
 export default API;

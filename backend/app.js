@@ -11,7 +11,8 @@ const authRoutes = require('./routes/authRoutes');
 const internshipRoutes = require('./routes/internshipRoutes');
 const userRoutes = require('./routes/userRoutes');
 const messagingRoutes = require('./routes/messagingRoutes');
-const cvRoutes = require('./routes/cvRoutes')
+const cvRoutes = require('./routes/cvRoutes');
+const recommendationRoutes = require('./routes/recommendationRoutes'); // Add this line
 
 // Initialize the app
 const app = express();
@@ -29,9 +30,9 @@ app.use('/api/internships', internshipRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/messages', messagingRoutes);
 app.use('/api/cv', cvRoutes);
+app.use('/api/recommendations', recommendationRoutes); // Add this line
 
 // Error handling middleware
 app.use(errorHandler);
 
 module.exports = app;
-
