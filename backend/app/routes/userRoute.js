@@ -1,13 +1,19 @@
 const express = require('express');
-const { registerUser, loginUser, generateAccessToken } = require('../controllers/userController');
-const { requestOTP, verifyOTP } = require('../controllers/userController');
+const { validateRequest } = require('../middlewares/validation');
+const { registerStudentController, loginStudentController, getStudentController, updateStudentController } = require('../controllers/studentController');
+const { registerRecruiterController, loginRecruiterController, getRecruiterController, updateRecruiterController } = require('../controllers/recruiterController');
 
 const router = express.Router();
 
-router.post('/register', registerUser);
-router.get('/login', loginUser);
-router.get('/request-otp', requestOTP);
-router.post('/validate-otp', verifyOTP);
-router.get('/generate-token', generateAccessToken);
+router.post('/registerStudent', validateRequest('register'), registerStudentController);
+router.get('/loginStudent', validateRequest('login'), loginStudentController);
+router.get('/fetchStudent', getStudentController);
+router.post('/updateStudent', validateRequest('updateStudent'), updateStudentController),
+
+
+router.post('/registerRecruiter', validateRequest('register'), registerRecruiterController);
+router.get('/loginRecruiter', validateRequest('login'), loginRecruiterController);
+router.get('/fetchRecruiter', getRecruiterController);
+router.post('/updateRecruiter', validateRequest('updateRecuiter'), updateRecruiterController),
 
 module.exports = router;
