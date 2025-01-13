@@ -68,10 +68,11 @@ const {
   getStudentInternships,
   getApplicantsForRecruiter,
   scheduleInterview,
-  getRecommendedInternships
+  getRecommendedInternships,
+  markInterviewAsCompleted
 } = require('../controllers/internshipController');
 
-const { getStudentInterviews } = require('../controllers/studentController');
+const { getStudentInterviews, getStudentCompletedInterviews } = require('../controllers/studentController');
 const { getRecruiterInterviews } = require('../controllers/recruiterController');
 const { authMiddleware, roleMiddleware } = require('../middleware/authMiddleware');
 const router = express.Router();
@@ -98,5 +99,13 @@ router.post('/:id/schedule', authMiddleware, roleMiddleware(['recruiter']), sche
 
 // ID specific route - Keep this last to avoid route conflicts
 router.get('/:id([a-fA-F0-9]{24})', getInternshipById);
+
+
+router.patch('/:internshipId/interviews/:studentId/completed', markInterviewAsCompleted);
+router.get(
+  '/student/completed-interviews',
+  authMiddleware, // Ensure the student is authenticated
+  getStudentCompletedInterviews
+);
 
 module.exports = router;

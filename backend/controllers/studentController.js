@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs');
 const Student = require('../models/Student');
 const jwt = require('jsonwebtoken');
-
+const Internship=require('../models/Internship')
 exports.registerStudent = async (req, res) => {
   try {
     const { email, password, firstName, lastName, profile } = req.body;
@@ -83,6 +83,41 @@ exports.loginStudent = async (req, res) => {
     } catch (error) {
       console.error('Error fetching student interviews:', error);
       res.status(500).json({ message: 'Failed to fetch interviews' });
+    }
+  };
+
+  exports.getStudentCompletedInterviews = async (req, res) => {
+    try {
+      const studentId = req.user.id;
+  
+      // Fetch completed interviews
+      const completedInterviews = await Internship.find({
+        'scheduledInterviews.student': studentId,
+        'scheduledInterviews.status': 'Completed',
+      }).populate({
+        path: 'scheduledInterviews.student',
+        select: 'firstName lastName email',
+      });
+  
+      // Filter and structure the response
+      const completed = completedInterviews.flatMap((internship) =>
+        internship.scheduledInterviews
+          .filter(
+            (interview) =>
+              interview.student._id.toString() === studentId &&
+              interview.status === 'Completed'
+          )
+          .map((interview) => ({
+            internshipTitle: internship.title,
+            company: internship.recruiter.companyName,
+            dateTime: interview.dateTime,
+          }))
+      );
+  
+      res.status(200).json(completed);
+    } catch (error) {
+      console.error('Error fetching completed interviews:', error);
+      res.status(500).json({ message: 'Failed to fetch completed interviews' });
     }
   };
   

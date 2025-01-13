@@ -22,12 +22,32 @@ const StudentDashboard = () => {
   const [recommendedInternships, setRecommendedInternships] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showCompletedDialog,setShowCompletedDialog]=useState(false)
+  const [completedInterviews, setCompletedInterviews] = useState([]);
 
   const stats = [
     { icon: Briefcase, label: 'Active Applications', value: 2 },
-    { icon: Calendar, label: 'Upcoming Interviews', value: 2 },
+    { icon: Calendar, label: 'Completed Interviews', value: 2 },
     { icon: MessageSquare, label: 'New Messages', value: 3 },
   ];
+
+  const fetchCompletedInterviews = async () => {
+    try {
+      const response = await API.get('/internships/student/completed-interviews', {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+      console.log("completed interviews:",response.data)
+      setCompletedInterviews(response.data);
+    } catch (error) {
+      console.error('Error fetching completed interviews:', error.response?.data?.message || error.message);
+    }
+  };
+  const handleCompletedClick = () => {
+    fetchCompletedInterviews(); // Fetch the data when the card is clicked
+    setShowCompletedDialog(true); // Open the dialog
+  };
 
   const handleReschedule = () => {
     console.log(`Rescheduled ${selectedInterview?.role} to ${rescheduleDate}`);
@@ -78,22 +98,18 @@ const StudentDashboard = () => {
     fetchActiveInternships();
   }, []);
 
-  useEffect(() => {
-    const checkCV = async () => {
-      try {
-        const response = await API.get('/cv/latest');
-        setHasCV(!!response.data);
-        if (response.data) {
-          fetchRecommendations();
-        }
-      } catch (error) {
-        setHasCV(false);
-        console.error('Error checking CV:', error);
+  const checkCV = async () => {
+    try {
+      const response = await API.get('/cv/latest');
+      setHasCV(!!response.data);
+      if (response.data) {
+        fetchRecommendations();
       }
-    };
-      
-    checkCV();
-  }, []);
+    } catch (error) {
+      setHasCV(false);
+      console.error('Error checking CV:', error);
+    }
+  };
 
   const handleCVBuilderClose = () => {
     setShowCVBuilder(false);
@@ -204,10 +220,34 @@ const StudentDashboard = () => {
             <div
               key={index}
               className="bg-white rounded-xl p-4 flex items-center cursor-pointer"
-              onClick={() => index === 0 && setShowActiveInternshipsModal(true)}
+              onClick={() => {
+                if (index === 0) {
+                  setShowActiveInternshipsModal(true);
+                }
+                if (index === 1) {
+                   // Fetch completed interviews when the stat is clicked
+                  handleCompletedClick();
+                }
+              }}
             >
-              <div className={`p-2 rounded-lg ${index === 0 ? 'bg-blue-50' : index === 1 ? 'bg-green-50' : 'bg-purple-50'}`}>
-                <Icon className={`h-6 w-6 ${index === 0 ? 'text-blue-500' : index === 1 ? 'text-green-500' : 'text-purple-500'}`} />
+              <div
+                className={`p-2 rounded-lg ${
+                  index === 0
+                    ? 'bg-blue-50'
+                    : index === 1
+                    ? 'bg-green-50'
+                    : 'bg-purple-50'
+                }`}
+              >
+                <Icon
+                  className={`h-6 w-6 ${
+                    index === 0
+                      ? 'text-blue-500'
+                      : index === 1
+                      ? 'text-green-500'
+                      : 'text-purple-500'
+                  }`}
+                />
               </div>
               <div className="ml-4">
                 <p className="text-sm text-[#666]">{stat.label}</p>
@@ -217,6 +257,46 @@ const StudentDashboard = () => {
           );
         })}
       </div>
+
+      {/* Completed Interviews Dialog */}
+      {showCompletedDialog && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white rounded-xl p-6 w-[90%] max-w-lg shadow-lg">
+            <h2 className="text-xl font-semibold text-[#1E1E1E] mb-4">Completed Interviews</h2>
+            {completedInterviews.length > 0 ? (
+              <div className="space-y-4">
+                {completedInterviews.map((interview, index) => (
+                  <div
+                    key={index}
+                    className="p-4 border border-[#E5E7EB] rounded-lg hover:bg-gray-50"
+                  >
+                    <div className="flex gap-4">
+                      <div className="p-2 bg-gray-50 rounded">
+                        <Calendar className="h-6 w-6 text-[#666]" />
+                      </div>
+                      <div>
+                        <h3 className="font-medium text-[#1E1E1E]">{interview.internshipTitle}</h3>
+                        <p className="text-sm text-[#666]">{interview.company}</p>
+                        <p className="text-sm text-[#4A72FF] mt-1">
+                          {new Date(interview.dateTime).toLocaleString()}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-gray-600">No completed interviews yet.</p>
+            )}
+            <button
+              onClick={() => setShowCompletedDialog(false)}
+              className="mt-4 px-4 py-2 bg-gray-300 text-[#666] rounded-lg hover:bg-gray-400"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Main Content */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

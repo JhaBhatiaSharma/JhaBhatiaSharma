@@ -344,3 +344,47 @@ exports.scheduleInterview = async (req, res) => {
     res.status(500).json({ message: "Failed to schedule interview" });
   }
 };
+
+
+exports.markInterviewAsCompleted = async (req, res) => {
+  try {
+    const { internshipId, studentId } = req.params;
+
+    const internship = await Internship.findById(internshipId);
+    if (!internship) {
+      return res.status(404).json({ message: 'Internship not found' });
+    }
+
+    // Find and update the interview status in the internship
+    const interview = internship.scheduledInterviews.find(
+      (interview) => interview.student.toString() === studentId
+    );
+
+    if (!interview) {
+      return res.status(404).json({ message: 'Interview not found' });
+    }
+
+    interview.status = 'Completed';
+    await internship.save();
+
+    // Update the student's scheduledInterviews status
+    const student = await Student.findById(studentId);
+    if (!student) {
+      return res.status(404).json({ message: 'Student not found' });
+    }
+
+    const studentInterview = student.scheduledInterviews.find(
+      (interview) => interview.internship.toString() === internshipId
+    );
+
+    if (studentInterview) {
+      studentInterview.status = 'Completed';
+      await student.save();
+    }
+
+    res.status(200).json({ message: 'Interview marked as completed successfully' });
+  } catch (error) {
+    console.error('Error marking interview as completed:', error);
+    res.status(500).json({ message: 'Failed to mark interview as completed' });
+  }
+};

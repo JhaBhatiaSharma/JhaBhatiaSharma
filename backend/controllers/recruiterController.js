@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs');
 const Recruiter = require('../models/Recruiter');
 const jwt = require('jsonwebtoken');
-
+const Internship=require('../models/Internship')
 exports.registerRecruiter = async (req, res) => {
   try {
     const { email, password, firstName, lastName, profile } = req.body;
@@ -73,14 +73,25 @@ exports.loginRecruiter = async (req, res) => {
 
   exports.getRecruiterInterviews = async (req, res) => {
     try {
-      const internships = await Internship.find({ recruiter: req.user.id })
-        .populate('scheduledInterviews.student', 'firstName lastName email');
+      const internships = await Internship.find({ recruiter: req.user.id }).populate({
+        path: 'scheduledInterviews.student',
+        select: 'firstName lastName email',
+      });
+  
+      if (!internships || internships.length === 0) {
+        return res.status(200).json([]);
+      }
+  
       const interviews = internships.flatMap((internship) =>
-        internship.scheduledInterviews.map((interview) => ({
-          internshipTitle: internship.title,
-          student: interview.student,
-          dateTime: interview.dateTime,
-        }))
+        internship.scheduledInterviews
+          .filter((interview) => interview.student) // Ensure valid student reference
+          .map((interview) => ({
+            internshipTitle: internship.title,
+            student: interview.student,
+            dateTime: interview.dateTime,
+            status: interview.status,
+            internshipId: internship._id,
+          }))
       );
   
       res.status(200).json(interviews);

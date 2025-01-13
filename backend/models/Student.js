@@ -42,7 +42,7 @@ const studentSchema = new mongoose.Schema({
       dateTime: { type: Date },
       status: {
         type: String,
-        enum: ['scheduled', 'completed', 'cancelled'],
+        enum: ['scheduled', 'Completed', 'Cancelled'],
         default: 'scheduled'
       }
     }
