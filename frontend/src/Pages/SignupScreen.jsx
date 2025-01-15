@@ -230,6 +230,16 @@ const SignupScreen = () => {
               <Building2 className="w-4 h-4" />
               Company
             </button>
+            <button
+              type="button"
+              onClick={() => setUserType('admin')}
+              className={`flex items-center justify-center gap-2 flex-1 px-4 py-2 rounded-lg text-sm transition-colors ${
+                userType === 'recruiter' ? 'bg-[#4F46E5] text-white' : 'bg-[#1E1E1E] text-white'
+              }`}
+            >
+              <Building2 className="w-4 h-4" />
+              Admin
+            </button>
           </div>
 
           {/* Form */}

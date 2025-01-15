@@ -13,7 +13,7 @@ const userRoutes = require('./routes/userRoutes');
 const messagingRoutes = require('./routes/messagingRoutes');
 const cvRoutes = require('./routes/cvRoutes');
 const recommendationRoutes = require('./routes/recommendationRoutes'); // Add this line
-
+const adminRoutes = require('./routes/adminRoutes')
 // Initialize the app
 const app = express();
 
@@ -31,6 +31,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/messages', messagingRoutes);
 app.use('/api/cv', cvRoutes);
 app.use('/api/recommendations', recommendationRoutes); // Add this line
+app.use('/api/admin',adminRoutes)
 
 // Error handling middleware
 app.use(errorHandler);
