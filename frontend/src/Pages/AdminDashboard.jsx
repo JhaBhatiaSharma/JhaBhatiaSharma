@@ -306,8 +306,12 @@ const AdminDashboard = () => {
   const [users, setUsers] = useState([]); // Store fetched user data
   const [searchQuery, setSearchQuery] = useState('');
   const [filterRole, setFilterRole] = useState('');
+  const [internships, setInternships] = useState([]);
   const [loading, setLoading] = useState(true); // Loading state for API calls
   const [isModalOpen, setModalOpen] = useState(false); // Modal state
+  const [isConfirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
+  const [editingUser, setEditingUser] = useState(null);
+  const [isInternshipModalOpen, setInternshipModalOpen] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -336,12 +340,53 @@ const AdminDashboard = () => {
     fetchUsers(); // Fetch users on component mount
   }, []);
 
+  useEffect(() => {
+    const fetchInternships = async () => {
+      try {
+        const response = await API.get("/internships/allinternships");
+        setInternships(response.data);
+      } catch (error) {
+        console.error("Failed to fetch internships:", error.message);
+      }
+    };
+
+    fetchInternships();
+  }, []);
+
   const handleSearch = async () => {
     await fetchUsers();
   };
 
-  const openAddUserModal = () => setModalOpen(true);
-  const closeAddUserModal = () => setModalOpen(false);
+  const openInternshipModal = () => {
+    setInternshipModalOpen(true);
+  };
+  const closeInternshipModal = () => setInternshipModalOpen(false);
+
+  const openAddUserModal = () => {
+    setEditingUser(null); // Reset editing state
+    setFormData({
+      email: '',
+      password: '',
+      type: 'student',
+      firstName: '',
+      lastName: '',
+      university: '',
+    });
+    setModalOpen(true);
+  };
+  const openEditUserModal = (user) => {
+    setEditingUser(user); // Set the user to be edited
+    setFormData({
+      email: user.email,
+      password: '', // Keep this blank for security reasons
+      type: user.type,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      university: user.profile?.university || '', // Handle student-specific fields
+    });
+    setModalOpen(true);
+  };
+  const closeModal = () => setModalOpen(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -351,28 +396,60 @@ const AdminDashboard = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const payload = {
-        email: formData.email,
-        password: formData.password,
-        type: formData.type, // "student" or "recruiter"
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        profile: formData.type === 'student' ? { university: formData.university } : {},
-      };
-
-      // Make POST request to the appropriate endpoint
-      await API.post(`/auth/${formData.type}/register`, payload, {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-      });
-
-      alert('User added successfully!');
-      closeAddUserModal();
+      if (editingUser) {
+        // Update user logic
+        const updates = {
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          type: formData.type,
+          profile: formData.type === 'student' ? { university: formData.university } : {},
+        };
+  
+        await API.put(`/admin/users/${editingUser._id}`, updates, {
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+        });
+        alert('User updated successfully!');
+      } else {
+        // Add new user logic
+        const payload = {
+          email: formData.email,
+          password: formData.password,
+          type: formData.type,
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          profile: formData.type === 'student' ? { university: formData.university } : {},
+        };
+  
+        await API.post(`/auth/${formData.type}/register`, payload, {
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+        });
+        alert('User added successfully!');
+      }
+      closeModal();
       fetchUsers(); // Refresh the user list
     } catch (err) {
-      console.error('Failed to add user:', err.response?.data?.message || err.message);
-      alert(err.response?.data?.message || 'Failed to add user. Please try again.');
+      console.error('Failed to submit user:', err.response?.data?.message || err.message);
+      alert(err.response?.data?.message || 'Failed to submit user. Please try again.');
     }
   };
+
+  const handleDeleteUser = async () => {
+    if (!editingUser) return;
+
+    try {
+      await API.delete(`/admin/users/${editingUser._id}`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+      });
+      alert('User deleted successfully!');
+      setConfirmDeleteOpen(false);
+      setModalOpen(false);
+      fetchUsers(); // Refresh the user list
+    } catch (err) {
+      console.error('Failed to delete user:', err.response?.data?.message || err.message);
+      alert('Failed to delete user. Please try again.');
+    }
+  };
+  
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -395,21 +472,60 @@ const AdminDashboard = () => {
       {/* Main Content */}
       <div className="p-8">
         {/* Quick Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <Card>
-            <CardContent className="pt-6">
-              <div className="flex items-center">
-                <div className="p-2 bg-blue-100 rounded-lg">
-                  <Users className="h-6 w-6 text-blue-600" />
-                </div>
-                <div className="ml-4">
-                  <p className="text-sm text-gray-600">Total Users</p>
-                  <h3 className="text-2xl font-bold">{users.length}</h3>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+        <div className="flex gap-6 mb-8 overflow-x-auto">
+      <Card>
+        <CardContent className="pt-6">
+          <div className="flex items-center">
+            <div className="p-2 bg-blue-100 rounded-lg">
+              <Users className="h-6 w-6 text-blue-600" />
+            </div>
+            <div className="ml-4">
+              <p className="text-sm text-gray-600">Total Users</p>
+              <h3 className="text-2xl font-bold">{users.length}</h3>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+      <Card>
+        <CardContent className="pt-6">
+          <div className="flex items-center">
+            <div className="p-2 bg-blue-100 rounded-lg">
+              <Users className="h-6 w-6 text-blue-600" />
+            </div>
+            <div className="ml-4" onClick={openInternshipModal}>
+              <p className="text-sm text-gray-600">Posted Internships</p>
+              <h3 className="text-2xl font-bold">{internships.length}</h3>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+    {isInternshipModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white w-[90%] max-w-2xl p-6 rounded-lg shadow-lg">
+            <h2 className="text-xl font-bold mb-4">All Internships</h2>
+            <div className="max-h-[400px] overflow-y-auto">
+              <ul>
+                {internships.map((internship) => (
+                  <li key={internship._id} className="border-b py-2">
+                    <p className="font-semibold">{internship.title}</p>
+                    <p className="text-sm text-gray-600">{internship.description}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="flex justify-end mt-4">
+              <button
+                onClick={closeInternshipModal}
+                className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400"
+              >
+                Close
+              </button>
+            </div>
+          </div>
         </div>
+      )}
+
 
         {/* Main Sections */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -458,41 +574,45 @@ const AdminDashboard = () => {
                   <p className="text-gray-600">Loading users...</p>
                 ) : (
                   <div className="overflow-x-auto">
-                    <table className="w-full">
-                      <thead>
-                        <tr className="border-b">
-                          <th className="text-left py-3 px-4">Name</th>
-                          <th className="text-left py-3 px-4">Role</th>
-                          <th className="text-left py-3 px-4">Status</th>
-                          <th className="text-left py-3 px-4">Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {users.map((user) => (
-                          <tr key={user._id} className="border-b hover:bg-gray-50">
-                            <td className="py-3 px-4">{`${user.firstName} ${user.lastName}`}</td>
-                            <td className="py-3 px-4">{user.role}</td>
-                            <td className="py-3 px-4">
-                              <span
-                                className={`px-2 py-1 ${
-                                  user.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
-                                } rounded-full text-sm`}
-                              >
-                                {user.status}
-                              </span>
-                            </td>
-                            <td className="py-3 px-4">
-                              <button
-                                className="text-blue-500 hover:text-blue-700"
-                              >
-                                Edit
-                              </button>
-                            </td>
+                    <div className="max-h-[200px] overflow-y-auto">
+                      <table className="w-full table-auto">
+                        <thead>
+                          <tr className="border-b">
+                            <th className="text-left py-3 px-4">Name</th>
+                            <th className="text-left py-3 px-4">Role</th>
+                            <th className="text-left py-3 px-4">Status</th>
+                            <th className="text-left py-3 px-4">Actions</th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                        </thead>
+                        <tbody>
+                          {users.map((user) => (
+                            <tr key={user._id} className="border-b">
+                              <td className="py-3 px-4">{`${user.firstName} ${user.lastName}`}</td>
+                              <td className="py-3 px-4">{user.role}</td>
+                              <td className="py-3 px-4">
+                                <span
+                                  className={`px-2 py-1 ${
+                                    user.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+                                  } rounded-full text-sm`}
+                                >
+                                  {user.status}
+                                </span>
+                              </td>
+                              <td className="py-3 px-4 text-center">
+                                <button
+                                  onClick={() => openEditUserModal(user)}
+                                  className="text-blue-500 hover:text-blue-700"
+                                >
+                                  Edit
+                                </button>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
+
                 )}
               </CardContent>
             </Card>
@@ -502,9 +622,11 @@ const AdminDashboard = () => {
 
       {/* Add User Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+        <div className="fixed inset-0 bg-slate-600 bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white p-8 rounded-lg w-[400px] shadow-lg">
-            <h2 className="text-xl font-bold mb-4">Add New User</h2>
+            <h2 className="text-xl font-bold mb-4">
+              {editingUser ? 'Edit User' : 'Add New User'}
+            </h2>
             <form onSubmit={handleSubmit}>
               <div className="space-y-4">
                 <input
@@ -533,16 +655,19 @@ const AdminDashboard = () => {
                   onChange={handleInputChange}
                   className="w-full p-2 border rounded-lg text-white"
                   required
+                  disabled={!!editingUser} // Disable email input when editing
                 />
-                <input
-                  type="password"
-                  name="password"
-                  placeholder="Password"
-                  value={formData.password}
-                  onChange={handleInputChange}
-                  className="w-full p-2 border rounded-lg text-white"
-                  required
-                />
+                {!editingUser && (
+                  <input
+                    type="password"
+                    name="password"
+                    placeholder="Password"
+                    value={formData.password}
+                    onChange={handleInputChange}
+                    className="w-full p-2 border rounded-lg text-white"
+                    required
+                  />
+                )}
                 <select
                   name="type"
                   value={formData.type}
@@ -568,8 +693,8 @@ const AdminDashboard = () => {
               <div className="flex justify-end mt-6 gap-4">
                 <button
                   type="button"
-                  onClick={closeAddUserModal}
-                  className="px-4 py-2 border rounded-lg text-gray-600 hover:bg-gray-100"
+                  onClick={closeModal}
+                  className="px-4 py-2 border rounded-lg  hover:bg-gray-100 text-white"
                 >
                   Cancel
                 </button>
@@ -577,10 +702,39 @@ const AdminDashboard = () => {
                   type="submit"
                   className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
                 >
-                  Add User
+                  {editingUser ? 'Update User' : 'Add User'}
                 </button>
+                {editingUser && ( // Show the Delete button only if editingUser is set
+                  <button 
+                    onClick={() => setConfirmDeleteOpen(true)} 
+                    className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                  >
+                    Delete
+                  </button>
+                )}
               </div>
             </form>
+          </div>
+        </div>
+      )}
+      {isConfirmDeleteOpen && (
+        <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white p-6 rounded-lg">
+            <p>Are you sure you want to delete this user?</p>
+            <div className="mt-4 flex justify-between">
+              <button
+                onClick={() => setConfirmDeleteOpen(false)}
+                className="text-gray-500"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDeleteUser}
+                className="text-red-500"
+              >
+                Confirm
+              </button>
+            </div>
           </div>
         </div>
       )}

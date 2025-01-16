@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import { UserProvider } from './context/UserContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import AuthenticationScreen from './pages/AuthenticationScreen'; 
-import AdminDashboard from './pages/AdminDashboard';
+import AdminDashboard from './Pages/AdminDashboard';
 import StudentDashboard from './pages/StudentDashboard';
 import CompanyDashboard from './Pages/Company/CompanyDashboard';
 import ProfileBuilder from './pages/ProfileBuilder';

@@ -76,21 +76,20 @@ exports.loginAdmin = async (req, res) => {
 
 // Fetch all users
 exports.getAllUsers = async (req, res) => {
-  const { search, role, page = 1, limit = 10 } = req.query;
+  const { search, role } = req.query;
   const query = {};
   if (search) query.name = { $regex: search, $options: 'i' };
   if (role) query.role = role;
 
   try {
-    const users = await User.find(query)
-      .skip((page - 1) * limit)
-      .limit(limit);
-    const total = await User.countDocuments(query);
+    const users = await User.find(query); // No pagination
+    const total = users.length;
     res.json({ users, total });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
+
 
 // Add user
 exports.addUser = async (req, res) => {
@@ -106,13 +105,26 @@ exports.addUser = async (req, res) => {
 // Edit user
 exports.editUser = async (req, res) => {
   try {
-    const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    // Fields to update
+    const { firstName, lastName, role, profile } = req.body;
+
+    // Validate fields (optional)
+    const updates = {};
+    if (firstName) updates.firstName = firstName;
+    if (lastName) updates.lastName = lastName;
+    if (role) updates.type = role; // Ensure role is valid
+    if (profile) updates.profile = profile; // Optional profile updates
+
+    // Find and update user
+    const user = await User.findByIdAndUpdate(req.params.id, updates, { new: true });
     if (!user) return res.status(404).json({ error: 'User not found' });
+
     res.json(user);
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
 };
+
 
 // Delete user
 exports.deleteUser = async (req, res) => {

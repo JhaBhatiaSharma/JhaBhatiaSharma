@@ -4,8 +4,7 @@ const {
   addUser,
   editUser,
   deleteUser,
-  registerAdmin,
-  loginAdmin
+  
 } = require('../controllers/adminController');
 const { authMiddleware, roleMiddleware } = require('../middleware/authMiddleware');
 const router = express.Router();
