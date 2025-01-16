@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Briefcase, Calendar, MessageSquare, Bell, FileText, Sparkles, MapPin } from 'lucide-react';
+import { Briefcase, Calendar, MessageSquare, Bell, FileText, Sparkles, MapPin, MessageCircleCodeIcon } from 'lucide-react';
 import CVBuilder from './CVBuilder';
 import MessagingSystem from './MessagingSystem';
 import DatePicker from 'react-datepicker';
@@ -24,11 +24,17 @@ const StudentDashboard = () => {
   const [error, setError] = useState(null);
   const [showCompletedDialog,setShowCompletedDialog]=useState(false)
   const [completedInterviews, setCompletedInterviews] = useState([]);
+  // Complaint states
+  const [showComplaintsModal, setShowComplaintsModal] = useState(false);
+  const [showNewComplaintModal, setShowNewComplaintModal] = useState(false);
+  const [complaints, setComplaints] = useState([]);
+  const [newComplaint, setNewComplaint] = useState({ title: '', description: '' });
 
   const stats = [
-    { icon: Briefcase, label: 'Active Applications', value: 2 },
-    { icon: Calendar, label: 'Completed Interviews', value: 2 },
+    { icon: Briefcase, label: 'Active Applications', value: activeInternships.length },
+    { icon: Calendar, label: 'Completed Interviews', value: completedInterviews.length },
     { icon: MessageSquare, label: 'New Messages', value: 3 },
+    { icon: MessageCircleCodeIcon, label: 'Complaints', value: complaints.length}
   ];
 
   const fetchCompletedInterviews = async () => {
@@ -180,6 +186,36 @@ const StudentDashboard = () => {
     }
   };
 
+  // complaint functions
+  const fetchComplaints = async () => {
+    try {
+      const response = await API.get('/complaints/my-complaints');
+      setComplaints(response.data.data);
+    } catch (error) {
+      console.error('Error fetching complaints:', error.response?.data?.message || error.message);
+    }
+  };
+
+  const handleNewComplaintSubmit = async () => {
+    try {
+      await API.post('/complaints/create-complaint', {
+        title: newComplaint.title,
+        description: newComplaint.description
+      });
+      alert('Complaint submitted successfully');
+      setShowNewComplaintModal(false);
+      setNewComplaint({ title: '', description: '' });
+      fetchComplaints(); // Refresh complaints list
+    } catch (error) {
+      console.error('Error submitting complaint:', error.response?.data?.message || error.message);
+      alert('Failed to submit complaint. Please try again.');
+    }
+  };
+
+  useEffect(() => {
+    fetchComplaints();
+  }, []);
+
   return (
     <div className="min-h-screen bg-[#F8F9FA] p-8">
       {/* Header */}
@@ -227,6 +263,9 @@ const StudentDashboard = () => {
                 if (index === 1) {
                    // Fetch completed interviews when the stat is clicked
                   handleCompletedClick();
+                }
+                if (index === 3){
+                  setShowComplaintsModal(true);
                 }
               }}
             >
@@ -294,6 +333,78 @@ const StudentDashboard = () => {
             >
               Close
             </button>
+          </div>
+        </div>
+      )}
+
+       {/* Complaints Modal */}
+       {showComplaintsModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white rounded-xl p-6 w-[90%] max-w-lg shadow-lg">
+            <h2 className="text-xl font-semibold text-[#1E1E1E] mb-4">Your Complaints</h2>
+            <div className="space-y-4">
+              {complaints.length > 0 ? (
+                complaints.map((complaint) => (
+                  <div key={complaint._id} className="p-4 border border-gray-300 rounded-lg">
+                    <h3 className="font-medium text-[#1E1E1E]">{complaint.title}</h3>
+                    <p className="text-sm text-[#666]">{complaint.description}</p>
+                    <p className="text-sm text-gray-500">Status: {complaint.status}</p>
+                  </div>
+                ))
+              ) : (
+                <p className="text-gray-600">No complaints found.</p>
+              )}
+            </div>
+            <button
+              onClick={() => setShowNewComplaintModal(true)}
+              className="mt-4 px-4 py-2 bg-[#4A72FF] text-white rounded-lg hover:bg-[#3A5FE6]"
+            >
+              New Complaint
+            </button>
+            <button
+              onClick={() => setShowComplaintsModal(false)}
+              className="mt-4 px-4 py-2 bg-gray-300 text-[#666] rounded-lg hover:bg-gray-400"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* New Complaint Modal */}
+      {showNewComplaintModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white rounded-xl p-6 w-[90%] max-w-md shadow-lg">
+            <h2 className="text-xl font-semibold text-[#1E1E1E] mb-4">New Complaint</h2>
+            <div className="space-y-4">
+              <input
+                type="text"
+                placeholder="Complaint Title"
+                value={newComplaint.title}
+                onChange={(e) => setNewComplaint({ ...newComplaint, title: e.target.value })}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg text-white"
+              />
+              <textarea
+                placeholder="Complaint Description"
+                value={newComplaint.description}
+                onChange={(e) => setNewComplaint({ ...newComplaint, description: e.target.value })}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg text-white"
+              />
+            </div>
+            <div className="flex gap-4 mt-4">
+              <button
+                onClick={handleNewComplaintSubmit}
+                className="px-4 py-2 bg-[#4A72FF] text-white rounded-lg hover:bg-[#3A5FE6]"
+              >
+                Submit
+              </button>
+              <button
+                onClick={() => setShowNewComplaintModal(false)}
+                className="px-4 py-2 bg-gray-300 text-[#666] rounded-lg hover:bg-gray-400"
+              >
+                Cancel
+              </button>
+            </div>
           </div>
         </div>
       )}
