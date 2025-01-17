@@ -312,6 +312,9 @@ const AdminDashboard = () => {
   const [isConfirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
   const [editingUser, setEditingUser] = useState(null);
   const [isInternshipModalOpen, setInternshipModalOpen] = useState(false);
+  const [complaints, setComplaints] = useState([]);
+  const [isComplaintModalOpen, setComplaintModalOpen] = useState(false);
+
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -449,6 +452,40 @@ const AdminDashboard = () => {
       alert('Failed to delete user. Please try again.');
     }
   };
+
+  // complaint stuff
+  const fetchComplaints = async () => {
+    try {
+      const response = await API.get('/complaints/get-complaints', {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+      });
+      setComplaints(response.data.data);
+      console.log("complaints are:", response.data.data)
+    } catch (error) {
+      console.error('Failed to fetch complaints:', error.message);
+    }
+  };
+
+  const handleMarkResolved = async (complaintId) => {
+    try {
+      await API.patch(`/complaints/${complaintId}/resolve`, {}, {
+        headers: {'Content-Type': 'application/json', Authorization: `Bearer ${localStorage.getItem('token')}` },
+      });
+      alert('Complaint marked as resolved!');
+      fetchComplaints(); // Refresh complaints after marking as resolved
+    } catch (error) {
+      console.error('Failed to resolve complaint:', error.message);
+      alert('Failed to mark complaint as resolved. Please try again.');
+    }
+  };
+  const openComplaintModal = () => {
+    fetchComplaints();
+    setComplaintModalOpen(true);
+  };
+
+  const closeComplaintModal = () => {
+    setComplaintModalOpen(false);
+  };
   
 
   return (
@@ -499,6 +536,19 @@ const AdminDashboard = () => {
           </div>
         </CardContent>
       </Card>
+      <Card>
+        <CardContent className="pt-6">
+          <div className="flex items-center">
+            <div className="p-2 bg-blue-100 rounded-lg">
+              <Users className="h-6 w-6 text-blue-600" />
+            </div>
+            <div className="ml-4" onClick={openComplaintModal}>
+              <p className="text-sm text-gray-600">Complaints</p>
+              <h3 className="text-2xl font-bold">{complaints.length}</h3>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
     </div>
     {isInternshipModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -517,6 +567,57 @@ const AdminDashboard = () => {
             <div className="flex justify-end mt-4">
               <button
                 onClick={closeInternshipModal}
+                className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+       {isComplaintModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white w-[90%] max-w-2xl p-6 rounded-lg shadow-lg">
+            <h2 className="text-xl font-bold mb-4">Complaints</h2>
+            <div className="max-h-[400px] overflow-y-auto">
+              {complaints.length > 0 ? (
+                <ul>
+                  {complaints.map((complaint) => (
+                    <li
+                      key={complaint._id}
+                      className="flex justify-between items-center border-b py-4"
+                    >
+                      <div>
+                        <p className="font-semibold">{complaint.title}</p>
+                        <p className="text-sm font-medium">Description: {complaint.description}</p>
+                        <p className="text-sm text-gray-600">
+                          Submitted by: {complaint.userId.firstName} {complaint.userId.lastName} (
+                          {complaint.userId.type})
+                        </p>
+                        <p className="text-sm text-gray-600">ID: {complaint.userId._id}</p>
+                        <p className="text-sm text-gray-600">Status: {complaint.status}</p>
+                      </div>
+                      <button
+                        className={`px-4 py-2 rounded ${
+                          complaint.status === 'pending'
+                            ? 'bg-blue-500 text-white hover:bg-blue-600'
+                            : 'bg-gray-300 text-gray-700 cursor-not-allowed'
+                        }`}
+                        disabled={complaint.status !== 'pending'}
+                        onClick={() => handleMarkResolved(complaint._id)}
+                      >
+                        {complaint.status === 'pending' ? 'Resolve' : 'Resolved'}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="text-gray-600">No complaints found.</p>
+              )}
+            </div>
+            <div className="flex justify-end mt-4">
+              <button
+                onClick={closeComplaintModal}
                 className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400"
               >
                 Close
