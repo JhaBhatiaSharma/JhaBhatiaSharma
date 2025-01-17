@@ -300,6 +300,7 @@ import {
   Filter,
 } from 'lucide-react';
 import UserMenuDropdown from '../components/UserMenuDropdown';
+import MessagingSystem from './MessagingSystem';
 import API from '../api';
 
 const AdminDashboard = () => {
@@ -314,7 +315,7 @@ const AdminDashboard = () => {
   const [isInternshipModalOpen, setInternshipModalOpen] = useState(false);
   const [complaints, setComplaints] = useState([]);
   const [isComplaintModalOpen, setComplaintModalOpen] = useState(false);
-
+  const [isMessagingOpen, setIsMessagingOpen] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -498,6 +499,16 @@ const AdminDashboard = () => {
             <p className="text-gray-600">Welcome back, Admin</p>
           </div>
           <div className="flex items-center gap-4">
+          <button
+          onClick={() => setIsMessagingOpen(true)}
+          className="px-4 py-2 bg-blue-500 text-white rounded-lg"
+        >
+          Open Messaging
+        </button>
+        <MessagingSystem
+        isOpen={isMessagingOpen}
+        onClose={() => setIsMessagingOpen(false)}
+      />
             <button className="p-2 rounded-full hover:bg-gray-100">
               <Bell className="h-6 w-6 text-gray-600" />
             </button>

@@ -29,9 +29,9 @@ app.use(compression()); // Gzip compression
 app.use('/api/auth', authRoutes);
 app.use('/api/internships', internshipRoutes);
 app.use('/api/users', userRoutes);
-app.use('/api/messages', messagingRoutes);
 app.use('/api/cv', cvRoutes);
 app.use('/api/recommendations', recommendationRoutes); // Add this line
+app.use('/api/chats', messagingRoutes)
 app.use('/api/admin',adminRoutes)
 app.use('/api/complaints',complaintRoutes)
 

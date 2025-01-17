@@ -369,6 +369,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { useNavigate } from 'react-router-dom';
 import API from '../../api';
 import UserMenuDropdown from '../../components/UserMenuDropdown';
+import MessagingSystem from '../MessagingSystem';
 
 const CompanyDashboard = () => {
   const [internships, setInternships] = useState([]);
@@ -377,6 +378,7 @@ const CompanyDashboard = () => {
   const [selectedApplicant, setSelectedApplicant] = useState(null);
   const [showScheduleModal, setShowScheduleModal] = useState(false);
   const [scheduleDate, setScheduleDate] = useState(null);
+  const [isMessagingOpen, setIsMessagingOpen] = useState(false);
 
   const navigate = useNavigate();
 
@@ -488,6 +490,16 @@ const CompanyDashboard = () => {
           <p className="text-gray-600">Manage your internship programs</p>
         </div>
         <div className="flex items-center gap-4">
+        <button
+          onClick={() => setIsMessagingOpen(true)}
+          className="px-4 py-2 bg-blue-500 text-white rounded-lg"
+        >
+          Open Messaging
+        </button>
+        <MessagingSystem
+        isOpen={isMessagingOpen}
+        onClose={() => setIsMessagingOpen(false)}
+      />
           <button onClick={() => navigate('/add-internship')} className="px-4 py-2 bg-blue-500 text-white rounded-lg flex items-center gap-2 hover:bg-blue-600">
             <Plus className="h-5 w-5" />
             Post New Internship
