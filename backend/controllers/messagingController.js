@@ -1,5 +1,64 @@
 const { Message, Conversation } = require('../models/Message');
 const User = require('../models/User');
+const Student = require('../models/Student');
+const Internship = require('../models/Internship');
+
+// New function to get available users to chat with
+const getAvailableUsers = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const userRole = req.user.role;
+
+    let availableUsers = [];
+
+    if (userRole === 'student') {
+      // For students: Get recruiters from internships they've applied to
+      const student = await Student.findById(userId)
+        .populate({
+          path: 'appliedInternships',
+          populate: {
+            path: 'recruiter',
+            select: 'firstName lastName role profile.companyName email'
+          }
+        });
+
+      if (student && student.appliedInternships) {
+        // Extract unique recruiters
+        availableUsers = student.appliedInternships
+          .map(internship => internship.recruiter)
+          .filter((recruiter, index, self) => 
+            recruiter && // Ensure recruiter exists
+            index === self.findIndex(r => r._id.toString() === recruiter._id.toString())
+          );
+      }
+
+    } else if (userRole === 'recruiter') {
+      // For recruiters: Get students who applied to their internships
+      const internships = await Internship.find({ recruiter: userId })
+        .populate('applicants', 'firstName lastName role email');
+
+      availableUsers = internships
+        .flatMap(internship => internship.applicants)
+        .filter((student, index, self) => 
+          student && // Ensure student exists
+          index === self.findIndex(s => s._id.toString() === student._id.toString())
+        );
+
+    } else if (userRole === 'admin') {
+      // For admins: Get all users except themselves
+      availableUsers = await User.find({
+        _id: { $ne: userId },
+        role: { $in: ['student', 'recruiter'] }
+      })
+      .select('firstName lastName role email profile.companyName');
+    }
+
+    res.json(availableUsers);
+  } catch (error) {
+    console.error('Error fetching available users:', error);
+    res.status(500).json({ message: 'Failed to fetch available users' });
+  }
+};
 
 // Get recent conversations
 const getRecentChats = async (req, res) => {
@@ -9,12 +68,13 @@ const getRecentChats = async (req, res) => {
     const recentChats = await Conversation.find({
       participants: userId,
     })
-      .populate('participants', 'firstName lastName role') // Populate participant details
+      .populate('participants', 'firstName lastName role profile.companyName') // Added profile.companyName
       .sort({ lastUpdated: -1 });
 
-    res.status(200).json(recentChats);
+    res.status(200).json(recentChats || []);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error('Error fetching recent chats:', error);
+    res.status(500).json({ message: 'Failed to fetch recent chats' });
   }
 };
 
@@ -30,81 +90,93 @@ const getMessages = async (req, res) => {
       ],
     })
       .sort({ timestamp: 1 })
-      .populate('sender', 'firstName lastName role') // Include sender details
-      .populate('receiver', 'firstName lastName role'); // Include receiver details
+      .populate('sender', 'firstName lastName role profile.companyName')
+      .populate('receiver', 'firstName lastName role profile.companyName');
 
-    res.status(200).json(messages);
+    res.status(200).json(messages || []);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error('Error fetching messages:', error);
+    res.status(500).json({ message: 'Failed to fetch messages' });
   }
 };
 
 // Start a new conversation
 const startConversation = async (req, res) => {
   try {
-    const { participants } = req.body;
+    const { receiverId } = req.body;
+    const senderId = req.user.id;
 
-    if (!participants || participants.length !== 2) {
-      return res.status(400).json({ message: 'A conversation must have exactly two participants.' });
+    if (!receiverId) {
+      return res.status(400).json({ message: 'Receiver ID is required.' });
     }
 
     // Check if a conversation already exists
     const existingConversation = await Conversation.findOne({
-      participants: { $all: participants },
-    });
+      participants: { $all: [senderId, receiverId] },
+    }).populate('participants', 'firstName lastName role profile.companyName');
 
     if (existingConversation) {
       return res.status(200).json(existingConversation);
     }
 
-    // Validate participant roles
-    const users = await User.find({ _id: { $in: participants } });
-
-    if (users.length !== 2) {
-      return res.status(400).json({ message: 'Invalid participants.' });
-    }
-
-    const roles = users.map((user) => user.role);
-    if (roles.includes('student') && !roles.includes('admin') && !roles.includes('recruiter')) {
-      return res.status(400).json({ message: 'Students can only chat with admins or recruiters.' });
-    }
-
     // Create a new conversation
-    const newConversation = new Conversation({ participants });
-    await newConversation.save();
+    const newConversation = new Conversation({
+      participants: [senderId, receiverId],
+      lastUpdated: Date.now(),
+    });
 
-    res.status(201).json(newConversation);
+    await newConversation.save();
+    
+    // Populate the participants before sending response
+    const populatedConversation = await Conversation.findById(newConversation._id)
+      .populate('participants', 'firstName lastName role profile.companyName');
+
+    res.status(201).json(populatedConversation);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error('Error starting conversation:', error);
+    res.status(500).json({ message: 'Failed to start conversation' });
   }
 };
 
 // Send a message
 const sendMessage = async (req, res) => {
   try {
-    const { receiverId, content } = req.body;
+    const { conversationId, content } = req.body;
 
-    if (!receiverId || !content) {
-      return res.status(400).json({ message: 'Receiver ID and content are required.' });
+    if (!conversationId || !content) {
+      return res.status(400).json({ message: 'Conversation ID and content are required.' });
     }
 
     const message = new Message({
+      conversationId,
       sender: req.user.id,
-      receiver: receiverId,
       content,
+      timestamp: Date.now(),
     });
 
     await message.save();
-    res.status(201).json(message);
+
+    // Update the conversation's last message and timestamp
+    await Conversation.findByIdAndUpdate(conversationId, {
+      lastMessage: content,
+      lastUpdated: Date.now(),
+    });
+
+    // Populate sender details before sending response
+    const populatedMessage = await Message.findById(message._id)
+      .populate('sender', 'firstName lastName role profile.companyName');
+
+    res.status(201).json(populatedMessage);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error('Error sending message:', error);
+    res.status(500).json({ message: 'Failed to send message' });
   }
 };
 
-// Export all functions
 module.exports = {
   getRecentChats,
   getMessages,
   startConversation,
   sendMessage,
+  getAvailableUsers  // Added export
 };
