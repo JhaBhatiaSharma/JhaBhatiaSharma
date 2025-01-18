@@ -6,6 +6,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import API from '../api';
 import UserMenuDropdown from '../components/UserMenuDropdown';
+import { useUser } from '../context/UserContext';
 
 const StudentDashboard = () => {
   const [showCVBuilder, setShowCVBuilder] = useState(false);
@@ -29,7 +30,8 @@ const StudentDashboard = () => {
   const [showNewComplaintModal, setShowNewComplaintModal] = useState(false);
   const [complaints, setComplaints] = useState([]);
   const [newComplaint, setNewComplaint] = useState({ title: '', description: '' });
-
+  
+  const { user } = useUser();
   const stats = [
     { icon: Briefcase, label: 'Active Applications', value: activeInternships.length },
     { icon: Calendar, label: 'Completed Interviews', value: completedInterviews.length },
@@ -660,6 +662,7 @@ const StudentDashboard = () => {
 />
       <MessagingSystem 
         isOpen={showMessaging} 
+        userId={user?.id}
         onClose={() => setShowMessaging(false)} 
       />
     </div>
