@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import InternshipDetails from '../../pages/InternshipApplication';
+import InternshipDetails from '../../Pages/InternshipApplication';
 
 // Mock the UI components
 jest.mock('@/components/ui/card', () => ({
