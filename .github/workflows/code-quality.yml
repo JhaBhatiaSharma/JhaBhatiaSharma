@@ -1,9 +1,9 @@
 name: Code Quality
 on:
   push:
-    branches: [main, develop]
+    branches: [main, develop, backup]
   pull_request:
-    branches: [main, develop]
+    branches: [main, develop, backup]
 jobs:
   setup:
     runs-on: ubuntu-latest
@@ -57,6 +57,9 @@ jobs:
 
       - name: Run ESLint
         run: npm run lint
+     
+      - name: Run tests
+        run: npm test -- --watchAll=false --ci
 
       - name: Build frontend
         run: npm run build
