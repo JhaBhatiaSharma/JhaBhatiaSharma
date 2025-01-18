@@ -6,6 +6,11 @@ const Internship = require('../models/Internship');
 // New function to get available users to chat with
 const getAvailableUsers = async (req, res) => {
   try {
+    console.log('getAvailableUsers called with user:', {
+      userId: req.user.id,
+      userRole: req.user.role
+    });
+
     const userId = req.user.id;
     const userRole = req.user.role;
 
@@ -13,6 +18,7 @@ const getAvailableUsers = async (req, res) => {
 
     if (userRole === 'student') {
       // For students: Get recruiters from internships they've applied to
+      console.log('Fetching available recruiters for student');
       const student = await Student.findById(userId)
         .populate({
           path: 'appliedInternships',
@@ -21,7 +27,8 @@ const getAvailableUsers = async (req, res) => {
             select: 'firstName lastName role profile.companyName email'
           }
         });
-
+      
+      console.log('Student data:', student);
       if (student && student.appliedInternships) {
         // Extract unique recruiters
         availableUsers = student.appliedInternships
@@ -34,6 +41,7 @@ const getAvailableUsers = async (req, res) => {
 
     } else if (userRole === 'recruiter') {
       // For recruiters: Get students who applied to their internships
+      console.log('Fetching available students for recruiter');
       const internships = await Internship.find({ recruiter: userId })
         .populate('applicants', 'firstName lastName role email');
 
@@ -46,12 +54,14 @@ const getAvailableUsers = async (req, res) => {
 
     } else if (userRole === 'admin') {
       // For admins: Get all users except themselves
+      console.log('Fetching all users for admin');
       availableUsers = await User.find({
         _id: { $ne: userId },
         role: { $in: ['student', 'recruiter'] }
       })
       .select('firstName lastName role email profile.companyName');
     }
+    console.log('Fetching all users for admin');
 
     res.json(availableUsers);
   } catch (error) {

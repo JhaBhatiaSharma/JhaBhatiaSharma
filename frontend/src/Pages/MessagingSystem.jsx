@@ -35,6 +35,13 @@ const MessagingSystem = ({ isOpen, onClose, userId, role }) => {
     fetchConversations();
   }, [isOpen]);
 
+  useEffect(() => {
+    // Add auth token to axios defaults
+    const token = localStorage.getItem('token');
+    if (token) {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    }
+  }, []);
   // Fetch available users
   useEffect(() => {
     const fetchAvailableUsers = async () => {
@@ -42,15 +49,22 @@ const MessagingSystem = ({ isOpen, onClose, userId, role }) => {
       
       try {
         setLoading(true);
-        // Use the new endpoint for fetching available users
-        const response = await axios.get("/messaging/available-users");
+        const token = localStorage.getItem('token');
+        
+        // Make request with explicit auth header
+        const response = await axios.get("/messaging/available-users", {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        
         console.log("Available users response:", response.data); // Debug log
         const usersData = response.data || [];
         setUsersToChat(Array.isArray(usersData) ? usersData : []);
         setError(null);
       } catch (error) {
-        console.error("Error fetching available users:", error);
-        setError("Failed to load available users");
+        console.error("Error fetching available users:", error.response || error);
+        setError(error.response?.data?.message || "Failed to load available users");
         setUsersToChat([]);
       } finally {
         setLoading(false);
