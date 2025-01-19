@@ -22,6 +22,7 @@ exports.registerStudent = async (req, res) => {
       firstName,
       lastName,
       profile,
+      role: "student"
     });
 
     // Save to the database
@@ -51,7 +52,7 @@ exports.loginStudent = async (req, res) => {
   
       // Generate JWT
       const token = jwt.sign(
-        { id: student._id, type: 'student' },
+        { id: student._id, role: 'student' },
         process.env.JWT_SECRET,
         { expiresIn: '1d' }
       );
@@ -61,7 +62,7 @@ exports.loginStudent = async (req, res) => {
         user: {
           id: student._id,
           email: student.email,
-          type: 'student',
+          role: 'student',
           firstName: student.firstName,
           lastName: student.lastName,
         },

@@ -25,7 +25,8 @@ const authMiddleware = (req, res, next) => {
 };
 
 const roleMiddleware = (roles) => (req, res, next) => {
-  if (!roles.includes(req.user.type)) {
+  console.log("user role is: ",req.user)
+  if (!roles.includes(req.user.role)) {
     return res.status(403).json({ message: 'Forbidden' });
   }
   next();

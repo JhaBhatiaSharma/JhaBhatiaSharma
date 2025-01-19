@@ -316,6 +316,8 @@ const AdminDashboard = () => {
   const [complaints, setComplaints] = useState([]);
   const [isComplaintModalOpen, setComplaintModalOpen] = useState(false);
   const [isMessagingOpen, setIsMessagingOpen] = useState(false);
+  const [isStudentModalOpen,setStudentModalOpen]=useState(false)
+  const [isRecruiterModalOpen,setRecruiterModalOpen]=useState(false)
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -467,6 +469,10 @@ const AdminDashboard = () => {
     }
   };
 
+  useEffect(() => {
+    fetchComplaints()
+  },[])
+
   const handleMarkResolved = async (complaintId) => {
     try {
       await API.patch(`/complaints/${complaintId}/resolve`, {}, {
@@ -479,13 +485,20 @@ const AdminDashboard = () => {
       alert('Failed to mark complaint as resolved. Please try again.');
     }
   };
-  const openComplaintModal = () => {
-    fetchComplaints();
-    setComplaintModalOpen(true);
+  const openStudentModal = () => {
+    setStudentModalOpen(true)
   };
-
-  const closeComplaintModal = () => {
-    setComplaintModalOpen(false);
+  
+  const openRecruiterModal = () => {
+   setRecruiterModalOpen(true)
+  };
+  
+  const closeStudentModal = () => {
+    setStudentModalOpen(false)
+  };
+  
+  const closeRecruiterModal = () => {
+    setRecruiterModalOpen(false)
   };
   
 
@@ -547,19 +560,38 @@ const AdminDashboard = () => {
           </div>
         </CardContent>
       </Card>
-      <Card>
+      <Card onClick={openStudentModal}>
         <CardContent className="pt-6">
           <div className="flex items-center">
-            <div className="p-2 bg-blue-100 rounded-lg">
-              <Users className="h-6 w-6 text-blue-600" />
+            <div className="p-2 bg-green-100 rounded-lg">
+              <Users className="h-6 w-6 text-green-600" />
             </div>
-            <div className="ml-4" onClick={openComplaintModal}>
-              <p className="text-sm text-gray-600">Complaints</p>
-              <h3 className="text-2xl font-bold">{complaints.length}</h3>
+            <div className="ml-4">
+              <p className="text-sm text-gray-600">Total Students</p>
+              <h3 className="text-2xl font-bold">
+                {users.filter((user) => user.role === "student").length}
+              </h3>
             </div>
           </div>
         </CardContent>
       </Card>
+
+      <Card onClick={openRecruiterModal}>
+        <CardContent className="pt-6">
+          <div className="flex items-center">
+            <div className="p-2 bg-purple-100 rounded-lg">
+              <Users className="h-6 w-6 text-purple-600" />
+            </div>
+            <div className="ml-4">
+              <p className="text-sm text-gray-600">Total Recruiters</p>
+              <h3 className="text-2xl font-bold">
+                {users.filter((user) => user.role === "recruiter").length}
+              </h3>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
     </div>
     {isInternshipModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -586,57 +618,80 @@ const AdminDashboard = () => {
           </div>
         </div>
       )}
-       {isComplaintModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white w-[90%] max-w-2xl p-6 rounded-lg shadow-lg">
-            <h2 className="text-xl font-bold mb-4">Complaints</h2>
-            <div className="max-h-[400px] overflow-y-auto">
-              {complaints.length > 0 ? (
-                <ul>
-                  {complaints.map((complaint) => (
-                    <li
-                      key={complaint._id}
-                      className="flex justify-between items-center border-b py-4"
-                    >
-                      <div>
-                        <p className="font-semibold">{complaint.title}</p>
-                        <p className="text-sm font-medium">Description: {complaint.description}</p>
-                        <p className="text-sm text-gray-600">
-                          Submitted by: {complaint.userId.firstName} {complaint.userId.lastName} (
-                          {complaint.userId.type})
-                        </p>
-                        <p className="text-sm text-gray-600">ID: {complaint.userId._id}</p>
-                        <p className="text-sm text-gray-600">Status: {complaint.status}</p>
-                      </div>
-                      <button
-                        className={`px-4 py-2 rounded ${
-                          complaint.status === 'pending'
-                            ? 'bg-blue-500 text-white hover:bg-blue-600'
-                            : 'bg-gray-300 text-gray-700 cursor-not-allowed'
-                        }`}
-                        disabled={complaint.status !== 'pending'}
-                        onClick={() => handleMarkResolved(complaint._id)}
-                      >
-                        {complaint.status === 'pending' ? 'Resolve' : 'Resolved'}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="text-gray-600">No complaints found.</p>
-              )}
-            </div>
-            <div className="flex justify-end mt-4">
-              <button
-                onClick={closeComplaintModal}
-                className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400"
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      {isStudentModalOpen && (
+  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div className="bg-white w-[90%] max-w-2xl p-6 rounded-lg shadow-lg">
+      <h2 className="text-xl font-bold mb-4">Students</h2>
+      <div className="max-h-[400px] overflow-y-auto">
+        {users.filter((user) => user.role === "student").length > 0 ? (
+          <ul>
+            {users
+              .filter((user) => user.role === "student")
+              .map((student) => (
+                <li key={student._id} className="border-b py-4">
+                  <p className="font-semibold">
+                    {student.firstName} {student.lastName}
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    University: {student.profile?.university || "N/A"}
+                  </p>
+                  <p className="text-sm text-gray-600">Email: {student.email}</p>
+                </li>
+              ))}
+          </ul>
+        ) : (
+          <p className="text-gray-600">No students found.</p>
+        )}
+      </div>
+      <div className="flex justify-end mt-4">
+        <button
+          onClick={closeStudentModal}
+          className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
+{isRecruiterModalOpen && (
+  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div className="bg-white w-[90%] max-w-2xl p-6 rounded-lg shadow-lg">
+      <h2 className="text-xl font-bold mb-4">Recruiters</h2>
+      <div className="max-h-[400px] overflow-y-auto">
+        {users.filter((user) => user.role === "recruiter").length > 0 ? (
+          <ul>
+            {users
+              .filter((user) => user.role === "recruiter")
+              .map((recruiter) => (
+                <li key={recruiter._id} className="border-b py-4">
+                  <p className="font-semibold">
+                    {recruiter.firstName} {recruiter.lastName}
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    Company: {recruiter.profile?.companyName || "N/A"}
+                  </p>
+                  <p className="text-sm text-gray-600">Email: {recruiter.email}</p>
+                </li>
+              ))}
+          </ul>
+        ) : (
+          <p className="text-gray-600">No recruiters found.</p>
+        )}
+      </div>
+      <div className="flex justify-end mt-4">
+        <button
+          onClick={closeRecruiterModal}
+          className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
 
 
         {/* Main Sections */}
@@ -729,6 +784,73 @@ const AdminDashboard = () => {
               </CardContent>
             </Card>
           </div>
+          <div className="lg:col-span-2">
+      <Card className="mb-6">
+        <CardHeader>
+          <div className="flex justify-between items-start">
+            <div>
+              <CardTitle>Complaints Management</CardTitle>
+              <CardDescription>Review and resolve user complaints</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent>
+          {/* Complaints Table */}
+          {complaints.length === 0 ? (
+            <p className="text-gray-600">No complaints found.</p>
+          ) : (
+            <div className="overflow-x-auto">
+              <div className="max-h-[200px] overflow-y-auto">
+                <table className="w-full table-auto">
+                  <thead>
+                    <tr className="border-b">
+                      <th className="text-left py-3 px-4">Complaint</th>
+                      <th className="text-left py-3 px-4">User</th>
+                      <th className="text-left py-3 px-4">Status</th>
+                      <th className="text-left py-3 px-4">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {complaints.map((complaint) => (
+                      <tr key={complaint._id} className="border-b">
+                        <td className="py-3 px-4">{complaint.title}</td>
+                        <td className="py-3 px-4">
+                          {complaint.userId?.firstName} {complaint.userId?.lastName}
+                        </td>
+                        <td className="py-3 px-4">
+                          <span
+                            className={`px-2 py-1 ${
+                              complaint.status === 'pending'
+                                ? 'bg-yellow-100 text-yellow-700'
+                                : 'bg-green-100 text-green-700'
+                            } rounded-full text-sm`}
+                          >
+                            {complaint.status}
+                          </span>
+                        </td>
+                        <td className="py-3 px-4">
+                          <button
+                            className={`text-blue-500 hover:text-blue-700 ${
+                              complaint.status === 'resolved'
+                                ? 'cursor-not-allowed text-gray-400'
+                                : ''
+                            }`}
+                            onClick={() => handleMarkResolved(complaint._id)}
+                            disabled={complaint.status === 'resolved'}
+                          >
+                            {complaint.status === 'pending' ? 'Resolve' : 'Resolved'}
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+    </div>
         </div>
       </div>
 

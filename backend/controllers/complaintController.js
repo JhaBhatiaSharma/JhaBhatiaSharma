@@ -4,7 +4,7 @@ exports.createComplaint = async (req, res) => {
   try {
     const { title, description } = req.body;
     const userId = req.user.id;
-    const role = req.user.type;
+    const role = req.user.role;
 
     const complaint = await Complaint.create({ userId, role, title, description });
     res.status(201).json({ success: true, data: complaint });

@@ -8,7 +8,7 @@ exports.registerAdmin = async (req, res) => {
     const { firstName, lastName, email, password } = req.body;
 
     // Check if the admin already exists
-    const existingAdmin = await User.findOne({ email, type: 'admin' });
+    const existingAdmin = await User.findOne({ email, role: 'admin' });
     if (existingAdmin) {
       return res.status(400).json({ message: 'Admin already exists' });
     }
@@ -22,7 +22,7 @@ exports.registerAdmin = async (req, res) => {
       lastName,
       email,
       password: hashedPassword,
-      type: 'admin', // Ensure the type is set to admin
+      role: 'admin', 
     });
 
     // Save to the database
@@ -40,7 +40,7 @@ exports.loginAdmin = async (req, res) => {
     const { email, password } = req.body;
 
     // Find the admin
-    const admin = await User.findOne({ email, type: 'admin' });
+    const admin = await User.findOne({ email, role: 'admin' });
     if (!admin) {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
@@ -53,7 +53,7 @@ exports.loginAdmin = async (req, res) => {
 
     // Generate JWT
     const token = jwt.sign(
-      { id: admin._id, type: 'admin' },
+      { id: admin._id, role: 'admin' },
       process.env.JWT_SECRET,
       { expiresIn: '1d' }
     );
@@ -63,7 +63,7 @@ exports.loginAdmin = async (req, res) => {
       user: {
         id: admin._id,
         email: admin.email,
-        type: 'admin',
+        role: 'admin',
         firstName: admin.firstName,
         lastName: admin.lastName,
       },
@@ -112,7 +112,7 @@ exports.editUser = async (req, res) => {
     const updates = {};
     if (firstName) updates.firstName = firstName;
     if (lastName) updates.lastName = lastName;
-    if (role) updates.type = role; // Ensure role is valid
+    if (role) updates.role = role; // Ensure role is valid
     if (profile) updates.profile = profile; // Optional profile updates
 
     // Find and update user

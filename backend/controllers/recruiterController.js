@@ -22,6 +22,7 @@ exports.registerRecruiter = async (req, res) => {
       firstName,
       lastName,
       profile,
+      role: "recruiter"
     });
 
     // Save to the database
@@ -51,7 +52,7 @@ exports.loginRecruiter = async (req, res) => {
   
       // Generate JWT
       const token = jwt.sign(
-        { id: recruiter._id, type: 'recruiter' },
+        { id: recruiter._id, role: 'recruiter' },
         process.env.JWT_SECRET,
         { expiresIn: '1d' }
       );
@@ -61,7 +62,7 @@ exports.loginRecruiter = async (req, res) => {
         user: {
           id: recruiter._id,
           email: recruiter.email,
-          type: 'recruiter',
+          role: 'recruiter',
           firstName: recruiter.firstName,
           lastName: recruiter.lastName,
         },
