@@ -504,12 +504,7 @@ const CompanyDashboard = () => {
             <Plus className="h-5 w-5" />
             Post New Internship
           </button>
-          <button className="p-2 rounded-full hover:bg-gray-100">
-            <Bell className="h-6 w-6 text-gray-600" />
-          </button>
-          <button className="p-2 rounded-full hover:bg-gray-100">
-            <Bell className="h-6 w-6 text-gray-600" />
-          </button>
+         
           <UserMenuDropdown role="company" initials="TC" />
         </div>
       </div>

@@ -30,12 +30,12 @@ const StudentDashboard = () => {
   const [showNewComplaintModal, setShowNewComplaintModal] = useState(false);
   const [complaints, setComplaints] = useState([]);
   const [newComplaint, setNewComplaint] = useState({ title: '', description: '' });
+  const [isMessagingOpen, setIsMessagingOpen] = useState(false);
   
   const { user } = useUser();
   const stats = [
     { icon: Briefcase, label: 'Active Applications', value: activeInternships.length },
     { icon: Calendar, label: 'Completed Interviews', value: completedInterviews.length },
-    { icon: MessageSquare, label: 'New Messages', value: 3 },
     { icon: MessageCircleCodeIcon, label: 'Complaints', value: complaints.length}
   ];
 
@@ -234,18 +234,16 @@ const StudentDashboard = () => {
             <FileText className="h-4 w-4" />
             Build CV
           </button>
-          <button 
-            onClick={() => setShowMessaging(true)}
-            className="p-2 rounded-full hover:bg-gray-100 relative"
-          >
-            <MessageSquare className="h-6 w-6 text-[#666]" />
-            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-              3
-            </span>
-          </button>
-          <button className="p-2 rounded-full hover:bg-gray-100">
-            <Bell className="h-6 w-6 text-[#666]" />
-          </button>
+          <button
+          onClick={() => setIsMessagingOpen(true)}
+          className="px-4 py-2 bg-[#4A72FF] hover:bg-[#3A5FE6] text-white rounded-lg"
+        >
+          Open Messaging
+        </button>
+        <MessagingSystem
+        isOpen={isMessagingOpen}
+        onClose={() => setIsMessagingOpen(false)}
+      />
           <UserMenuDropdown />
         </div>
       </div>
@@ -266,7 +264,7 @@ const StudentDashboard = () => {
                    // Fetch completed interviews when the stat is clicked
                   handleCompletedClick();
                 }
-                if (index === 3){
+                if (index === 2){
                   setShowComplaintsModal(true);
                 }
               }}

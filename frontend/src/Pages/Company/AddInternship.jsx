@@ -275,23 +275,12 @@ const AddInternship = () => {
 
     delete submissionData.newSkill;
 
-    // try {
-    //   // Make API request to add internship
-    //   const token=localStorage.getItem('token')
-    //   console.log(token)
-    //   const response = await API.post('/internships/addinternship', formData);
-
-    //   alert('Internship added successfully!');
-    //   navigate('/'); // Redirect to dashboard or homepage
-    // } catch (error) {
-    //   console.error('Error adding internship:', error.response?.data?.message || error.message);
-    //   alert(error.response?.data?.message || 'Failed to add internship');
-    // }
-
     try {
       const response = await API.post('/internships/addinternship', submissionData);
+      
       alert('Internship added successfully!');
-      navigate('/');
+      navigate('/company');
+      
     } catch (error) {
       console.error('Error adding internship:', error.response?.data?.message || error.message);
       alert(error.response?.data?.message || 'Failed to add internship');
@@ -299,7 +288,7 @@ const AddInternship = () => {
   };
 
   const handleCancel = () => {
-    navigate('/');
+    navigate('/company');
   };
 
   return (
