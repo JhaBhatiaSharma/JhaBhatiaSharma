@@ -32,5 +32,6 @@ const roleMiddleware = (roles) => (req, res, next) => {
   next();
 };
 
+
 module.exports = { authMiddleware, roleMiddleware };
 

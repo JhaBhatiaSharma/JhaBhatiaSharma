@@ -9,7 +9,8 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.9.3",
     "morgan": "^1.10.0",
-    "nodemon": "^3.1.9"
+    "nodemon": "^3.1.9",
+    "pdfkit": "^0.16.0"
   },
   "devDependencies": {
     "@babel/core": "^7.26.0",

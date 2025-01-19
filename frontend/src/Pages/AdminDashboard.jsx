@@ -326,6 +326,8 @@ const AdminDashboard = () => {
     lastName: '',
     university: '',
   }); // Form data for new user
+  const [usageStatistics, setUsageStatistics] = useState(null);
+  const [userAnalytics, setUserAnalytics] = useState(null);
 
   const fetchUsers = async () => {
     try {
@@ -500,6 +502,37 @@ const AdminDashboard = () => {
   const closeRecruiterModal = () => {
     setRecruiterModalOpen(false)
   };
+
+
+  const downloadReport = async (reportType) => {
+    try {
+      const response = await API.get(`/reports/download?type=${reportType}`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+        responseType: 'blob', // Ensures the response is treated as a file
+      });
+  
+      if (response.status === 200) {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute(
+          'download',
+          `${reportType}-report-${new Date().toISOString()}.pdf`
+        ); // Name of the downloaded file
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+      } else {
+        console.error('Failed to download report:', response.data.message);
+        alert('Failed to download the report. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error during report download:', error.message);
+      alert('Error downloading the report. Please try again.');
+    }
+  };
+  
+  
   
 
   return (
@@ -784,6 +817,43 @@ const AdminDashboard = () => {
               </CardContent>
             </Card>
           </div>
+
+          <div className="bg-white shadow rounded-lg p-7">
+            <h3 className="text-xl font-bold mb-2">Generate Reports</h3>
+            <p className="text-gray-600 mb-6">Create custom system reports</p>
+
+            <div className="space-y-4">
+              {/* Usage Statistics */}
+              <div className="flex justify-between items-center bg-gray-50 px-4 py-3 rounded-lg">
+                <div>
+                  <h4 className="text-lg font-semibold p-1">Usage Statistics</h4>
+                  <p className="text-sm text-gray-500 p-1">System activity report</p>
+                </div>
+                <button
+                  onClick={() => downloadReport('usage-statistics')}
+                  className="text-blue-600 hover:text-blue-800 flex items-center gap-2 m-1"
+                >
+                  <span>Download</span>
+                </button>
+              </div>
+
+              {/* User Analytics */}
+              <div className="flex justify-between items-center bg-gray-50 px-4 py-3 rounded-lg">
+                <div>
+                  <h4 className="text-lg font-semibold">User Analytics</h4>
+                  <p className="text-sm text-gray-500">User behavior report</p>
+                </div>
+                <button
+                  onClick={() => downloadReport('user-analytics')}
+                  className="text-blue-600 hover:text-blue-800 flex items-center gap-1"
+                >
+                  <span>Download</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+
           <div className="lg:col-span-2">
       <Card className="mb-6">
         <CardHeader>
