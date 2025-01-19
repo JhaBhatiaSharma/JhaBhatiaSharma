@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import StudentDashboard from '../../Pages/StudentDashboard';
 import { BrowserRouter } from 'react-router-dom';
+import { UserProvider } from '../../context/UserContext';
 
 // Mock the components that are imported
 jest.mock('../../Pages/CVBuilder', () => () => <div data-testid="cv-builder">CV Builder</div>);
@@ -14,13 +15,33 @@ jest.mock('../../api', () => ({
   get: jest.fn(() => Promise.resolve({ data: [] })),
 }));
 
+// Mock the UserContext
+jest.mock('../../context/UserContext', () => ({
+  ...jest.requireActual('../../context/UserContext'),
+  useUser: () => ({
+    user: {
+      _id: '123',
+      firstName: 'John',
+      lastName: 'Doe',
+      email: 'john@example.com',
+      type: 'student',
+      profile: {
+        degree: 'Computer Science'
+      }
+    },
+    loading: false
+  })
+}));
+
 describe('StudentDashboard', () => {
   beforeEach(() => {
-    // Wrap the component with BrowserRouter for routing context
+    // Wrap the component with both UserProvider and BrowserRouter
     render(
-      <BrowserRouter>
-        <StudentDashboard />
-      </BrowserRouter>
+      <UserProvider>
+        <BrowserRouter>
+          <StudentDashboard />
+        </BrowserRouter>
+      </UserProvider>
     );
   });
 
