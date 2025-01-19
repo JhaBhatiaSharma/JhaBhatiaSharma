@@ -25,6 +25,11 @@ app.use(cors()); // Enable CORS
 app.use(helmet()); // Security headers
 app.use(compression()); // Gzip compression
 
+// Health Check Route
+app.get('/health', (req, res) => {
+    res.status(200).json({ message: 'Server is healthy' });
+});
+  
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/internships', internshipRoutes);
