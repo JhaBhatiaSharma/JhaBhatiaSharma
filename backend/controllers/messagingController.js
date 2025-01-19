@@ -4,71 +4,37 @@ const Student = require('../models/Student');
 const Internship = require('../models/Internship');
 
 // New function to get available users to chat with
+
+
 const getAvailableUsers = async (req, res) => {
   try {
-    console.log('getAvailableUsers called with user:', {
-      userId: req.user.id,
-      userRole: req.user.role
-    });
+    const { search, role } = req.query; // Optional query params for filtering
+    const userId = req.user.id; // Current user's ID
 
-    const userId = req.user.id;
-    const userRole = req.user.role;
+    const query = { _id: { $ne: userId } }; // Exclude current user
 
-    let availableUsers = [];
-
-    if (userRole === 'student') {
-      // For students: Get recruiters from internships they've applied to
-      console.log('Fetching available recruiters for student');
-      const student = await Student.findById(userId)
-        .populate({
-          path: 'appliedInternships',
-          populate: {
-            path: 'recruiter',
-            select: 'firstName lastName role profile.companyName email'
-          }
-        });
-      
-      console.log('Student data:', student);
-      if (student && student.appliedInternships) {
-        // Extract unique recruiters
-        availableUsers = student.appliedInternships
-          .map(internship => internship.recruiter)
-          .filter((recruiter, index, self) => 
-            recruiter && // Ensure recruiter exists
-            index === self.findIndex(r => r._id.toString() === recruiter._id.toString())
-          );
-      }
-
-    } else if (userRole === 'recruiter') {
-      // For recruiters: Get students who applied to their internships
-      console.log('Fetching available students for recruiter');
-      const internships = await Internship.find({ recruiter: userId })
-        .populate('applicants', 'firstName lastName role email');
-
-      availableUsers = internships
-        .flatMap(internship => internship.applicants)
-        .filter((student, index, self) => 
-          student && // Ensure student exists
-          index === self.findIndex(s => s._id.toString() === student._id.toString())
-        );
-
-    } else if (userRole === 'admin') {
-      // For admins: Get all users except themselves
-      console.log('Fetching all users for admin');
-      availableUsers = await User.find({
-        _id: { $ne: userId },
-        role: { $in: ['student', 'recruiter'] }
-      })
-      .select('firstName lastName role email profile.companyName');
+    // Add search filter
+    if (search) {
+      query.$or = [
+        { firstName: { $regex: search, $options: 'i' } },
+        { lastName: { $regex: search, $options: 'i' } },
+      ];
     }
-    console.log('Fetching all users for admin');
 
-    res.json(availableUsers);
+    // Add role filter
+    if (role) query.role = role;
+
+    // Fetch users
+    const users = await User.find(query).select('firstName lastName role email profile.companyName');
+    res.json(users);
   } catch (error) {
     console.error('Error fetching available users:', error);
     res.status(500).json({ message: 'Failed to fetch available users' });
   }
 };
+
+
+
 
 // Get recent conversations
 const getRecentChats = async (req, res) => {
@@ -89,19 +55,34 @@ const getRecentChats = async (req, res) => {
 };
 
 // Get messages for a conversation
+// const getMessages = async (req, res) => {
+//   try {
+//     const { userId } = req.params;
+
+//     const messages = await Message.find({
+//       $or: [
+//         { sender: req.user.id, receiver: userId },
+//         { sender: userId, receiver: req.user.id },
+//       ],
+//     })
+//       .sort({ timestamp: 1 })
+//       .populate('sender', 'firstName lastName role profile.companyName')
+//       .populate('receiver', 'firstName lastName role profile.companyName');
+
+//     res.status(200).json(messages || []);
+//   } catch (error) {
+//     console.error('Error fetching messages:', error);
+//     res.status(500).json({ message: 'Failed to fetch messages' });
+//   }
+// };
 const getMessages = async (req, res) => {
   try {
-    const { userId } = req.params;
+    const { userId } = req.params; // Use the conversationId instead of userId
 
-    const messages = await Message.find({
-      $or: [
-        { sender: req.user.id, receiver: userId },
-        { sender: userId, receiver: req.user.id },
-      ],
-    })
+    // Fetch messages for the conversation
+    const messages = await Message.find({ conversationId: userId })
       .sort({ timestamp: 1 })
-      .populate('sender', 'firstName lastName role profile.companyName')
-      .populate('receiver', 'firstName lastName role profile.companyName');
+      .populate('sender', 'firstName lastName role profile.companyName');
 
     res.status(200).json(messages || []);
   } catch (error) {
@@ -110,43 +91,51 @@ const getMessages = async (req, res) => {
   }
 };
 
+
 // Start a new conversation
+
 const startConversation = async (req, res) => {
   try {
-    const { receiverId } = req.body;
-    const senderId = req.user.id;
+    const { receiverId } = req.body; // ID of the user to chat with
+    const senderId = req.user.id; // Current user's ID from middleware
 
     if (!receiverId) {
       return res.status(400).json({ message: 'Receiver ID is required.' });
     }
 
-    // Check if a conversation already exists
-    const existingConversation = await Conversation.findOne({
+    // Check if a conversation already exists between these two users
+    let conversation = await Conversation.findOne({
       participants: { $all: [senderId, receiverId] },
     }).populate('participants', 'firstName lastName role profile.companyName');
 
-    if (existingConversation) {
-      return res.status(200).json(existingConversation);
+    if (conversation) {
+      // If conversation exists, return it
+      return res.status(200).json(conversation);
     }
 
     // Create a new conversation
-    const newConversation = new Conversation({
+    conversation = new Conversation({
       participants: [senderId, receiverId],
       lastUpdated: Date.now(),
     });
 
-    await newConversation.save();
-    
-    // Populate the participants before sending response
-    const populatedConversation = await Conversation.findById(newConversation._id)
-      .populate('participants', 'firstName lastName role profile.companyName');
+    await conversation.save();
 
-    res.status(201).json(populatedConversation);
+    // Populate participants for the response
+    conversation = await Conversation.findById(conversation._id).populate(
+      'participants',
+      'firstName lastName role profile.companyName'
+    );
+
+    res.status(201).json(conversation);
   } catch (error) {
     console.error('Error starting conversation:', error);
     res.status(500).json({ message: 'Failed to start conversation' });
   }
 };
+
+
+
 
 // Send a message
 const sendMessage = async (req, res) => {
@@ -182,6 +171,10 @@ const sendMessage = async (req, res) => {
     res.status(500).json({ message: 'Failed to send message' });
   }
 };
+
+
+
+
 
 module.exports = {
   getRecentChats,

@@ -178,7 +178,7 @@ const SignupScreen = () => {
       const payload = {
         email: formData.email,
         password: formData.password,
-        type: userType, // "student" or "recruiter"
+        role: userType, // "student" or "recruiter"
         firstName: formData.firstName,
         lastName: formData.lastName,
         profile: userType === 'student' ? { university: formData.university } : {}, // Add university for students

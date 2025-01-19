@@ -700,7 +700,7 @@ const AdminDashboard = () => {
                           {users.map((user) => (
                             <tr key={user._id} className="border-b">
                               <td className="py-3 px-4">{`${user.firstName} ${user.lastName}`}</td>
-                              <td className="py-3 px-4">{user.role}</td>
+                              <td className="py-3 px-4">{user.type}</td>
                               <td className="py-3 px-4">
                                 <span
                                   className={`px-2 py-1 ${

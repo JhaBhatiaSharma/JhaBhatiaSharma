@@ -109,22 +109,25 @@ const MessagingSystem = ({ isOpen, onClose, userId, role }) => {
   // Fetch messages for a conversation
   const fetchMessages = async (conversationId) => {
     try {
-      const response = await axios.get(`/messaging/${conversationId}`);
+      const response = await API.get(`/messaging/${conversationId}`); // Pass the conversationId
       const messagesData = response.data || [];
-      setMessages(Array.isArray(messagesData) ? messagesData : []);
+      setMessages(messagesData); // Replace messages with the fetched ones
+      console.log('Messages fetched:', messagesData);
     } catch (error) {
-      console.error("Error fetching messages:", error);
-      setMessages([]);
+      console.error('Error fetching messages:', error);
+      setMessages([]); // Clear messages on error
     }
   };
+  
+  
 
   // Start a new conversation
   const startConversation = async (receiverId) => {
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem("token");
   
       const response = await API.post(
-        '/messaging/start',
+        "/messaging/start",
         { receiverId },
         {
           headers: {
@@ -132,48 +135,62 @@ const MessagingSystem = ({ isOpen, onClose, userId, role }) => {
           },
         }
       );
-      console.log(response)
   
       if (response.data) {
-        // Add the new conversation to the list
-        setConversations((prev) => [response.data, ...prev]);
-        setActiveConversation(response.data); // Open the new conversation
-        fetchMessages(response.data._id); // Fetch messages if any
+        // Set the active conversation and fetch messages
+        setActiveConversation(response.data);
+        fetchMessages(response.data._id); // Fetch messages for the new conversation
       }
     } catch (error) {
-      console.error('Error starting conversation:', error);
-      alert(error.response?.data?.message || 'Failed to start conversation');
+      console.error("Error starting conversation:", error);
+      alert(error.response?.data?.message || "Failed to start conversation");
     }
   };
   
+  
+  const handleConversationSelect = (conversation) => {
+    setMessages([]); // Clear previous messages
+    setActiveConversation(conversation);
+    fetchMessages(conversation._id);
+  };
   
 
   // Send a message
   const handleSendMessage = async () => {
     if (!message.trim() || !activeConversation?._id) return;
-
+  
     try {
-      const response = await axios.post("/messaging", {
+      const response = await API.post("/messaging/send", {
         conversationId: activeConversation._id,
-        content: message.trim()
+        content: message.trim(),
       });
-
+  
       if (response.data) {
-        setMessages(prev => [...prev, response.data]);
+        // Update messages directly
+        setMessages((prev) => [...prev, response.data]);
+  
+        // Update the last message in the conversation list
+        setConversations((prev) =>
+          prev.map((conv) =>
+            conv._id === activeConversation._id
+              ? {
+                  ...conv,
+                  lastMessage: response.data.content,
+                  lastUpdated: response.data.timestamp,
+                }
+              : conv
+          )
+        );
+  
+        // Clear the input field
         setMessage("");
-        
-        // Update conversation list
-        setConversations(prev => prev.map(conv => 
-          conv._id === activeConversation._id 
-            ? { ...conv, lastMessage: message.trim(), lastUpdated: new Date() }
-            : conv
-        ));
       }
     } catch (error) {
       console.error("Error sending message:", error);
-      alert("Failed to send message");
+      alert("Failed to send message. Please try again.");
     }
   };
+  
 
   if (!isOpen) return null;
 
@@ -270,70 +287,7 @@ const MessagingSystem = ({ isOpen, onClose, userId, role }) => {
           </div>
         </div>
 
-        {/* Chat Area - remains the same */}
-        {/* <div className="flex-1 flex flex-col">
-          {activeConversation ? (
-            <>
-              <div className="p-4 border-b bg-white">
-                <h2 className="font-medium">
-                
-                  {activeConversation.participants?.find(p => p._id !== userId)?.firstName || "Unknown"}{" "}
-                  {activeConversation.participants?.find(p => p._id !== userId)?.lastName || "User"}
-                </h2>
-                <p className="text-sm text-gray-500">
-                  {activeConversation.participants?.find(p => p._id !== userId)?.role || ""}
-                </p>
-              </div>
-
-              <div className="flex-1 overflow-y-auto p-4 space-y-4">
-                {messages.map((msg) => (
-                  <div
-                    key={`message-${msg._id}-${msg.timestamp}`}
-                    className={`flex ${msg.sender._id === userId ? "justify-end" : "justify-start"}`}
-                  >
-                    <div
-                      className={`max-w-[70%] p-3 rounded-lg ${
-                        msg.sender._id === userId
-                          ? "bg-blue-600 text-white"
-                          : "bg-gray-100 text-gray-800"
-                      }`}
-                    >
-                      <p>{msg.content}</p>
-                      <p className="text-xs mt-1 opacity-75">
-                        {new Date(msg.timestamp).toLocaleTimeString()}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="p-4 border-t bg-white">
-                <div className="flex space-x-2">
-                  <input
-                    type="text"
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                    onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
-                    placeholder="Type a message..."
-                    className="flex-1 p-2 border rounded-lg text-black bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                  <button
-                    onClick={handleSendMessage}
-                    disabled={!message.trim()}
-                    className="p-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    <Send className="h-5 w-5" />
-                  </button>
-                </div>
-              </div>
-            </>
-          ) : (
-            <div className="flex-1 flex items-center justify-center text-gray-500">
-              Select a conversation to start messaging
-            </div>
-          )}
-        </div> */}
-
+       
 <div className="flex-1 flex flex-col">
   {activeConversation ? (
     <>
