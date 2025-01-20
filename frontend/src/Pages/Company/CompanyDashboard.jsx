@@ -17,6 +17,8 @@ const CompanyDashboard = () => {
   const [showScheduleModal, setShowScheduleModal] = useState(false);
   const [scheduleDate, setScheduleDate] = useState(null);
   const [isMessagingOpen, setIsMessagingOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedInternship, setSelectedInternship] = useState(null);
 
   const navigate = useNavigate();
 
@@ -135,12 +137,22 @@ const CompanyDashboard = () => {
     (interview) => new Date(interview.dateTime).toDateString() === today
   );
 
+  const handleViewDetails = (internship) => {
+    setSelectedInternship(internship);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setSelectedInternship(null);
+    setIsModalOpen(false);
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 p-8 w-screen">
       {/* Header */}
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-gray-800">TechCorp Dashboard</h1>
+          <h1 className="text-3xl font-bold text-gray-800">InternHub Dashboard</h1>
           <p className="text-gray-600">Manage your internship programs</p>
         </div>
         <div className="flex items-center gap-4">
@@ -226,35 +238,79 @@ const CompanyDashboard = () => {
   <div className="col-span-2">
     {/* Posted Internships */}
     <div className="mb-8">
-      <Card className="shadow-md">
-        <CardHeader>
-          <CardTitle>Posted Internships</CardTitle>
-        </CardHeader>
-        <CardContent>
-          {internships.length > 0 ? (
-            <div className="space-y-4">
-              {internships.map((internship) => (
-                <div key={internship._id} className="p-4 border rounded-lg hover:bg-gray-50">
-                  <h4 className="font-semibold">{internship.title}</h4>
-                  <p className="text-sm text-gray-600">Location: {internship.location}</p>
-                  <p className="text-sm text-gray-600">
-                    Applicants: {internship.applicants?.length || 0}
-                  </p>
-                  <button
-                    onClick={() => navigate(`/internships/${internship._id}`)}
-                    className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg text-sm hover:bg-blue-600"
-                  >
-                    View Details
-                  </button>
+  <Card className="shadow-md">
+    <CardHeader>
+      <CardTitle>Posted Internships</CardTitle>
+    </CardHeader>
+    <CardContent>
+      {internships.length > 0 ? (
+        <div className="flex space-x-4 overflow-x-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
+          {internships.map((internship) => (
+            <div
+              key={internship._id}
+              className="flex-shrink-0 w-72 p-6 border rounded-lg shadow-sm bg-white hover:shadow-md transition-shadow"
+            >
+              <div className="flex justify-between items-center mb-4">
+                <h4 className="font-bold text-lg text-gray-800">{internship.title}</h4>
+                <div className="bg-blue-100 text-blue-600 text-sm px-3 py-1 rounded-full">
+                  {internship.applicants?.length || 0} Applicants
                 </div>
-              ))}
+              </div>
+              <p className="text-sm text-gray-500 mb-2">
+                <strong>Location:</strong> {internship.location}
+              </p>
+              <p className="text-sm text-gray-500 mb-4">
+                <strong>Stipend:</strong> ${internship.stipend || 'N/A'}
+              </p>
+              <button
+                onClick={() => handleViewDetails(internship)}
+                className="w-full px-4 py-2 bg-blue-500 text-white rounded-lg text-sm hover:bg-blue-600 transition-colors"
+              >
+                View Details
+              </button>
             </div>
-          ) : (
-            <p className="text-gray-600">No internships posted yet. Start by posting one!</p>
-          )}
-        </CardContent>
-      </Card>
-    </div>
+          ))}
+        </div>
+      ) : (
+        <p className="text-gray-600">No internships posted yet. Start by posting one!</p>
+      )}
+    </CardContent>
+  </Card>
+</div>
+
+    {isModalOpen && selectedInternship && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white rounded-lg p-6 w-[90%] max-w-md shadow-lg">
+            <h2 className="text-lg font-semibold">{selectedInternship.title}</h2>
+            <p className="text-sm text-gray-600 mt-2">
+              <strong>Location:</strong> {selectedInternship.location}
+            </p>
+            <p className="text-sm text-gray-600 mt-2">
+              <strong>Description:</strong> {selectedInternship.description}
+            </p>
+            <p className="text-sm text-gray-600 mt-2">
+              <strong>Duration:</strong> {selectedInternship.duration} months
+            </p>
+            <p className="text-sm text-gray-600 mt-2">
+              <strong>Stipend:</strong> ${selectedInternship.stipend}
+            </p>
+            <p className="text-sm text-gray-600 mt-2">
+              <strong>Required Skills:</strong> {selectedInternship.requiredSkills.join(', ')}
+            </p>
+            <p className="text-sm text-gray-600 mt-2">
+              <strong>Status:</strong> {selectedInternship.status}
+            </p>
+            <div className="flex justify-end gap-4 mt-6">
+              <button
+                onClick={closeModal}
+                className="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
     {/* Recent Applications */}
     <div className="mb-8">
