@@ -104,6 +104,7 @@ const StudentDashboard = () => {
 
     fetchInternships();
     fetchActiveInternships();
+    fetchCompletedInterviews()
   }, []);
 
   const checkCV = async () => {
@@ -219,12 +220,12 @@ const StudentDashboard = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#F8F9FA] p-8">
+    <div className="min-h-screen w-screen bg-[#F8F9FA] p-8">
       {/* Header */}
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-3xl font-semibold text-[#1E1E1E]">Welcome, John!</h1>
-          <p className="text-[#666]">Computer Science Student</p>
+          <h1 className="text-3xl font-semibold text-[#1E1E1E]">Welcome, Student</h1>
+          <p className="text-[#666]">Find Suitable Internships and Apply with ease</p>
         </div>
         <div className="flex items-center gap-4">
           <button 

@@ -67,8 +67,8 @@ const AuthenticationScreen = () => {
   };
 
   return (
-    <div className="min-h-screen w-full bg-[#F8F9FA] flex items-center justify-center">
-      <div className="w-[450px] bg-white rounded-lg shadow-sm">
+    <div className="min-h-screen w-screen bg-[#F8F9FA] flex items-center justify-center">
+      <div className=" bg-white rounded-lg shadow-sm">
         <div className="px-8 py-6">
           {/* Header */}
           <div className="mb-6">
