@@ -67,7 +67,7 @@ const AuthenticationScreen = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8F9FA] flex items-center justify-center">
+    <div className="min-h-screen w-full bg-[#F8F9FA] flex items-center justify-center">
       <div className="w-[450px] bg-white rounded-lg shadow-sm">
         <div className="px-8 py-6">
           {/* Header */}
@@ -104,7 +104,7 @@ const AuthenticationScreen = () => {
               type="button"
               onClick={() => setUserType('admin')}
               className={`flex items-center justify-center gap-2 flex-1 px-4 py-2 rounded-lg text-sm transition-colors
-                ${userType === 'company' 
+                ${userType === 'admin' 
                   ? 'bg-[#4F46E5] text-white' 
                   : 'bg-[#1E1E1E] text-white'}`}
             >

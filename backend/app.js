@@ -17,6 +17,7 @@ const adminRoutes = require('./routes/adminRoutes')
 const complaintRoutes = require('./routes/complaintRoutes')
 const logUsage = require('./middleware/logUsage')
 const reportRoutes = require('./routes/reportRoutes')
+const configurationRoutes = require('./routes/configurationRoutes')
 // Initialize the app
 const app = express();
 
@@ -26,6 +27,11 @@ app.use(morgan('dev')); // Logger
 app.use(cors()); // Enable CORS
 app.use(helmet()); // Security headers
 app.use(compression()); // Gzip compression
+
+const initializeConfigurations = require('./utils/initialConfiguration');
+
+initializeConfigurations();
+
 
 // Health Check Route
 app.get('/health', (req, res) => {
@@ -44,6 +50,7 @@ app.use('/api/messaging', messagingRoutes)
 app.use('/api/admin',adminRoutes)
 app.use('/api/complaints',complaintRoutes)
 app.use('/api/reports', reportRoutes)
+app.use("/api/configurations", configurationRoutes);
 
 // Error handling middleware
 app.use(errorHandler);
