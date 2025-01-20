@@ -35,7 +35,6 @@ jest.mock('../../context/UserContext', () => ({
 
 describe('StudentDashboard', () => {
   beforeEach(() => {
-    // Wrap the component with both UserProvider and BrowserRouter
     render(
       <UserProvider>
         <BrowserRouter>
@@ -47,16 +46,17 @@ describe('StudentDashboard', () => {
 
   test('renders basic dashboard elements', () => {
     // Test header content
-    expect(screen.getByText('Welcome, John!')).toBeInTheDocument();
-    expect(screen.getByText('Computer Science Student')).toBeInTheDocument();
+    expect(screen.getByText('Welcome, Student')).toBeInTheDocument();
+    expect(screen.getByText('Find Suitable Internships and Apply with ease')).toBeInTheDocument();
 
     // Test main action buttons
     expect(screen.getByText('Build CV')).toBeInTheDocument();
+    expect(screen.getByText('Open Messaging')).toBeInTheDocument();
 
     // Test stats sections labels
     expect(screen.getByText('Active Applications')).toBeInTheDocument();
     expect(screen.getByText('Completed Interviews')).toBeInTheDocument();
-    expect(screen.getByText('New Messages')).toBeInTheDocument();
+    expect(screen.getByText('Complaints')).toBeInTheDocument();
 
     // Test main sections
     expect(screen.getByText('Recent Internship Matches')).toBeInTheDocument();
