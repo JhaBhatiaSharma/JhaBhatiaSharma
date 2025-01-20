@@ -12,6 +12,7 @@ const CompanyDashboard = () => {
   const [internships, setInternships] = useState([]);
   const [scheduledInterviews, setScheduledInterviews] = useState([]);
   const [applicants, setApplicants] = useState([]);
+  const [uniqueApplicants, setUniqueApplicants] = useState([]);
   const [selectedApplicant, setSelectedApplicant] = useState(null);
   const [showScheduleModal, setShowScheduleModal] = useState(false);
   const [scheduleDate, setScheduleDate] = useState(null);
@@ -49,6 +50,8 @@ const CompanyDashboard = () => {
     fetchAllInterviews();
   }, []);
 
+  
+
   // Fetch applicants for recruiter internships
   useEffect(() => {
     const fetchApplicants = async () => {
@@ -65,6 +68,20 @@ const CompanyDashboard = () => {
     };
     fetchApplicants();
   }, []);
+
+  useEffect(() => {
+    const getUniqueApplicants = (applicants) => {
+      const seen = new Set();
+      return applicants.filter((applicant) => {
+        if (seen.has(applicant.email)) {
+          return false;
+        }
+        seen.add(applicant.email);
+        return true;
+      });
+    };
+    setUniqueApplicants(getUniqueApplicants(applicants));
+  }, [applicants]);
 
   const handleScheduleInterview = async () => {
     if (!selectedApplicant || !scheduleDate) {
@@ -156,7 +173,7 @@ const CompanyDashboard = () => {
               </div>
               <div className="ml-4">
                 <p className="text-sm text-gray-600">Active Positions</p>
-                <h3 className="text-2xl font-bold">8</h3>
+                <h3 className="text-2xl font-bold">{internships.length}</h3>
               </div>
             </div>
           </CardContent>
@@ -170,7 +187,7 @@ const CompanyDashboard = () => {
               </div>
               <div className="ml-4">
                 <p className="text-sm text-gray-600">Total Applicants</p>
-                <h3 className="text-2xl font-bold">156</h3>
+                <h3 className="text-2xl font-bold">{uniqueApplicants.length}</h3>
               </div>
             </div>
           </CardContent>
@@ -184,7 +201,7 @@ const CompanyDashboard = () => {
               </div>
               <div className="ml-4">
                 <p className="text-sm text-gray-600">Scheduled Interviews</p>
-                <h3 className="text-2xl font-bold">12</h3>
+                <h3 className="text-2xl font-bold">{scheduledInterviews.length}</h3>
               </div>
             </div>
           </CardContent>
@@ -209,7 +226,7 @@ const CompanyDashboard = () => {
   <div className="col-span-2">
     {/* Posted Internships */}
     <div className="mb-8">
-      <Card>
+      <Card className="shadow-md">
         <CardHeader>
           <CardTitle>Posted Internships</CardTitle>
         </CardHeader>
@@ -241,7 +258,7 @@ const CompanyDashboard = () => {
 
     {/* Recent Applications */}
     <div className="mb-8">
-      <Card>
+      <Card className="shadow-md">
         <CardHeader>
           <CardTitle>Recent Applications</CardTitle>
           <CardDescription>Review and manage candidate applications</CardDescription>
@@ -298,85 +315,111 @@ const CompanyDashboard = () => {
   <div>
     {/* Today's Interviews */}
     <div className="mb-8">
-      <Card>
-        <CardHeader>
-          <CardTitle>Today's Interviews</CardTitle>
-        </CardHeader>
-        <CardContent>
-          {todaysInterviews.length > 0 ? (
-            <div className="space-y-4">
-              {todaysInterviews.map((interview) => (
-                <div key={interview.student._id} className="p-4 border rounded-lg">
-                  <div className="flex gap-4">
-                    <div className="p-2 bg-gray-100 rounded">
-                      <Calendar className="h-6 w-6 text-gray-600" />
-                    </div>
-                    <div>
-                      <h4 className="font-semibold">{`${interview.student.firstName} ${interview.student.lastName}`}</h4>
-                      <p className="text-sm text-gray-600">{interview.internshipTitle}</p>
-                      <p className="text-sm text-blue-600 mt-1">
-                        {new Date(interview.dateTime).toLocaleString()}
-                      </p>
-                      <button
-                        onClick={() =>
-                          handleMarkAsCompleted(interview.internshipId, interview.student._id)
-                        }
-                        className="mt-2 px-4 py-2 bg-green-500 text-white rounded-lg text-sm hover:bg-green-600"
-                      >
-                        Mark as Completed
-                      </button>
-                    </div>
-                  </div>
+  <Card className="shadow-md">
+    <CardHeader>
+      <CardTitle className="text-lg font-bold">Today's Interviews</CardTitle>
+    </CardHeader>
+    <CardContent>
+      {todaysInterviews.length > 0 ? (
+        <div className="space-y-4">
+          {todaysInterviews.map((interview) => (
+            <div
+              key={interview.student._id}
+              className="p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow"
+            >
+              <div className="flex items-center gap-4">
+                {/* Icon Section */}
+                <div className="flex-shrink-0 p-3 bg-gray-100 rounded-full">
+                  <Calendar className="h-8 w-8 text-blue-600" />
                 </div>
-              ))}
+
+                {/* Content Section */}
+                <div className="flex-grow">
+                  <h4 className="text-base font-semibold text-gray-800">
+                    {`${interview.student.firstName} ${interview.student.lastName}`}
+                  </h4>
+                  <p className="text-sm text-gray-500">{interview.internshipTitle}</p>
+                  <p className="text-sm text-blue-500 mt-1">
+                    {new Date(interview.dateTime).toLocaleString()}
+                  </p>
+                </div>
+
+                {/* Action Section */}
+                <div>
+                  <button
+                    onClick={() =>
+                      handleMarkAsCompleted(interview.internshipId, interview.student._id)
+                    }
+                    className="px-4 py-2 bg-green-500 text-white text-sm font-medium rounded-lg hover:bg-green-600 transition-colors"
+                  >
+                    Mark as Completed
+                  </button>
+                </div>
+              </div>
             </div>
-          ) : (
-            <p className="text-gray-600">No interviews scheduled for today.</p>
-          )}
-        </CardContent>
-      </Card>
-    </div>
+          ))}
+        </div>
+      ) : (
+        <p className="text-gray-600">No interviews scheduled for today.</p>
+      )}
+    </CardContent>
+  </Card>
+</div>
+
 
     {/* All Scheduled Interviews */}
     <div>
-      <Card>
-        <CardHeader>
-          <CardTitle>All Scheduled Interviews</CardTitle>
-        </CardHeader>
-        <CardContent>
-          {scheduledInterviews.length > 0 ? (
-            <div className="space-y-4">
-              {scheduledInterviews.map((interview) => (
-                <div key={interview.student._id} className="p-4 border rounded-lg">
-                  <div className="flex gap-4">
-                    <div className="p-2 bg-gray-100 rounded">
-                      <Calendar className="h-6 w-6 text-gray-600" />
-                    </div>
-                    <div>
-                      <h4 className="font-semibold">{`${interview.student.firstName} ${interview.student.lastName}`}</h4>
-                      <p className="text-sm text-gray-600">{interview.internshipTitle}</p>
-                      <p className="text-sm text-blue-600 mt-1">
-                        {new Date(interview.dateTime).toLocaleString()}
-                      </p>
-                      <button
-                        onClick={() =>
-                          handleMarkAsCompleted(interview.internshipId, interview.student._id)
-                        }
-                        className="mt-2 px-4 py-2 bg-green-500 text-white rounded-lg text-sm hover:bg-green-600"
-                      >
-                        Mark as Completed
-                      </button>
-                    </div>
-                  </div>
+  <Card className="shadow-md">
+    <CardHeader>
+      <CardTitle className="text-lg font-bold">All Scheduled Interviews</CardTitle>
+    </CardHeader>
+    <CardContent>
+      {scheduledInterviews.length > 0 ? (
+        <div className="space-y-4">
+          {scheduledInterviews.map((interview) => (
+            <div
+              key={interview.student._id}
+              className="p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow"
+            >
+              <div className="flex items-center gap-4">
+                {/* Icon Section */}
+                <div className="flex-shrink-0 p-3 bg-gray-100 rounded-full">
+                  <Calendar className="h-8 w-8 text-blue-600" />
                 </div>
-              ))}
+
+                {/* Content Section */}
+                <div className="flex-grow">
+                  <h4 className="text-base font-semibold text-gray-800">
+                    {`${interview.student.firstName} ${interview.student.lastName}`}
+                  </h4>
+                  <p className="text-sm text-gray-500">{interview.internshipTitle}</p>
+                  <p className="text-sm text-blue-500 mt-1">
+                    {new Date(interview.dateTime).toLocaleString()}
+                  </p>
+                </div>
+
+                {/* Action Section */}
+                <div>
+                  <button
+                    onClick={() =>
+                      handleMarkAsCompleted(interview.internshipId, interview.student._id)
+                    }
+                    className="px-4 py-2 bg-green-500 text-white text-sm font-medium rounded-lg hover:bg-green-600 transition-colors"
+                  >
+                    Mark as Completed
+                  </button>
+                </div>
+              </div>
             </div>
-          ) : (
-            <p className="text-gray-600">No interviews scheduled yet.</p>
-          )}
-        </CardContent>
-      </Card>
-    </div>
+          ))}
+        </div>
+      ) : (
+        <p className="text-gray-600">No interviews scheduled yet.</p>
+      )}
+    </CardContent>
+  </Card>
+</div>
+
   </div>
 </div>
 

@@ -292,8 +292,8 @@ const AddInternship = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8 flex items-center justify-center">
-      <div className="w-full max-w-lg bg-white rounded-lg shadow p-6">
+    <div className="min-h-screen w-screen  bg-gray-50 p-8 flex items-center justify-center">
+      <div className="w-full max-w-lg shadow-md bg-white rounded-lg shadow p-6">
         <h1 className="text-2xl font-bold text-gray-800 mb-6">Post New Internship</h1>
         <form onSubmit={handleSubmit} className="space-y-4">
           <input

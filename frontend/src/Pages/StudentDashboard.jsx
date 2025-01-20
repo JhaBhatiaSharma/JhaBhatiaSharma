@@ -411,9 +411,9 @@ const StudentDashboard = () => {
       )}
 
       {/* Main Content */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-3 gap-8">
         {/* Recent Internship Matches */}
-<div className="lg:col-span-2">
+<div className="lg:col-span-2 shadow-md">
   <div className="bg-white rounded-xl p-6">
     <div className="flex items-center justify-between mb-6">
       <div>
@@ -512,7 +512,7 @@ const StudentDashboard = () => {
   </div>
 </div>
         {/* Upcoming Interviews */}
-        <div>
+        <div className='shadow-md'>
           <div className="bg-white rounded-xl p-6">
             <h2 className="text-xl font-semibold text-[#1E1E1E] mb-6">
               Upcoming Interviews
