@@ -293,7 +293,7 @@ const AdminDashboard = () => {
       <div className="bg-white shadow">
         <div className="flex justify-between items-center px-8 py-4">
           <div>
-            <h1 className="text-2xl font-bold text-gray-800">University Admin Dashboard</h1>
+            <h1 className="text-2xl font-bold text-gray-800">Admin Dashboard</h1>
             <p className="text-gray-600">Welcome back, Admin</p>
           </div>
           <div className="flex items-center gap-4">

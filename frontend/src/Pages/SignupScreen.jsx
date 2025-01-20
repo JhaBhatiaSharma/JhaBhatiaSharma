@@ -200,7 +200,7 @@ const SignupScreen = () => {
 
   return (
     <div className="min-h-screen w-screen bg-[#F8F9FA] flex items-center justify-center">
-      <div className="w-[450px] bg-white rounded-lg shadow-sm">
+      <div className="w-[450px] bg-white rounded-lg shadow-2xl">
         <div className="px-8 py-6">
           {/* Header */}
           <div className="mb-6 text-center">
@@ -234,7 +234,7 @@ const SignupScreen = () => {
               type="button"
               onClick={() => setUserType('admin')}
               className={`flex items-center justify-center gap-2 flex-1 px-4 py-2 rounded-lg text-sm transition-colors ${
-                userType === 'recruiter' ? 'bg-[#4F46E5] text-white' : 'bg-[#1E1E1E] text-white'
+                userType === 'admin' ? 'bg-[#4F46E5] text-white' : 'bg-[#1E1E1E] text-white'
               }`}
             >
               <Building2 className="w-4 h-4" />
