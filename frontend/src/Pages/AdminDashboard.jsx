@@ -30,6 +30,7 @@ const AdminDashboard = () => {
   const [isMessagingOpen, setIsMessagingOpen] = useState(false);
   const [isStudentModalOpen,setStudentModalOpen]=useState(false)
   const [isRecruiterModalOpen,setRecruiterModalOpen]=useState(false)
+  const [filteredUsers, setFilteredUsers] = useState([]);
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -221,6 +222,22 @@ const AdminDashboard = () => {
     setRecruiterModalOpen(false)
   };
 
+  useEffect(() => {
+    if (!users) return;
+    
+    const filtered = users.filter(user => {
+      const query = searchQuery.toLowerCase();
+      return (
+        user.firstName?.toLowerCase().includes(query) ||
+        user.lastName?.toLowerCase().includes(query) ||
+        user.email?.toLowerCase().includes(query) ||
+        user.type?.toLowerCase().includes(query)
+      );
+    });
+    
+    setFilteredUsers(filtered);
+  }, [searchQuery, users]);
+
 
 
   const downloadReport = async (reportType) => {
@@ -307,9 +324,7 @@ const AdminDashboard = () => {
         isOpen={isMessagingOpen}
         onClose={() => setIsMessagingOpen(false)}
       />
-            <button className="p-2 rounded-full hover:bg-gray-100">
-              <Bell className="h-6 w-6 text-gray-600" />
-            </button>
+            
             <UserMenuDropdown role="admin" initials="AD" />
           </div>
         </div>
@@ -476,7 +491,6 @@ const AdminDashboard = () => {
 )}
 
 
-
         {/* Main Sections */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* User Management */}
@@ -507,7 +521,7 @@ const AdminDashboard = () => {
                       placeholder="Search users..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      className="w-full pl-10 pr-4 py-2 border rounded-lg"
+                      className="w-full text-white pl-10 pr-4 py-2 border rounded-lg"
                     />
                   </div>
                   <button
@@ -535,7 +549,7 @@ const AdminDashboard = () => {
                           </tr>
                         </thead>
                         <tbody>
-                          {users.map((user) => (
+                          {filteredUsers.map((user) => (
                             <tr key={user._id} className="border-b">
                               <td className="py-3 px-4">{`${user.firstName} ${user.lastName}`}</td>
                               <td className="py-3 px-4">{user.type}</td>
