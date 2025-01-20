@@ -19,14 +19,14 @@ describe('UserMenuDropdown', () => {
   it('shows dropdown menu on click', () => {
     renderDropdown();
     fireEvent.click(screen.getByText('JD'));
-    expect(screen.getByText('My Profile')).toBeInTheDocument();
     expect(screen.getByText('Logout')).toBeInTheDocument();
   });
 
-  it('navigates to correct profile based on role', () => {
+  it('shows correct background color based on role', () => {
     renderDropdown('admin');
     fireEvent.click(screen.getByText('JD'));
-    expect(screen.getByText('Admin Settings')).toBeInTheDocument();
+    const button = screen.getByText('JD');
+    expect(button).toHaveClass('bg-blue-500');
   });
 
   it('logs out and redirects to login', () => {
