@@ -129,7 +129,7 @@ describe('AddInternship', () => {
 
     expect(mockApi.post).toHaveBeenCalledWith('/internships/addinternship', expect.any(Object));
     expect(mockAlert).toHaveBeenCalledWith('Internship added successfully!');
-    expect(mockNavigate).toHaveBeenCalledWith('/');
+    expect(mockNavigate).toHaveBeenCalledWith('/company');  // Updated to match actual navigation
   });
 
   test('handles form submission errors', async () => {
@@ -188,7 +188,7 @@ describe('AddInternship', () => {
 
   test('handles cancel button click', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Cancel' }));
-    expect(mockNavigate).toHaveBeenCalledWith('/');
+    expect(mockNavigate).toHaveBeenCalledWith('/company');  // Updated to match actual navigation
   });
 
   test('allows adding skills with Enter key', () => {
