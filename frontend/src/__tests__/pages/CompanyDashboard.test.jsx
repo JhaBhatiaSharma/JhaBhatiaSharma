@@ -5,13 +5,20 @@ import '@testing-library/jest-dom';
 import CompanyDashboard from '../../Pages/Company/CompanyDashboard';
 
 // Mock components
+jest.mock('@/components/ui/card', () => ({
+  Card: ({ children }) => <div>{children}</div>,
+  CardHeader: ({ children }) => <div>{children}</div>,
+  CardTitle: ({ children }) => <div>{children}</div>,
+  CardDescription: ({ children }) => <div>{children}</div>,
+  CardContent: ({ children }) => <div>{children}</div>
+}));
+
 jest.mock('../../components/UserMenuDropdown', () => {
   return function DummyUserMenuDropdown() {
     return <div data-testid="user-menu">User Menu</div>;
   };
 });
 
-// Mock MessagingSystem - using correct path
 jest.mock('../../Pages/MessagingSystem', () => {
   return function DummyMessagingSystem() {
     return <div data-testid="messaging-system">Messaging System</div>;
@@ -27,8 +34,8 @@ jest.mock('react-datepicker', () => {
 
 // Mock API
 jest.mock('../../api', () => ({
-  get: jest.fn().mockResolvedValue({ data: [] }),
-  patch: jest.fn().mockResolvedValue({})
+  get: jest.fn(() => Promise.resolve({ data: [] })),
+  patch: jest.fn(() => Promise.resolve({}))
 }));
 
 // Mock router
@@ -48,7 +55,6 @@ Object.defineProperty(window, 'localStorage', { value: localStorageMock });
 
 describe('CompanyDashboard', () => {
   beforeEach(() => {
-    // Clear all mocks
     jest.clearAllMocks();
   });
 
@@ -59,8 +65,8 @@ describe('CompanyDashboard', () => {
       </BrowserRouter>
     );
 
-    // Check header
-    expect(screen.getByText('TechCorp Dashboard')).toBeInTheDocument();
+    // Check header with correct text
+    expect(screen.getByText('InternHub Dashboard')).toBeInTheDocument();
     expect(screen.getByText('Manage your internship programs')).toBeInTheDocument();
 
     // Check buttons
@@ -74,7 +80,7 @@ describe('CompanyDashboard', () => {
         <CompanyDashboard />
       </BrowserRouter>
     );
-
+    
     // Check stats cards
     const statsTexts = [
       'Active Positions',
@@ -82,7 +88,7 @@ describe('CompanyDashboard', () => {
       'Scheduled Interviews',
       'Hired This Month'
     ];
-
+    
     statsTexts.forEach(text => {
       expect(screen.getByText(text)).toBeInTheDocument();
     });
@@ -97,7 +103,6 @@ describe('CompanyDashboard', () => {
 
     const messagingButton = screen.getByText('Open Messaging');
     fireEvent.click(messagingButton);
-
     expect(screen.getByTestId('messaging-system')).toBeInTheDocument();
   });
 
@@ -110,7 +115,6 @@ describe('CompanyDashboard', () => {
 
     const addButton = screen.getByText('Post New Internship');
     fireEvent.click(addButton);
-
     expect(mockNavigate).toHaveBeenCalledWith('/add-internship');
   });
 });
