@@ -22,7 +22,7 @@ describe('Admin Controller Tests (Mocked Database)', () => {
           firstName: 'Test',
           lastName: 'Admin',
           email: 'admin@test.com',
-          type: 'admin',
+          role: 'admin',
           save: jest.fn().mockResolvedValue(true)
         };
   
@@ -56,7 +56,7 @@ describe('Admin Controller Tests (Mocked Database)', () => {
         // Verify User.findOne was called correctly
         expect(User.findOne).toHaveBeenCalledWith({ 
           email: 'admin@test.com',
-          type: 'admin' 
+          role: 'admin' 
         });
   
         // Verify bcrypt.hash was called correctly
@@ -68,7 +68,7 @@ describe('Admin Controller Tests (Mocked Database)', () => {
           lastName: 'Admin',
           email: 'admin@test.com',
           password: 'hashedPassword',
-          type: 'admin'
+          role: 'admin'
         });
   
         // Verify save was called
@@ -85,7 +85,7 @@ describe('Admin Controller Tests (Mocked Database)', () => {
       // Mock finding an existing admin
       User.findOne = jest.fn().mockResolvedValue({
         email: 'admin@test.com',
-        type: 'admin'
+        role: 'admin'
       });
 
       const req = {
@@ -106,7 +106,7 @@ describe('Admin Controller Tests (Mocked Database)', () => {
 
       expect(User.findOne).toHaveBeenCalledWith({ 
         email: 'admin@test.com',
-        type: 'admin' 
+        role: 'admin' 
       });
       expect(res.status).toHaveBeenCalledWith(400);
       expect(res.json).toHaveBeenCalledWith({ 
@@ -123,7 +123,7 @@ describe('Admin Controller Tests (Mocked Database)', () => {
         password: 'hashedPassword',
         firstName: 'Test',
         lastName: 'Admin',
-        type: 'admin'
+        role: 'admin'
       };
 
       User.findOne = jest.fn().mockResolvedValue(mockedAdmin);
@@ -146,14 +146,14 @@ describe('Admin Controller Tests (Mocked Database)', () => {
 
       expect(User.findOne).toHaveBeenCalledWith({ 
         email: 'admin@test.com',
-        type: 'admin' 
+        role: 'admin' 
       });
       expect(bcrypt.compare).toHaveBeenCalledWith(
         'password123',
         'hashedPassword'
       );
       expect(jwt.sign).toHaveBeenCalledWith(
-        { id: 'mockAdminId', type: 'admin' },
+        { id: 'mockAdminId', role: 'admin' },
         process.env.JWT_SECRET,
         { expiresIn: '1d' }
       );
@@ -163,7 +163,7 @@ describe('Admin Controller Tests (Mocked Database)', () => {
         user: {
           id: 'mockAdminId',
           email: 'admin@test.com',
-          type: 'admin',
+          role: 'admin',
           firstName: 'Test',
           lastName: 'Admin'
         }
@@ -174,7 +174,7 @@ describe('Admin Controller Tests (Mocked Database)', () => {
       User.findOne = jest.fn().mockResolvedValue({
         email: 'admin@test.com',
         password: 'hashedPassword',
-        type: 'admin'
+        role: 'admin'
       });
 
       bcrypt.compare = jest.fn().mockResolvedValue(false);
@@ -195,7 +195,7 @@ describe('Admin Controller Tests (Mocked Database)', () => {
 
       expect(User.findOne).toHaveBeenCalledWith({ 
         email: 'admin@test.com',
-        type: 'admin' 
+        role: 'admin' 
       });
       expect(bcrypt.compare).toHaveBeenCalledWith(
         'wrongpassword',
