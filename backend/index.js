@@ -27,3 +27,5 @@ app.listen(port, host, () => {
   console.log("ENV: ", process.env.ENVIRONMENT);
   console.log(`Server listening on http://${host}:${port}`);
 });
+
+module.exports = app; 
