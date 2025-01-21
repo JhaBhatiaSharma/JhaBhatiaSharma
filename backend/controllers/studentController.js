@@ -7,6 +7,9 @@ exports.registerStudent = async (req, res) => {
     const { email, password, firstName, lastName, profile } = req.body;
 
     // Check if the student already exists
+    if (password.length < 8) {
+      return res.status(400).json({ message: 'Password should be at least 8 characters long' });
+    }
     const existingStudent = await Student.findOne({ email });
     if (existingStudent) {
       return res.status(400).json({ message: 'Student already exists' });

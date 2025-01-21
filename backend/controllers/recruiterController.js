@@ -7,6 +7,9 @@ exports.registerRecruiter = async (req, res) => {
     const { email, password, firstName, lastName, profile } = req.body;
 
     // Check if the recruiter already exists
+    if (password.length < 8) {
+      return res.status(400).json({ message: 'Password should be at least 8 characters long' });
+    }
     const existingRecruiter = await Recruiter.findOne({ email });
     if (existingRecruiter) {
       return res.status(400).json({ message: 'Recruiter already exists' });

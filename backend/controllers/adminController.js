@@ -8,6 +8,9 @@ exports.registerAdmin = async (req, res) => {
     const { firstName, lastName, email, password } = req.body;
 
     // Check if the admin already exists
+    if (password.length < 8) {
+      return res.status(400).json({ message: 'Password should be at least 8 characters long' });
+    }
     const existingAdmin = await User.findOne({ email, role: 'admin' });
     if (existingAdmin) {
       return res.status(400).json({ message: 'Admin already exists' });
