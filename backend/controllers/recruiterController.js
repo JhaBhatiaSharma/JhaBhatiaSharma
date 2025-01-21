@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs');
 const Recruiter = require('../models/Recruiter');
 const jwt = require('jsonwebtoken');
 const Internship=require('../models/Internship')
+const User=require('../models/User')
 exports.registerRecruiter = async (req, res) => {
   try {
     const { email, password, firstName, lastName, profile } = req.body;
@@ -105,3 +106,24 @@ exports.loginRecruiter = async (req, res) => {
     }
   };
    
+
+  exports.getAllRecruiters = async (req, res) => {
+    const { search } = req.query;
+    const query = { role: 'recruiter' };
+    if (search) query.firstName = { $regex: search, $options: 'i' };
+  
+    try {
+      console.log('Executing query:', query);
+      const recruiters = await User.find(query);
+      if (!recruiters.length) {
+        console.warn('No recruiters found');
+        return res.status(404).json({ message: 'No recruiters found' });
+      }
+      res.json({ recruiters, total: recruiters.length });
+    } catch (err) {
+      console.error('Error fetching recruiters:', err);
+      res.status(500).json({ error: 'Failed to fetch recruiters', details: err.message });
+    }
+  };
+  
+  

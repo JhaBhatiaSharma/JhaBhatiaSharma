@@ -16,6 +16,12 @@ const cvSchema = new mongoose.Schema(
       type: Object, // Contains the CV data like personalInfo, education, experience, etc.
       required: true,
     },
+    visibility: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: 'Recruiter',
+      default: [],
+  },
+  
   },
   { timestamps: true }
 );

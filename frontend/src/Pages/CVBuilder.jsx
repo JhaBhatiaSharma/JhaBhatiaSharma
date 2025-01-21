@@ -316,7 +316,7 @@
 
 // export default CVBuilder;
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { X, Plus, FileText } from 'lucide-react';
 import API from '../api';
 
@@ -347,6 +347,39 @@ const CVBuilder = ({ isOpen, onClose }) => {
     skills: [],
     newSkill: ''  // For skill input
   });
+
+  const [recruiters, setRecruiters] = useState([]);
+  const [selectedRecruiters, setSelectedRecruiters] = useState([]);
+
+  useEffect(() => {
+    // Fetch the list of recruiters from the backend
+    const fetchRecruiters = async () => {
+      try {
+        const response = await API.get('/users/get-all-recruiters', {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`, // Ensure auth token is sent
+          },
+        });
+        setRecruiters(response.data.recruiters);
+        console.log("chutiye:", recruiters)
+      } catch (error) {
+        console.error('Failed to fetch recruiters:', error);
+      }
+    };
+  
+    fetchRecruiters();
+  }, []);
+
+  const handleCheckboxChange = (recruiterId) => {
+    setSelectedRecruiters((prev) =>
+      prev.includes(recruiterId)
+        ? prev.filter((id) => id !== recruiterId)
+        : [...prev, recruiterId]
+    );
+  };
+
+  
+  
 
   const handleInputChange = (section, field, value, index = null) => {
     setFormData(prev => {
@@ -424,7 +457,8 @@ const CVBuilder = ({ isOpen, onClose }) => {
             startDate: exp.startDate,
             endDate: exp.endDate,
             description: exp.description
-          }))
+          })),
+          visibility: selectedRecruiters,
         }
       };
   
@@ -681,6 +715,38 @@ const CVBuilder = ({ isOpen, onClose }) => {
                 </button>
               </div>
             </div>
+            <div className="border-b-2 pb-4">
+              <h3 className="text-lg font-medium mb-4 text-gray-800">Manage CV Visibility</h3>
+              <div className="flex overflow-x-auto space-x-4 pb-2 max-w-full">
+                {recruiters.map((recruiter) => (
+                  <label
+                    key={recruiter._id}
+                    className="flex-shrink-0 flex items-center gap-3 p-3 bg-white shadow-sm rounded-lg hover:bg-gray-50 border border-gray-200 w-10"
+                    style={{ minWidth: '33%' }} // Ensure three items are visible
+                  >
+                    <input
+                      type="checkbox"
+                      className="h-5 w-5 text-blue-600 focus:ring-blue-500 rounded border-gray-300"
+                      checked={selectedRecruiters.includes(recruiter._id)}
+                      onChange={() => handleCheckboxChange(recruiter._id)}
+                    />
+                    <div className="flex items-center gap-2">
+                      <div className="h-10 w-10 bg-blue-100 text-blue-600 flex items-center justify-center rounded-full font-bold text-sm">
+                        {recruiter.firstName.charAt(0)}
+                        {recruiter.lastName.charAt(0)}
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-gray-800">
+                          {recruiter.firstName} {recruiter.lastName}
+                        </p>
+                        <p className="text-xs text-gray-500">{recruiter.email}</p>
+                      </div>
+                    </div>
+                  </label>
+                ))}
+              </div>
+            </div>
+
           </div>
 
           {/* Right Panel - Preview */}

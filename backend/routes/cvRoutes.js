@@ -5,6 +5,7 @@ const {
   createOrUpdateCV,
   getCV,
   deleteCV,
+  updateVisibility
 } = require("../controllers/cvController");
 
 // Route to create or update a CV
@@ -18,5 +19,7 @@ router.get("/", authMiddleware, getCV);
 
 // Route to delete a CV
 router.delete("/", authMiddleware, deleteCV);
+
+router.post("/update-visibility", authMiddleware, updateVisibility)
 
 module.exports = router;
