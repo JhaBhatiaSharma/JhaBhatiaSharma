@@ -715,7 +715,7 @@ const CVBuilder = ({ isOpen, onClose }) => {
                 </button>
               </div>
             </div>
-            <div className="border-b-2 pb-4">
+            <div className="border-b-2 pb-4 pt-4">
               <h3 className="text-lg font-medium mb-4 text-gray-800">Manage CV Visibility</h3>
               <div className="flex overflow-x-auto space-x-4 pb-2 max-w-full">
                 {recruiters.map((recruiter) => (

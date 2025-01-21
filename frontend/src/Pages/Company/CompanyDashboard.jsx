@@ -19,6 +19,8 @@ const CompanyDashboard = () => {
   const [isMessagingOpen, setIsMessagingOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedInternship, setSelectedInternship] = useState(null);
+  const [selectedCV, setSelectedCV] = useState(null);
+
 
   const navigate = useNavigate();
 
@@ -64,6 +66,7 @@ const CompanyDashboard = () => {
           },
         });
         setApplicants(response.data);
+        console.log("laude :", applicants)
       } catch (error) {
         console.error('Error fetching applicants:', error.response?.data?.message || error.message);
       }
@@ -145,6 +148,21 @@ const CompanyDashboard = () => {
   const closeModal = () => {
     setSelectedInternship(null);
     setIsModalOpen(false);
+  };
+
+  const viewCV = async (id) => {
+    try {
+      const response = await API.get(`/cv/${id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+      setSelectedCV(response.data);
+      console.log("tera cv:", response.data)
+    } catch (error) {
+      console.error('Error fetching CV:', error.response?.data?.message || error.message);
+      alert('Failed to fetch CV. Please try again.');
+    }
   };
 
   return (
@@ -314,57 +332,111 @@ const CompanyDashboard = () => {
 
     {/* Recent Applications */}
     <div className="mb-8">
-      <Card className="shadow-md">
-        <CardHeader>
-          <CardTitle>Recent Applications</CardTitle>
-          <CardDescription>Review and manage candidate applications</CardDescription>
-        </CardHeader>
-        <CardContent>
-          {applicants.length > 0 ? (
-            <div className="space-y-4">
-              {applicants.map((applicant, index) => (
-                <div key={index} className="p-4 border rounded-lg hover:bg-gray-50">
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <h4 className="font-semibold">{`${applicant.firstName} ${applicant.lastName}`}</h4>
-                      <p className="text-sm text-gray-600">{applicant.internshipTitle}</p>
-                      <div className="flex gap-2 mt-2">
-                        {applicant.skills.map((skill, idx) => (
-                          <span
-                            key={idx}
-                            className="px-2 py-1 bg-blue-100 text-blue-600 rounded text-xs"
-                          >
-                            {skill}
-                          </span>
-                        ))}
-                      </div>
-                      {applicant.scheduledDateTime && (
-                        <p className="text-sm text-green-600 mt-2">
-                          Scheduled: {new Date(applicant.scheduledDateTime).toLocaleString()}
-                        </p>
-                      )}
-                    </div>
-                    <div className="flex gap-2">
-                      <button
-                        onClick={() => {
-                          setSelectedApplicant(applicant);
-                          setShowScheduleModal(true);
-                        }}
-                        className="px-4 py-2 bg-green-500 text-white rounded-lg text-sm hover:bg-green-600"
+  <Card className="shadow-md">
+    <CardHeader>
+      <CardTitle>Recent Applications</CardTitle>
+      <CardDescription>Review and manage candidate applications</CardDescription>
+    </CardHeader>
+    <CardContent>
+      {applicants.length > 0 ? (
+        <div className="space-y-4">
+          {applicants.map((applicant, index) => (
+            
+            <div key={index} className="p-4 border rounded-lg hover:bg-gray-50">
+              <div className="flex justify-between items-start">
+                <div>
+                  <h4 className="font-semibold">{`${applicant.firstName} ${applicant.lastName}`}</h4>
+                  <p className="text-sm text-gray-600">{applicant.internshipTitle}</p>
+                  <div className="flex gap-2 mt-2">
+                    {applicant.skills.map((skill, idx) => (
+                      <span
+                        key={idx}
+                        className="px-2 py-1 bg-blue-100 text-blue-600 rounded text-xs"
                       >
-                        Schedule
-                      </button>
-                    </div>
+                        {skill}
+                      </span>
+                    ))}
                   </div>
+                  {applicant.scheduledDateTime && (
+                    <p className="text-sm text-green-600 mt-2">
+                      Scheduled: {new Date(applicant.scheduledDateTime).toLocaleString()}
+                    </p>
+                  )}
                 </div>
-              ))}
+                <div className="flex flex-col gap-2">
+                  <button
+                    onClick={() => viewCV(applicant.applicantId)}
+                    className="px-4 py-2 bg-blue-500 text-white rounded-lg text-sm hover:bg-blue-600"
+                  >
+                    View CV
+                  </button>
+                  <button
+                    onClick={() => {
+                      setSelectedApplicant(applicant);
+                      setShowScheduleModal(true);
+                      
+                    }}
+                    className="px-4 py-2 bg-green-500 text-white rounded-lg text-sm hover:bg-green-600"
+                  >
+                    Schedule
+                  </button>
+                </div>
+              </div>
             </div>
-          ) : (
-            <p className="text-gray-600">No applications received yet.</p>
-          )}
-        </CardContent>
-      </Card>
+          ))}
+        </div>
+      ) : (
+        <p className="text-gray-600">No applications received yet.</p>
+      )}
+    </CardContent>
+  </Card>
+</div>
+{selectedCV && (
+  <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+    <div className="bg-white rounded-lg p-6 w-[90%] max-w-2xl shadow-lg overflow-y-auto max-h-[90%]">
+      <h2 className="text-lg font-semibold text-gray-800 mb-4">CV Details</h2>
+      <div className="space-y-4">
+        <p><strong>Name:</strong> {selectedCV.data.personalInfo.fullName}</p>
+        <p><strong>Email:</strong> {selectedCV.data.personalInfo.email}</p>
+        <p><strong>Phone:</strong> {selectedCV.data.personalInfo.phone}</p>
+        <p><strong>Location:</strong> {selectedCV.data.personalInfo.location}</p>
+
+        <h3 className="text-lg font-medium">Skills</h3>
+        <ul className="list-disc ml-5">
+          {selectedCV.data.skills.map((skill, index) => (
+            <li key={index}>{skill}</li>
+          ))}
+        </ul>
+
+        <h3 className="text-lg font-medium">Education</h3>
+        {selectedCV.data.education.map((edu, index) => (
+          <div key={index}>
+            <p><strong>{edu.degree}</strong> in {edu.fieldOfStudy}</p>
+            <p>{edu.school}, {edu.graduationYear}</p>
+          </div>
+        ))}
+
+        <h3 className="text-lg font-medium">Experience</h3>
+        {selectedCV.data.experience.map((exp, index) => (
+          <div key={index}>
+            <p><strong>{exp.position}</strong> at {exp.company}</p>
+            <p>{exp.startDate} - {exp.endDate || 'Present'}</p>
+            <p>{exp.description}</p>
+          </div>
+        ))}
+      </div>
+      <div className="mt-6 flex justify-end">
+        <button
+          onClick={() => setSelectedCV(null)}
+          className="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400"
+        >
+          Close
+        </button>
+      </div>
     </div>
+  </div>
+)}
+
   </div>
 
   {/* Right Column */}
