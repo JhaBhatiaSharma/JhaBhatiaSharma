@@ -192,22 +192,6 @@ exports.getInternshipById = async (req, res) => {
   }
 };
 
-// exports.applyToInternship = async (req, res) => {
-//   try {
-//     const internship = await Internship.findById(req.params.id);
-//     if (!internship) {
-//       return res.status(404).json({ message: 'Internship not found' });
-//     }
-
-//     internship.applicants = internship.applicants || [];
-//     internship.applicants.push(req.user.id);
-//     await internship.save();
-
-//     res.json({ message: 'Application submitted successfully' });
-//   } catch (error) {
-//     res.status(500).json({ message: error.message });
-//   }
-// };
 exports.applyToInternship = async (req, res) => {
   try {
     const internship = await Internship.findById(req.params.id);
