@@ -361,7 +361,6 @@ const CVBuilder = ({ isOpen, onClose }) => {
           },
         });
         setRecruiters(response.data.recruiters);
-        console.log("chutiye:", recruiters)
       } catch (error) {
         console.error('Failed to fetch recruiters:', error);
       }

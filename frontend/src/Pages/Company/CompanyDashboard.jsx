@@ -47,7 +47,6 @@ const CompanyDashboard = () => {
           },
         });
         setScheduledInterviews(response.data);
-        console.log("tum lodu:", response.data)
       } catch (error) {
         console.error('Error fetching interviews:', error.response?.data?.message || error.message);
       }
