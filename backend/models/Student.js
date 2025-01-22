@@ -40,6 +40,7 @@ const studentSchema = new mongoose.Schema({
     {
       internship: { type: mongoose.Schema.Types.ObjectId, ref: 'Internship' },
       dateTime: { type: Date },
+      meetLink: { type: String },
       status: {
         type: String,
         enum: ['scheduled', 'Completed', 'Cancelled'],

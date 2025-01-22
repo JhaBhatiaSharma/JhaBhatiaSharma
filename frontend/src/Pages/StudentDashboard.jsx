@@ -8,6 +8,7 @@ import API from '../api';
 import UserMenuDropdown from '../components/UserMenuDropdown';
 import { useUser } from '../context/UserContext';
 
+
 const StudentDashboard = () => {
   const [showCVBuilder, setShowCVBuilder] = useState(false);
   const [hasCV, setHasCV] = useState(false);
@@ -126,6 +127,12 @@ const StudentDashboard = () => {
     checkCV();
   };
 
+  // const auth = new google.auth.GoogleAuth({
+  //   keyFile: './credentials/studenc-9f5932ef024b', // Adjust the path based on where you saved the file
+  //   scopes: ['https://www.googleapis.com/auth/calendar'],
+  // });
+
+  
   useEffect(() => {
     const fetchScheduledInterviews = async () => {
       try {
@@ -512,42 +519,53 @@ const StudentDashboard = () => {
   </div>
 </div>
         {/* Upcoming Interviews */}
-        <div className='shadow-md'>
-          <div className="bg-white rounded-xl p-6">
-            <h2 className="text-xl font-semibold text-[#1E1E1E] mb-6">
-              Upcoming Interviews
-            </h2>
-            {scheduledInterviews.length > 0 ? (
-              <div className="space-y-4">
-                {scheduledInterviews.map((interview, index) => (
-                  <div
-                    key={index}
-                    className="p-4 border border-[#E5E7EB] rounded-lg hover:bg-gray-50 cursor-pointer"
-                    onClick={() => setSelectedInterview(interview)}
-                  >
-                    <div className="flex gap-4">
-                      <div className="p-2 bg-gray-50 rounded">
-                        <Calendar className="h-6 w-6 text-[#666]" />
-                      </div>
-                      <div>
-                        <h3 className="font-medium text-[#1E1E1E]">
-                        {interview.internship?.title || 'N/A'}
-                        </h3>
-                        
-                        <p className="text-sm text-[#4A72FF] mt-1">
-                        {new Date(interview.dateTime).toLocaleString()}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
+<div className="shadow-md">
+  <div className="bg-white rounded-xl p-6">
+    <h2 className="text-xl font-semibold text-[#1E1E1E] mb-6">Upcoming Interviews</h2>
+    {scheduledInterviews.length > 0 ? (
+      <div className="space-y-4">
+        {scheduledInterviews.map((interview, index) => (
+          <div
+            key={index}
+            className="p-4 border border-[#E5E7EB] rounded-lg hover:bg-gray-50 cursor-pointer"
+            onClick={() => setSelectedInterview(interview)}
+          >
+            <div className="flex gap-4">
+              <div className="p-2 bg-gray-50 rounded">
+                <Calendar className="h-6 w-6 text-[#666]" />
               </div>
-            ) : (
-              <p className="text-gray-600">No upcoming interviews scheduled.</p>
-            )}
+              <div>
+                <h3 className="font-medium text-[#1E1E1E]">
+                  {interview.internship?.title || 'N/A'}
+                </h3>
+                <p className="text-sm text-[#4A72FF] mt-1">
+                  {new Date(interview.dateTime).toLocaleString()}
+                </p>
+                {interview.meetLink && (
+                  <p className="text-sm text-blue-600 mt-2">
+                    Meet Link:{' '}
+                    <a
+                      href={interview.meetLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline"
+                    >
+                      {interview.meetLink}
+                    </a>
+                  </p>
+                )}
+              </div>
+            </div>
           </div>
-        </div>
+        ))}
       </div>
+    ) : (
+      <p className="text-gray-600">No upcoming interviews scheduled.</p>
+    )}
+  </div>
+</div>
+</div>
+
 
       {/* Modals */}
       {/* Active Internships Modal */}

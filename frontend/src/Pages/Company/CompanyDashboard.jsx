@@ -47,6 +47,7 @@ const CompanyDashboard = () => {
           },
         });
         setScheduledInterviews(response.data);
+        console.log("tum lodu:", response.data)
       } catch (error) {
         console.error('Error fetching interviews:', error.response?.data?.message || error.message);
       }
@@ -524,6 +525,18 @@ const CompanyDashboard = () => {
                   <p className="text-sm text-blue-500 mt-1">
                     {new Date(interview.dateTime).toLocaleString()}
                   </p>
+                  {interview.meetLink && (
+                    <p className="text-sm text-blue-600 mt-2 break-words">
+                      
+                      <a
+                        href={interview.meetLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="underline break-all"
+                      ><button className='bg-white text-black border border-black rounded-lg shadow-md'>Meet Link{' '}</button>
+                      </a>
+                    </p>
+                  )}
                 </div>
 
                 {/* Action Section */}
@@ -547,6 +560,7 @@ const CompanyDashboard = () => {
     </CardContent>
   </Card>
 </div>
+
 
   </div>
 </div>

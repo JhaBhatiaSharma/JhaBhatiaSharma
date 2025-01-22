@@ -96,6 +96,7 @@ exports.loginRecruiter = async (req, res) => {
             dateTime: interview.dateTime,
             status: interview.status,
             internshipId: internship._id,
+            meetLink: interview.meetLink
           }))
       );
   

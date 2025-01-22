@@ -48,7 +48,9 @@ const internshipSchema = new mongoose.Schema({
     {
       student: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
       dateTime: { type: Date },
+      meetLink: { type: String },
       status: { type: String, enum: ['Scheduled', 'Completed'], default: 'Scheduled' },
+      
     },
   ],
   status: {  // Added to track internship status

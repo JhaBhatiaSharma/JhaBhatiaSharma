@@ -1,6 +1,7 @@
 const Internship = require('../models/Internship');
 const Student=require('../models/Student')
 const CV = require('../models/Cv')
+const { google } = require('googleapis');
 
 const calculateTotalMatchScore = (internship, studentProfile, userCV) => {
   const skillsScore = calculateSkillMatch(userCV.data.skills || [], internship.requiredSkills || []);
@@ -112,6 +113,7 @@ exports.getRecommendedInternships = async (req, res) => {
           : ''}`
       };
     });
+
 
    // Sort by match score and return top matches
    const sortedRecommendations = recommendedInternships
@@ -303,6 +305,12 @@ exports.getApplicantsForRecruiter = async (req, res) => {
   }
 };
 
+const calendar = google.calendar('v3');
+const auth = new google.auth.GoogleAuth({
+  keyFile: './credentials/studenc-9f5932ef024b.json',
+  scopes: ['https://www.googleapis.com/auth/calendar'],
+});
+
 exports.scheduleInterview = async (req, res) => {
   try {
     const { id: internshipId } = req.params;
@@ -317,24 +325,54 @@ exports.scheduleInterview = async (req, res) => {
       return res.status(404).json({ message: "Internship not found" });
     }
 
-    // Add interview to the internship's scheduledInterviews field
-    internship.scheduledInterviews = internship.scheduledInterviews || [];
-    internship.scheduledInterviews.push({
-      student: applicantId,
-      dateTime: scheduleDate,
-    });
-    await internship.save();
-
-    // Add the interview to the student's scheduledInterviews field
     const student = await Student.findById(applicantId);
     if (!student) {
       return res.status(404).json({ message: "Student not found" });
     }
 
+    // Generate Google Meet Link
+    const authClient = await auth.getClient();
+    const event = {
+      summary: `Interview for Internship: ${internship.title}`,
+      description: `Interview scheduled for ${student.profile.name}`,
+      start: {
+        dateTime: new Date(scheduleDate).toISOString(),
+        timeZone: 'UTC',
+      },
+      end: {
+        dateTime: new Date(new Date(scheduleDate).getTime() + 3600000).toISOString(), // 1-hour duration
+        timeZone: 'UTC',
+      },
+      conferenceData: {
+        createRequest: { requestId: `${internshipId}-${applicantId}` },
+      },
+    };
+
+    const calendarResponse = await calendar.events.insert({
+      auth: authClient,
+      calendarId: 'primary',
+      resource: event,
+      conferenceDataVersion: 1,
+    });
+    
+
+    const meetLink = calendarResponse.data.htmlLink;
+
+    // Save Interview Details
+    internship.scheduledInterviews = internship.scheduledInterviews || [];
+    console.log
+    internship.scheduledInterviews.push({
+      student: applicantId,
+      dateTime: scheduleDate,
+      meetLink,
+    });
+    await internship.save();
+
     student.scheduledInterviews = student.scheduledInterviews || [];
     student.scheduledInterviews.push({
       internship: internshipId,
       dateTime: scheduleDate,
+      meetLink,
     });
     await student.save();
 
