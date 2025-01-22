@@ -1,5 +1,5 @@
 const express = require('express');
-const { getAllInternshipsController, getInternshipController, addInternshipController, updateInternshipController, deleteInternshipController } = require('../controllers/InternshipController');
+const { getAllInternshipsController, getInternshipController, addInternshipController, updateInternshipController, deleteInternshipController } = require('../controllers/internshipController');
 
 const router = express.Router();
 

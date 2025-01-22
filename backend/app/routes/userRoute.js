@@ -14,6 +14,6 @@ router.post('/updateStudent', validateRequest('updateStudent'), updateStudentCon
 router.post('/registerRecruiter', validateRequest('register'), registerRecruiterController);
 router.get('/loginRecruiter', validateRequest('login'), loginRecruiterController);
 router.get('/fetchRecruiter', getRecruiterController);
-router.post('/updateRecruiter', validateRequest('updateRecuiter'), updateRecruiterController),
+router.post('/updateRecruiter', validateRequest('updateRecruiter'), updateRecruiterController),
 
 module.exports = router;

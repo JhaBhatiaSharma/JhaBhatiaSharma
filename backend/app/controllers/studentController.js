@@ -1,4 +1,4 @@
-const { registerStudent, loginStudent } = require('../services/studentService');
+const { registerStudent, loginStudent, getStudent, updateStudent } = require('../services/studentService');
 const { generateToken } = require('../services/authService');
 
 const registerStudentController = async (req, res) => {
@@ -21,14 +21,15 @@ const loginStudentController = async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await loginStudent({ email, password });
-
     if (user) {
-      const sessionData = generateToken(email, 'student');
-
+      const sessionData = await generateToken(email, 'student');
       return res.status(200).json({
         message: 'Student found',
         userData: user,
-        sessionData: sessionData
+        sessionData: {
+          tokenType: 'Bearer',
+          accessToken: sessionData
+        }
       });
     } else {
       return res.status(401).json({ message: 'Invalid credentials' });

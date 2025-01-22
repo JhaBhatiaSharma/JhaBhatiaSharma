@@ -1,13 +1,14 @@
 'use strict';
 
+/** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up(queryInterface, Sequelize) {
+  async up (queryInterface, Sequelize) {
     await queryInterface.createTable('internships', {
       id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
         type: Sequelize.INTEGER,
+        allowNull: false,
+        primaryKey: true,
+        autoIncrement: true,
       },
       title: {
         type: Sequelize.STRING,
@@ -21,16 +22,12 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      stipend: {
-        type: Sequelize.INTEGER,
-        allowNull: true,
-      },
-      duration: {
-        type: Sequelize.STRING,
+      startDate: {
+        type: Sequelize.DATE,
         allowNull: false,
       },
-      skillsRequired: {
-        type: Sequelize.ARRAY(Sequelize.STRING),
+      endDate: {
+        type: Sequelize.DATE,
         allowNull: false,
       },
       recruiterId: {
@@ -56,7 +53,7 @@ module.exports = {
     });
   },
 
-  async down(queryInterface, Sequelize) {
+  async down (queryInterface, Sequelize) {
     await queryInterface.dropTable('internships');
-  },
+  }
 };

@@ -3,9 +3,7 @@ const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class Student extends Model {
-    static associate(models) {
-      // Define associations here, if any
-    }
+    static associate(models) {}
   }
 
   Student.init(
@@ -22,41 +20,21 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true,
+        validate: {
+          isEmail: true,
+        },
       },
       mobileNumber: {
         type: DataTypes.STRING,
-        allowNull: true,
-        unique: true,
-      },
-      dateOfBirth: {
-        type: DataTypes.DATE,
-        allowNull: true,
-      },
-      gender: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      profilePicture: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      linkedinProfile: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      githubProfile: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      createdAt: {
-        type: DataTypes.DATE,
         allowNull: false,
-        defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
+        validate: {
+          isNumeric: true,
+          len: [10, 15],
+        },
       },
-      updatedAt: {
-        type: DataTypes.DATE,
+      password: {
+        type: DataTypes.STRING,
         allowNull: false,
-        defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
       },
     },
     {

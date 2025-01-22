@@ -1,5 +1,5 @@
 const express = require('express');
-const { getAllInterviewsController, getInterviewController, addInterviewController, updateInterviewController } = require('../controllers/InterviewController');
+const { getAllInterviewsController, getInterviewController, addInterviewController, updateInterviewController } = require('../controllers/interviewController');
 
 const router = express.Router();
 

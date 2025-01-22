@@ -12,14 +12,13 @@ const registerStudent = async ({ firstName, lastName, email, mobileNumber, passw
     throw new Error('User with this email already exists');
   }
 
-  passwordEncrypt = encrypt(password);
-
+  passwordEncrypt = await encrypt(password);
   const newStudent = await Student.create({
     firstName,
     lastName,
     email,
     mobileNumber,
-    passwordEncrypt
+    password: passwordEncrypt
   });
 
   return newStudent;
@@ -32,7 +31,7 @@ const loginStudent = async ({ email, password }) => {
       throw new Error('User with this email does not exist');
     }
 
-    const passwordMatch = decrypt(password, existingStudent.password);
+    const passwordMatch = await decrypt(password, existingStudent.password);
     if(passwordMatch) {
         return existingStudent;
     }
@@ -41,7 +40,7 @@ const loginStudent = async ({ email, password }) => {
 
 const getStudent = async (email) => {
   const user = await findStudentByEmail(email);
-  if (!existingStudent) {
+  if (!user) {
     throw new Error('User with this email does not exist');
   }
   return user;

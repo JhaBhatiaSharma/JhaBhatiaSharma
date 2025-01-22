@@ -5,21 +5,21 @@ const fetchResume = async (studentId) => {
     return await Resume.findOne({ where: { studentId } });
 };
 
-const createResume = async (studentId, filePath) => {
-    return await Resume.create({ studentId, filePath });
+const createResume = async (studentId, path) => {
+    return await Resume.create({ studentId, path });
 };
 
-const updateResume = async (studentId, filePath) => {
+const updateResume = async (studentId, path) => {
     const existingResume = await Resume.findOne({ where: { studentId } });
     if (!existingResume) {
         throw new Error('Resume not found');
     }
 
-    if (existingResume.filePath) {
-        fs.unlinkSync(existingResume.filePath);
+    if (existingResume.path) {
+        fs.unlinkSync(existingResume.path);
     }
 
-    existingResume.filePath = filePath;
+    existingResume.path = path;
     return await existingResume.save();
 };
 
@@ -29,8 +29,8 @@ const deleteResume = async (studentId) => {
         throw new Error('Resume not found');
     }
 
-    if (existingResume.filePath) {
-        fs.unlinkSync(existingResume.filePath);
+    if (existingResume.path) {
+        fs.unlinkSync(existingResume.path);
     }
 
     return await existingResume.destroy();
