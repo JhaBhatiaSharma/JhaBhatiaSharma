@@ -15,6 +15,7 @@ const schemas = {
     }),
 
     updateStudent: Joi.object({
+        email: Joi.string().email().required().trim(),
         firstName: Joi.string(),
         lastName: Joi.string(),
         mobileNumber: Joi.string().pattern(/^[0-9]{10}$/),
@@ -25,6 +26,7 @@ const schemas = {
     }).or( 'firstName', 'lastName', 'email', 'mobileNumber', 'dateOfBirth', 'gender', 'linkedinProfile', 'githubProfile' ),
 
     updateRecruiter: Joi.object({
+        email: Joi.string().email().required().trim(),
         firstName: Joi.string(),
         lastName: Joi.string(),
         mobileNumber: Joi.string().pattern(/^[0-9]{10}$/),
@@ -36,28 +38,35 @@ const schemas = {
 
 const validateRequest = (schemaName) => {
     return (req, res, next) => {
-        const schema = schemas[schemaName];    
+        const schema = schemas[schemaName];
         if (!schema) {
-        return res.status(500).json({
-            message: `No validation schema found for ${schemaName}`
-        });
+            return res.status(500).json({
+                message: `No validation schema found for ${schemaName}`
+            });
         }
 
-        const { error, value } = schema.validate(req.body, {
-        abortEarly: false, 
-        stripUnknown: true,
-        allowUnknown: false
+        let dataToValidate;
+        if (req.method === 'GET') {
+            dataToValidate = req.query;
+        } else {
+            dataToValidate = req.body;
+        }
+
+        const { error, value } = schema.validate(dataToValidate, {
+            abortEarly: false,
+            stripUnknown: true,
+            allowUnknown: false
         });
 
         if (error) {
-        const errorMessage = error.details
-            .map(detail => detail.message)
-            .join(', ');
-            
-        return res.status(400).json({
-            message: 'Validation error',
-            errors: errorMessage
-        });
+            const errorMessage = error.details
+                .map(detail => detail.message)
+                .join(', ');
+
+            return res.status(400).json({
+                message: 'Validation error',
+                errors: errorMessage
+            });
         }
 
         req.body = value;

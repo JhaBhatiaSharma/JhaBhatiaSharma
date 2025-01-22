@@ -12,14 +12,14 @@ const registerRecruiter = async ({ firstName, lastName, email, mobileNumber, pas
     throw new Error('User with this email already exists');
   }
 
-  passwordEncrypt = encrypt(password);
+  passwordEncrypt = await encrypt(password);
 
   const newRecruiter = await Recruiter.create({
     firstName,
     lastName,
     email,
     mobileNumber,
-    passwordEncrypt
+    password: passwordEncrypt
   });
 
   return newRecruiter;
@@ -32,7 +32,7 @@ const loginRecruiter = async ({ email, password }) => {
       throw new Error('User with this email does not exist');
     }
 
-    const passwordMatch = decrypt(password, existingStudent.password);
+    const passwordMatch = await decrypt(password, existingRecruiter.password);
     if(passwordMatch) {
         return existingRecruiter;
     }
@@ -41,7 +41,7 @@ const loginRecruiter = async ({ email, password }) => {
 
 const getRecruiter = async (email) => {
   const user = await findRecruiterByEmail(email);
-  if (!existingStudent) {
+  if (!user) {
     throw new Error('User with this email does not exist');
   }
   return user;

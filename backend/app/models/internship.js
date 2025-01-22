@@ -3,9 +3,6 @@ const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class Internship extends Model {
-    /**
-     * Define associations here
-     */
     static associate(models) {
       Internship.belongsTo(models.Recruiter, {
         foreignKey: 'recruiterId',
@@ -28,16 +25,12 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      stipend: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-      },
-      duration: {
-        type: DataTypes.STRING,
+      startDate: {
+        type: DataTypes.DATE,
         allowNull: false,
       },
-      skillsRequired: {
-        type: DataTypes.ARRAY(DataTypes.STRING),
+      endDate: {
+        type: DataTypes.DATE,
         allowNull: false,
       },
       recruiterId: {
@@ -49,16 +42,6 @@ module.exports = (sequelize, DataTypes) => {
         },
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
-      },
-      createdAt: {
-        type: DataTypes.DATE,
-        allowNull: false,
-        defaultValue: DataTypes.NOW,
-      },
-      updatedAt: {
-        type: DataTypes.DATE,
-        allowNull: false,
-        defaultValue: DataTypes.NOW,
       },
     },
     {

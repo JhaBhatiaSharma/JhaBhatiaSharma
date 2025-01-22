@@ -1,4 +1,4 @@
-const Internship = require('../models/index');
+const { Internship } = require('../models/index');
 
 async function getAllInternships() {
   return await Internship.findAll();

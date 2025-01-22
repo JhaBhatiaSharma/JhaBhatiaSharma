@@ -1,4 +1,5 @@
-const { registerRecruiter, loginRecruiter, updateRecruiter } = require('../services/recruiterService');
+const { registerRecruiter, loginRecruiter, getRecruiter, updateRecruiter } = require('../services/recruiterService');
+const { generateToken } = require('../services/authService');
 
 const registerRecruiterController = async (req, res) => {
   try {
@@ -19,14 +20,20 @@ const registerRecruiterController = async (req, res) => {
 const loginRecruiterController = async (req, res) => {
   try {
     const { email, password } = req.body;
-
     const user = await loginRecruiter({ email, password });
-
-    return res.status(200).json({
-      message: 'Recruiter found',
-      userData: user,
-      sessionData: sessionData
-    });
+    if (user) {
+      const sessionData = await generateToken(email, 'recruiter');
+      return res.status(200).json({
+        message: 'Student found',
+        userData: user,
+        sessionData: {
+          tokenType: 'Bearer',
+          accessToken: sessionData
+        }
+      });
+    } else {
+      return res.status(401).json({ message: 'Invalid credentials' });
+    }
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: 'Error logging recruiter', error: error.message });
@@ -36,7 +43,7 @@ const loginRecruiterController = async (req, res) => {
 const getRecruiterController = async (req,res) => {
   try {
     const email = req.query.email;
-    const user = await getrecruiter(email);
+    const user = await getRecruiter(email);
 
     return res.status(200).json({
       message: 'recruiter found',

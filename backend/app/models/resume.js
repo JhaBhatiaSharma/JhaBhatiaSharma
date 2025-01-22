@@ -2,20 +2,25 @@
 const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-  class OTP extends Model {
+  class Resume extends Model {
     static associate(models) {
-      OTP.belongsTo(models.Student, {
+      Resume.belongsTo(models.Student, {
         foreignKey: 'studentId',
         as: 'student',
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
       });
     }
   }
 
-  OTP.init(
+  Resume.init(
     {
-      otp: {
+      path: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+          notEmpty: true,
+        },
       },
       studentId: {
         type: DataTypes.INTEGER,
@@ -25,20 +30,14 @@ module.exports = (sequelize, DataTypes) => {
           key: 'id',
         },
         unique: true,
-        onDelete: 'CASCADE',
-        onUpdate: 'CASCADE',
-      },
-      expiresAt: {
-        type: DataTypes.DATE,
-        allowNull: false,
       },
     },
     {
       sequelize,
-      modelName: 'OTP',
-      tableName: 'otps',
+      modelName: 'Resume',
+      tableName: 'resumes',
     }
   );
 
-  return OTP;
+  return Resume;
 };
