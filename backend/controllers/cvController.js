@@ -1,34 +1,5 @@
 const CV = require("../models/Cv");
 
-// Create or update a CV
-// exports.createOrUpdateCV = async (req, res) => {
-//   try {
-//     const { template, data } = req.body;
-
-//     // Check if the user already has a CV
-//     let cv = await CV.findOne({ user: req.user.id });
-
-//     if (cv) {
-//       // Update the existing CV
-//       cv.template = template;
-//       cv.data = data;
-//       await cv.save();
-//       return res.status(200).json({ message: "CV updated successfully", cv });
-//     }
-
-//     // Create a new CV
-//     cv = new CV({
-//       user: req.user.id,
-//       template,
-//       data,
-//     });
-//     await cv.save();
-//     res.status(201).json({ message: "CV created successfully", cv });
-//   } catch (error) {
-//     console.error("Error creating/updating CV:", error.message);
-//     res.status(500).json({ message: "Internal Server Error" });
-//   }
-// };
 exports.createOrUpdateCV = async (req, res) => {
   try {
     const { template, data, visibility } = req.body;
