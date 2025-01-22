@@ -107,6 +107,7 @@ describe('Student Controller Tests', () => {
       Student.findOne = jest.fn().mockResolvedValue(mockedStudent);
       bcrypt.compare = jest.fn().mockResolvedValue(true);
       jwt.sign = jest.fn().mockReturnValue('mockToken');
+      process.env.JWT_SECRET = 'testSecret';
 
       const req = {
         body: {
@@ -125,8 +126,8 @@ describe('Student Controller Tests', () => {
       expect(Student.findOne).toHaveBeenCalledWith({ email: 'john@example.com' });
       expect(bcrypt.compare).toHaveBeenCalledWith('password123', 'hashedPassword');
       expect(jwt.sign).toHaveBeenCalledWith(
-        { id: 'mockStudentId', role: 'student' },
-        process.env.JWT_SECRET,
+        { id: 'mockStudentId', role: 'student', email: 'john@example.com' },
+        'testSecret',
         { expiresIn: '1d' }
       );
       expect(res.status).toHaveBeenCalledWith(200);

@@ -54,27 +54,6 @@ const getRecentChats = async (req, res) => {
   }
 };
 
-// Get messages for a conversation
-// const getMessages = async (req, res) => {
-//   try {
-//     const { userId } = req.params;
-
-//     const messages = await Message.find({
-//       $or: [
-//         { sender: req.user.id, receiver: userId },
-//         { sender: userId, receiver: req.user.id },
-//       ],
-//     })
-//       .sort({ timestamp: 1 })
-//       .populate('sender', 'firstName lastName role profile.companyName')
-//       .populate('receiver', 'firstName lastName role profile.companyName');
-
-//     res.status(200).json(messages || []);
-//   } catch (error) {
-//     console.error('Error fetching messages:', error);
-//     res.status(500).json({ message: 'Failed to fetch messages' });
-//   }
-// };
 const getMessages = async (req, res) => {
   try {
     const { userId } = req.params; // Use the conversationId instead of userId
@@ -173,13 +152,10 @@ const sendMessage = async (req, res) => {
 };
 
 
-
-
-
 module.exports = {
   getRecentChats,
   getMessages,
   startConversation,
   sendMessage,
-  getAvailableUsers  // Added export
+  getAvailableUsers
 };
