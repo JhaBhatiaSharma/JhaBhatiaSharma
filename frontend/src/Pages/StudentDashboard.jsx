@@ -542,18 +542,17 @@ const StudentDashboard = () => {
                   {new Date(interview.dateTime).toLocaleString()}
                 </p>
                 {interview.meetLink && (
-                  <p className="text-sm text-blue-600 mt-2">
-                    Meet Link:{' '}
-                    <a
-                      href={interview.meetLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="underline"
-                    >
-                      {interview.meetLink}
-                    </a>
-                  </p>
-                )}
+                    <p className="text-sm text-blue-600 mt-2 break-words">
+                      
+                      <a
+                        href={interview.meetLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="underline break-all"
+                      ><button className='bg-white text-black border border-black rounded-lg shadow-md'>Meet Link{' '}</button>
+                      </a>
+                    </p>
+                  )}
               </div>
             </div>
           </div>
