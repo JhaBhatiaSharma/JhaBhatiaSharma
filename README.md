@@ -5,6 +5,47 @@
 
 **InternHub Students & Companies (S&C)** is a full-stack platform revolutionizing university-industry connections for internships. Our solution combines intelligent matching algorithms with comprehensive workflow management to enhance the internship experience for all stakeholders.
 
+# 🎥 Prototype Demo
+This repository contains interactive prototype demos for different dashboards.
+
+---
+
+## 🛠️ Admin Dashboard Prototype Testing
+### 🚀 Overview: 
+This prototype demonstrates the admin dashboard functionality.
+### 📌 Features: 
+- User Management
+- Analytics
+- Role-Based Access.
+  
+![Admin Dashboard Prototype](https://raw.githubusercontent.com/JhaBhatiaSharma/JhaBhatiaSharma/feature/prototype-v1-testing/Prototype_Demo/Admin_Dashboard_Prototype_Testing.gif)
+
+---
+
+## 🏢 Company Dashboard Prototype Testing
+### 📊 Overview: 
+The company dashboard showcases enterprise-level features.
+### ✅ Features: 
+- Job Postings
+- Application tTracking
+- Company Insights.
+  
+![Company Dashboard Prototype](https://raw.githubusercontent.com/JhaBhatiaSharma/JhaBhatiaSharma/feature/prototype-v1-testing/Prototype_Demo/Company_Dashboard_Prototype_Testing.gif)
+
+---
+
+## 🎓 Student Dashboard Prototype Testing
+### 📚 Overview: 
+A student-friendly dashboard for career opportunities.
+### 🔍 Features: 
+- Resume Management
+- Job Applications
+- Notifications.
+  
+![Student Dashboard Prototype](https://raw.githubusercontent.com/JhaBhatiaSharma/JhaBhatiaSharma/feature/prototype-v1-testing/Prototype_Demo/Student_Dashboard_Prototype_Testing.gif)
+
+---
+
 ## 🌟 Key Features
 
 - **AI-Powered Matching**: Smart algorithm connecting student skills with company requirements
