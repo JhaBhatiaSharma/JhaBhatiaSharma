@@ -1,7 +1,7 @@
 # InternHub S&C Platform - Next-Gen Internship Management
 
 ![Tech Stack](https://img.shields.io/badge/stack-MERN-61DAFB?logo=react&logoColor=white)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 **InternHub Students & Companies (S&C)** is a full-stack platform revolutionizing university-industry connections for internships. Our solution combines intelligent matching algorithms with comprehensive workflow management to enhance the internship experience for all stakeholders.
 
@@ -84,5 +84,95 @@ npm run build
 # Backend
 cd ../backend
 NODE_ENV=production node server.js
+```
+
+## 🐳 Docker Setup (Recommended)
+```bash
+# Start full-stack application with hot-reload
+docker-compose up --build
+```
+
+### Access Services
+1. **Frontend:** http://localhost:5173
+2. **Backend:** http://localhost:5001
+> **Important Notes:**  
+> ⏱️ **First Build:** Initial container setup may take 2-3 minutes  
+> 🔄 **Hot Reloading:** Code changes will automatically reload both services  
+> 🔐 **Environment:** Ensure backend environment variables are configured (see [Environment Variables](#environment-variables) section below)
+
+## 🔒 Environment Variables
+1. **Backend Preparation:**
+Create `.env` file in backend directory: (example)
+```env
+MONGO_URI=mongodb://localhost:27017/internhub
+JWT_SECRET=your_jwt_secret_key
+JWT_EXPIRES_IN=90d
+PORT=5001
+```
+
+## ✅ Testing Suite
+
+### Frontend Tests (from frontend directory):
+```bash
+cd frontend
+npm test              # Run all tests
+npm run test:watch    # Watch mode
+npm run test:coverage # Generate coverage report
+```
+
+### Backend Tests (from backend directory):
+```bash
+cd backend
+npm test              # Run all tests with coverage
+```
+
+## 📁 Project Structure
+
+### Frontend Architecture:
+```bash
+frontend/
+├── Dockerfile
+├── public/               # Static assets
+│   └── vite.svg
+├── src/
+│   ├── Pages/            # Application views
+│   │   ├── AdminDashboard.jsx
+│   │   ├── Company/      # Company-specific pages
+│   │   ├── Student/      # Student-specific pages
+│   │   └── ...other pages
+│   ├── components/       # Reusable UI components
+│   │   └── ui/          # UI primitives
+│   ├── context/          # React context providers
+│   ├── __tests__/        # Component & page tests
+│   ├── assets/           # Static assets
+│   ├── lib/              # Utilities & mock data
+│   └── main.jsx          # Application entry point
+├── tailwind.config.js    # Tailwind configuration
+├── vite.config.js        # Vite configuration
+└── ...other config files
+```
+
+### Backend Architecture
+```bash
+backend/
+├── Dockerfile
+├── app.js                # Express application setup
+├── config/               # Environment configuration
+├── controllers/          # Business logic handlers
+│   ├── adminController.js
+│   ├── authController.js
+│   └── ...other controllers
+├── models/               # MongoDB schemas
+│   ├── User.js
+│   ├── Internship.js
+│   └── ...other models
+├── routes/               # API endpoint definitions
+│   ├── authRoutes.js
+│   ├── adminRoutes.js
+│   └── ...other routes
+├── middleware/           # Authentication & error handling
+├── __tests__/            # Integration & unit tests
+├── utils/                # Helper functions
+└── ...other core files
 ```
 
