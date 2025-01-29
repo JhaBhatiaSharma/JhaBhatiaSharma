@@ -1,9 +1,9 @@
 name: Code Quality
 on:
   push:
-    branches: [main, develop, backup]
+    branches: [main, develop, backup, feature/prototype-v1-testing]
   pull_request:
-    branches: [main, develop, backup]
+    branches: [main, develop, backup, feature/prototype-v1-testing]
 jobs:
   setup:
     runs-on: ubuntu-latest
