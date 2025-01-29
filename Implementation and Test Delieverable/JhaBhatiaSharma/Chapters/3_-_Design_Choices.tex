@@ -1,0 +1,440 @@
+\section{Adopted Programming Languages: Advantages and Disadvantages}
+
+\subsection*{1. Frontend Language: JavaScript with React (and Vite)}
+React is a JavaScript library used for building interactive user interfaces. Coupled with Vite as a build tool, it provides a modern, efficient way to manage the frontend development of the application.
+
+\paragraph{Advantages:}
+\begin{itemize}
+    \item \textbf{Component-Based Architecture:}
+    \begin{itemize}
+        \item React uses reusable components, enabling developers to build a modular UI.
+        \item Components can be composed and maintained independently, increasing maintainability.
+        \item Example: A "Button" component can be reused across different parts of the application with varying styles or functionalities.
+    \end{itemize}
+    \item \textbf{Virtual DOM:}
+    \begin{itemize}
+        \item React’s Virtual DOM improves performance by reducing direct interaction with the actual DOM.
+        \item Only the changes are updated in the DOM, resulting in faster rendering and better user experience.
+        \item Example: In an internship listing page, updating one entry does not require re-rendering the entire list.
+    \end{itemize}
+    \item \textbf{Strong Ecosystem:}
+    \begin{itemize}
+        \item Integration with tools like React Router for navigation and Redux for state management.
+        \item Large community support ensures abundant resources, libraries, and troubleshooting help.
+        \item Example: Material-UI provides pre-built, customizable UI components, accelerating development.
+    \end{itemize}
+    \item \textbf{Hot Module Replacement (HMR) via Vite:}
+    \begin{itemize}
+        \item Vite enables instantaneous feedback during development by updating only the affected modules without a full reload.
+        \item Example: Editing the CSS of a single component updates the preview immediately without reloading the page.
+    \end{itemize}
+    \item \textbf{SEO and SSR Support:}
+    \begin{itemize}
+        \item React supports Server-Side Rendering (SSR), which can improve SEO for pages needing indexing.
+        \item Example: Internship search pages rendered on the server can rank better on search engines.
+    \end{itemize}
+    \item \textbf{Cross-Platform Compatibility:}
+    \begin{itemize}
+        \item React’s flexibility allows the use of frameworks like React Native for mobile development, unifying frontend logic.
+    \end{itemize}
+\end{itemize}
+
+\paragraph{Disadvantages:}
+\begin{itemize}
+    \item \textbf{Steep Learning Curve:}
+    \begin{itemize}
+        \item Beginners may find it difficult to grasp advanced concepts like hooks, higher-order components (HOCs), and context API.
+        \item Example: The useEffect hook’s dependency array often confuses developers, leading to unexpected behaviors.
+    \end{itemize}
+    \item \textbf{Boilerplate Code:}
+    \begin{itemize}
+        \item Although modular, managing state and lifecycle events can introduce excessive boilerplate code, especially in larger applications.
+        \item Example: Redux requires setting up actions, reducers, and a store, which adds complexity.
+    \end{itemize}
+    \item \textbf{Heavy Dependency on External Libraries:}
+    \begin{itemize}
+        \item React does not include built-in features like routing or HTTP requests, requiring additional libraries such as Axios or React Router.
+        \item This increases dependencies and potential compatibility issues.
+    \end{itemize}
+    \item \textbf{Performance Bottlenecks with Large Applications:}
+    \begin{itemize}
+        \item Excessive use of stateful components or improper state management can degrade performance.
+        \item Example: Rendering too many child components unnecessarily on state change can cause lag.
+    \end{itemize}
+\end{itemize}
+
+\subsection*{2. Backend Language: JavaScript with Node.js and Express}
+Node.js is a runtime environment for executing JavaScript on the server side, while Express.js is a lightweight framework for building web applications and APIs.
+
+\paragraph{Advantages:}
+\begin{itemize}
+    \item \textbf{Asynchronous, Event-Driven Architecture:}
+    \begin{itemize}
+        \item Node.js uses non-blocking I/O operations, making it highly efficient for real-time applications and heavy workloads.
+        \item Example: Simultaneous internship application submissions from multiple users can be processed without delay.
+    \end{itemize}
+    \item \textbf{Single Programming Language:}
+    \begin{itemize}
+        \item Using JavaScript for both the frontend and backend ensures seamless communication and reduces context switching for developers.
+        \item Example: Shared utility functions like data formatting can be reused across the application.
+    \end{itemize}
+    \item \textbf{Vast Ecosystem:}
+    \begin{itemize}
+        \item The npm ecosystem offers thousands of libraries and tools to extend functionality.
+        \item Example: Mongoose simplifies interactions with MongoDB, while jsonwebtoken enables secure authentication.
+    \end{itemize}
+    \item \textbf{Lightweight and Scalable:}
+    \begin{itemize}
+        \item Node.js is lightweight and scales efficiently with tools like clustering or load balancers.
+        \item Example: Horizontal scaling can be achieved to handle traffic spikes during peak application submission periods.
+    \end{itemize}
+    \item \textbf{Microservices-Friendly:}
+    \begin{itemize}
+        \item Node.js is suitable for building microservices with RESTful APIs.
+        \item Example: Separate APIs for internships, applications, and notifications allow independent scaling and maintenance.
+    \end{itemize}
+    \item \textbf{Real-Time Communication:}
+    \begin{itemize}
+        \item WebSockets in Node.js enable real-time features such as notifications or live chat.
+        \item Example: Students and recruiters can communicate directly via instant messaging.
+    \end{itemize}
+\end{itemize}
+
+\paragraph{Disadvantages:}
+\begin{itemize}
+    \item \textbf{Single-Threaded Nature:}
+    \begin{itemize}
+        \item Node.js runs on a single-threaded event loop, which can cause performance issues with CPU-intensive tasks.
+        \item Example: Large computations, such as generating complex analytics for platform administrators, might block the thread.
+    \end{itemize}
+    \item \textbf{Callback Hell:}
+    \begin{itemize}
+        \item Complex logic with multiple asynchronous operations can lead to deeply nested callbacks.
+        \item Mitigation with Promises or async/await is essential but adds learning overhead.
+    \end{itemize}
+    \item \textbf{Rapid API Changes:}
+    \begin{itemize}
+        \item The fast-paced evolution of Node.js and its libraries can result in compatibility issues.
+        \item Example: Upgrading a major version of a library might require significant code refactoring.
+    \end{itemize}
+    \item \textbf{Security Challenges:}
+    \begin{itemize}
+        \item The vast npm ecosystem includes packages with potential vulnerabilities.
+        \item Example: Using unverified or outdated third-party libraries can expose the application to risks like dependency injection attacks.
+    \end{itemize}
+\end{itemize}
+
+\subsection*{3. Database Language: MongoDB (Query Language)}
+MongoDB uses a document-oriented NoSQL query language for managing and manipulating JSON-like data.
+
+\subsubsection*{Advantages:}
+\begin{itemize}
+    \item \textbf{Schema Flexibility:}
+    \begin{itemize}
+        \item MongoDB allows dynamic schema designs, which are beneficial for applications with evolving data models.
+        \item Example: New attributes can be added to internship or user profiles without altering the existing structure.
+    \end{itemize}
+    \item \textbf{High Scalability:}
+    \begin{itemize}
+        \item Horizontal scaling with sharding enables MongoDB to handle large datasets efficiently.
+        \item Example: Storing thousands of CVs or application records across multiple servers.
+    \end{itemize}
+    \item \textbf{Integration with JavaScript:}
+    \begin{itemize}
+        \item MongoDB’s query syntax aligns with JavaScript, making it easier to use with Node.js.
+        \item Example: Queries can be written directly in JavaScript objects without additional abstraction layers.
+    \end{itemize}
+    \item \textbf{Performance with Write-Heavy Workloads:}
+    \begin{itemize}
+        \item The database is optimized for high write speeds, suitable for logging and storing real-time data.
+        \item Example: Real-time activity logs for internship applications or interactions.
+    \end{itemize}
+\end{itemize}
+
+\subsubsection*{Disadvantages:}
+\begin{itemize}
+    \item \textbf{Limited Query Capabilities:}
+    \begin{itemize}
+        \item MongoDB lacks advanced relational query features like joins or transactions (in earlier versions).
+        \item Example: Complex relationships between students, companies, and internships require additional handling in the application logic.
+    \end{itemize}
+    \item \textbf{Memory Usage:}
+    \begin{itemize}
+        \item MongoDB uses significant memory due to its document-based design.
+        \item Example: Storing large datasets, such as resumes with attachments, can quickly consume resources.
+    \end{itemize}
+    \item \textbf{Consistency Issues:}
+    \begin{itemize}
+        \item In distributed systems, MongoDB prioritizes availability over consistency, which may lead to outdated data reads in certain scenarios.
+    \end{itemize}
+    \item \textbf{Indexing Overhead:}
+    \begin{itemize}
+        \item Proper indexing is critical for query performance but increases storage requirements and maintenance complexity.
+    \end{itemize}
+\end{itemize}
+
+\section{Adopted Middleware: Advantages and Disadvantages}
+Middleware is a critical part of the software architecture that sits between the frontend, backend, and database. Middleware simplifies handling requests, responses, authentication, data validation, and more.
+
+\subsection*{1. Express Middleware}
+Express.js provides built-in and third-party middleware to streamline the backend development process. It is central to handling HTTP requests, parsing data, and chaining operations in the backend.
+
+\paragraph{Examples Used:}
+\begin{itemize}
+    \item Body Parsing: \texttt{express.json()} and \texttt{express.urlencoded()}.
+    \item Routing Middleware: \texttt{express.Router()} for modular route handling.
+\end{itemize}
+
+\paragraph{Advantages:}
+\begin{itemize}
+    \item \textbf{Simplified Request Handling:}
+    \begin{itemize}
+        \item Middleware functions provide modular, reusable code for handling HTTP requests and responses.
+        \item Example: Parsing JSON payloads with \texttt{express.json()} simplifies extracting data from API requests.
+    \end{itemize}
+    \item \textbf{Modular Architecture:}
+    \begin{itemize}
+        \item Enables dividing the application into smaller, manageable route handlers with \texttt{express.Router()}.
+        \item Example: Separate routes for user authentication, internships, and complaints.
+    \end{itemize}
+    \item \textbf{Comprehensive Ecosystem:}
+    \begin{itemize}
+        \item Integrates seamlessly with a wide range of third-party middleware for security, logging, and more.
+        \item Example: \texttt{helmet} middleware secures HTTP headers.
+    \end{itemize}
+    \item \textbf{Chained Middleware Execution:}
+    \begin{itemize}
+        \item Allows multiple middleware functions to process a request sequentially.
+        \item Example: Authentication -> Validation -> Business Logic -> Response.
+    \end{itemize}
+    \item \textbf{Error Handling:}
+    \begin{itemize}
+        \item Custom error-handling middleware improves debugging and ensures consistent error responses.
+    \end{itemize}
+\end{itemize}
+
+\paragraph{Disadvantages:}
+\begin{itemize}
+    \item \textbf{Manual Middleware Management:}
+    \begin{itemize}
+        \item Developers must explicitly define middleware for each route or use-case.
+        \item Example: Forgetting to add a validation middleware for a route can cause unexpected errors.
+    \end{itemize}
+    \item \textbf{Performance Overhead:}
+    \begin{itemize}
+        \item Excessive middleware layers can increase request-processing time.
+        \item Example: Sequentially processing redundant middlewares can slow down responses for high-traffic endpoints.
+    \end{itemize}
+    \item \textbf{Lack of Opinionated Defaults:}
+    \begin{itemize}
+        \item While flexible, Express does not provide default configurations for security or performance, requiring extra effort to set up.
+    \end{itemize}
+\end{itemize}
+
+\subsection*{2. Mongoose Middleware (ODM for MongoDB)}
+Mongoose provides pre- and post-save hooks (middleware) for MongoDB models, enabling developers to handle logic at various stages of data interaction.
+
+\paragraph{Examples Used:}
+\begin{itemize}
+    \item Pre-save Hooks: Validate data or hash passwords before saving.
+    \item Post-remove Hooks: Clean up related data after a record deletion.
+\end{itemize}
+
+\paragraph{Advantages:}
+\begin{itemize}
+    \item \textbf{Built-in Lifecycle Hooks:}
+    \begin{itemize}
+        \item Automates repetitive tasks like validation, password hashing, or cascading deletes.
+        \item Example: A pre-save hook to hash student passwords before storing them in the database.
+    \end{itemize}
+    \item \textbf{Data Validation:}
+    \begin{itemize}
+        \item Middleware ensures schema validation rules are applied consistently.
+        \item Example: Validating internship fields (e.g., stipend, duration) before saving to the database.
+    \end{itemize}
+    \item \textbf{Centralized Logic:}
+    \begin{itemize}
+        \item Reduces redundancy by allowing data-related logic to reside within the models.
+        \item Example: Automatically updating timestamps for records via pre-update hooks.
+    \end{itemize}
+    \item \textbf{Error Handling:}
+    \begin{itemize}
+        \item Provides a robust mechanism for handling schema validation errors at the database level.
+        \item Example: Preventing invalid CV uploads by rejecting oversized files.
+    \end{itemize}
+\end{itemize}
+
+\paragraph{Disadvantages:}
+\begin{itemize}
+    \item \textbf{Performance Impact:}
+    \begin{itemize}
+        \item Hooks can introduce latency, especially if they involve complex logic or external service calls.
+        \item Example: A pre-save hook that verifies unique email addresses via an API may slow down user registration.
+    \end{itemize}
+    \item \textbf{Debugging Complexity:}
+    \begin{itemize}
+        \item Errors in middleware logic are harder to trace because they occur outside of the main request-response flow.
+        \item Example: Misconfigured validation middleware causing silent failures.
+    \end{itemize}
+    \item \textbf{Limited Customization:}
+    \begin{itemize}
+        \item Mongoose middleware can be rigid, making it challenging to accommodate advanced use cases without workarounds.
+    \end{itemize}
+\end{itemize}
+
+\subsection*{3. Authentication Middleware: JSON Web Tokens (JWT)}
+JWT middleware provides secure authentication and authorization for APIs by issuing signed tokens that clients include in subsequent requests.
+
+\paragraph{Examples Used:}
+\begin{itemize}
+    \item \texttt{jsonwebtoken} for signing and verifying tokens.
+    \item Middleware to decode and validate JWT tokens on protected routes.
+\end{itemize}
+
+\subsubsection*{Advantages:}
+\begin{itemize}
+    \item \textbf{Stateless Authentication:}
+    \begin{itemize}
+        \item No need for server-side session storage; the client stores tokens, reducing backend load.
+        \item Example: Students and recruiters authenticate using tokens stored in their browsers or apps.
+    \end{itemize}
+    \item \textbf{Scalability:}
+    \begin{itemize}
+        \item Works efficiently in distributed systems since tokens do not rely on centralized storage.
+        \item Example: APIs can verify user identity without querying a database for each request.
+    \end{itemize}
+    \item \textbf{Flexibility:}
+    \begin{itemize}
+        \item Tokens can include custom claims for roles, permissions, or session data.
+        \item Example: A JWT can contain a role field (e.g., "student" or "recruiter") for role-based access control.
+    \end{itemize}
+    \item \textbf{Security Features:}
+    \begin{itemize}
+        \item Tokens are signed, ensuring data integrity and preventing tampering.
+        \item Example: If the signature does not match, the token is invalid.
+    \end{itemize}
+\end{itemize}
+
+\subsubsection*{Disadvantages:}
+\begin{itemize}
+    \item \textbf{Token Storage Risks:}
+    \begin{itemize}
+        \item Storing tokens insecurely (e.g., in local storage) can expose the application to attacks like XSS.
+        \item Mitigation: Use HTTP-only cookies for storing tokens.
+    \end{itemize}
+    \item \textbf{No Built-in Expiration Handling:}
+    \begin{itemize}
+        \item JWT does not include token revocation by default, requiring additional logic to handle blacklisting.
+        \item Example: Invalidating tokens when users log out requires a server-side token blacklist.
+    \end{itemize}
+    \item \textbf{Payload Size:}
+    \begin{itemize}
+        \item Large payloads can increase request sizes, affecting performance in some cases.
+        \item Example: Including unnecessary claims in the token may bloat the payload.
+    \end{itemize}
+\end{itemize}
+
+\subsection*{4. Logging Middleware: Morgan}
+Morgan is a logging middleware for Express applications, primarily used to track HTTP requests and responses.
+
+\paragraph{Advantages:}
+\begin{itemize}
+    \item \textbf{Simplifies Debugging:}
+    \begin{itemize}
+        \item Logs critical request details, such as HTTP method, status code, and response time.
+        \item Example: Logs can identify slow endpoints causing performance bottlenecks.
+    \end{itemize}
+    \item \textbf{Customizable Formats:}
+    \begin{itemize}
+        \item Supports pre-defined and custom log formats for varying use cases (e.g., combined, dev).
+        \item Example: Using the "combined" format for production and "dev" for debugging.
+    \end{itemize}
+    \item \textbf{Integrates with External Services:}
+    \begin{itemize}
+        \item Compatible with log management tools like Winston or external logging services (e.g., Elasticsearch).
+        \item Example: Piping logs to a centralized dashboard for analytics.
+    \end{itemize}
+\end{itemize}
+
+\paragraph{Disadvantages:}
+\begin{itemize}
+    \item \textbf{Performance Overhead:}
+    \begin{itemize}
+        \item Generating and storing logs for every request can slightly impact performance.
+        \item Example: High-traffic APIs may experience latency due to excessive logging.
+    \end{itemize}
+    \item \textbf{Security Concerns:}
+    \begin{itemize}
+        \item Improperly configured logs may expose sensitive data, such as authorization headers or tokens.
+    \end{itemize}
+\end{itemize}
+
+\section{APIs Not Included in the Design Document (DD)}
+This section outlines the APIs that were not explicitly mentioned in the Design Document (DD) but could significantly enhance the functionality, usability, and scalability of the InternHub - Students \& Companies (S\&C) platform.
+
+\subsection*{1. File Upload API}
+\paragraph{Purpose:}
+Manage user file uploads, including CVs, certificates, and other required documents.
+
+\paragraph{Potential Use Cases:}
+\begin{itemize}
+    \item Allow students to upload resumes and certificates directly to their profiles.
+    \item Enable recruiters to upload job descriptions or supporting files for internships.
+\end{itemize}
+
+\paragraph{Advantages:}
+\begin{itemize}
+    \item Secure and efficient storage for user documents.
+    \item Built-in versioning to track changes and updates.
+    \item Integration with cloud storage services like AWS S3 or Cloudinary for scalability.
+\end{itemize}
+
+\paragraph{Disadvantages:}
+\begin{itemize}
+    \item Requires additional infrastructure for large-scale file handling.
+    \item Increased bandwidth costs for large files.
+\end{itemize}
+
+\subsection*{2. Notification API}
+\paragraph{Purpose:}
+Extend the notification system to support multi-channel delivery, including SMS, email, and push notifications.
+
+\paragraph{Potential Use Cases:}
+\begin{itemize}
+    \item Notify students about internship application updates.
+    \item Send interview reminders via SMS or email.
+\end{itemize}
+
+\paragraph{Advantages:}
+\begin{itemize}
+    \item Improved user engagement with timely notifications.
+    \item Multi-channel support ensures critical updates reach users even if they are offline.
+\end{itemize}
+
+\paragraph{Disadvantages:}
+\begin{itemize}
+    \item Requires integration with external providers (e.g., Twilio, SendGrid), adding to costs.
+    \item Dependency on third-party services introduces potential downtime risks.
+\end{itemize}
+
+\subsection*{3. Analytics API}
+\paragraph{Purpose:}
+Provide insights into system usage, application trends, and user engagement.
+
+\paragraph{Potential Use Cases:}
+\begin{itemize}
+    \item Track the number of applications submitted per internship.
+    \item Generate reports on platform activity for administrators.
+\end{itemize}
+
+\paragraph{Advantages:}
+\begin{itemize}
+    \item Helps stakeholders make data-driven decisions.
+    \item Real-time analytics can identify bottlenecks or underperforming features.
+\end{itemize}
+
+\paragraph{Disadvantages:}
+\begin{itemize}
+    \item Complex queries and real-time processing may increase backend load.
+    \item Requires additional storage for aggregated data.
+\end{itemize}

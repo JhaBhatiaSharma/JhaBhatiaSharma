@@ -1,0 +1,101 @@
+\section{Setup Guide}
+
+\subsection{Clone the Repository}
+Clone the repository using the following command:
+\begin{verbatim}
+git clone https://github.com/JhaBhatiaSharma/JhaBhatiaSharma.git
+\end{verbatim}
+
+Navigate to the project directory:
+\begin{verbatim}
+cd JhaBhatiaSharma
+\end{verbatim}
+
+\subsection{Environment Configuration}
+Create a \texttt{.env} file in the root directory of the project.  
+Add the following variables to the file:
+
+\begin{verbatim}
+PORT=5001
+JWT_SECRET=your_jwt_secret_here
+MONGO_URI=your_mongo_uri_here
+\end{verbatim}
+
+\subsection{Backend Setup}
+
+\subsubsection{Requirements}
+\begin{itemize}
+    \item Internet connection
+    \item At least 50MB free disk space for Node.js binary.
+    \item At least 100MB free disk space for dependencies.
+\end{itemize}
+
+\subsubsection{Setup}
+Navigate to the backend folder:
+\begin{verbatim}
+cd backend
+\end{verbatim}
+
+Install dependencies:
+\begin{verbatim}
+npm install
+\end{verbatim}
+
+\subsubsection{Run}
+Start the backend server:
+\begin{verbatim}
+npx nodemon server.js
+\end{verbatim}
+
+\subsection{Frontend Setup}
+
+\subsubsection{Requirements}
+\begin{itemize}
+    \item Internet connection
+\end{itemize}
+
+\subsubsection{Setup}
+Navigate to the frontend folder:
+\begin{verbatim}
+cd frontend
+\end{verbatim}
+
+Install dependencies:
+\begin{verbatim}
+npm install
+\end{verbatim}
+
+\subsubsection{Run}
+Start the frontend development server:
+\begin{verbatim}
+npm run dev
+\end{verbatim}
+
+\subsection{Easier Installation (Using Docker)}
+For an easier installation, you can use **Docker** to set up both the frontend and backend automatically.
+
+\begin{enumerate}
+    \item Go to the project home directory:
+    \begin{verbatim}
+    cd JhaBhatiaSharma
+    \end{verbatim}
+
+    \item Run the following command to build and start the application:
+    \begin{verbatim}
+    docker-compose up --build
+    \end{verbatim}
+
+    \item Once the containers are running, access the application at:
+    \begin{verbatim}
+    http://localhost:5173/
+    \end{verbatim}
+\end{enumerate}
+
+\subsection{Access the Backend}
+Open your browser and navigate to the URL:
+\begin{verbatim}
+http://localhost:5001
+\end{verbatim}
+
+
+
