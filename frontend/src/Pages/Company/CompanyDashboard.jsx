@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Users, Briefcase, Bell, BarChart, Calendar, Plus } from 'lucide-react';
+import { Users, Briefcase, BarChart, Calendar, Plus } from 'lucide-react';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import { useNavigate } from 'react-router-dom';
@@ -445,7 +445,7 @@ const CompanyDashboard = () => {
     <div className="mb-8">
   <Card className="shadow-md">
     <CardHeader>
-      <CardTitle className="text-lg font-bold">Today's Interviews</CardTitle>
+      <CardTitle className="text-lg font-bold">Today&apos;s Interviews</CardTitle>
     </CardHeader>
     <CardContent>
       {todaysInterviews.length > 0 ? (

@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../context/UserContext';
 import { GraduationCap, Building2, Mail, Lock } from 'lucide-react';
-import axios from 'axios';
 import API from '../api';
 
 const AuthenticationScreen = () => {
@@ -173,7 +172,7 @@ const AuthenticationScreen = () => {
           </div>
 
           <div className="mt-6 text-center">
-            <p className="text-sm text-gray-500">Don't have an account?</p>
+            <p className="text-sm text-gray-500">Don&apos;t have an account?</p>
             <button
               onClick={() => navigate('/register')}
               className="mt-2 bg-[#4F46E5] text-white py-2 px-4 rounded-lg text-sm font-medium hover:bg-[#4338CA] transition-colors"

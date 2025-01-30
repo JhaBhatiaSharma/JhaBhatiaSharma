@@ -1,39 +1,39 @@
-import { render, screen, fireEvent } from '@testing-library/react';
-import UserMenuDropdown from '../../components/UserMenuDropdown';
-import { BrowserRouter } from 'react-router-dom';
+import { render, screen, fireEvent } from "@testing-library/react";
+import UserMenuDropdown from "../../components/UserMenuDropdown";
+import { BrowserRouter } from "react-router-dom";
 
-describe('UserMenuDropdown', () => {
-  const renderDropdown = (role = 'student') => {
+describe("UserMenuDropdown", () => {
+  const renderDropdown = (role = "student") => {
     render(
       <BrowserRouter>
         <UserMenuDropdown role={role} initials="JD" />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
   };
 
-  it('renders the dropdown button with initials', () => {
+  it("renders the dropdown button with initials", () => {
     renderDropdown();
-    expect(screen.getByText('JD')).toBeInTheDocument();
+    expect(screen.getByText("JD")).toBeInTheDocument();
   });
 
-  it('shows dropdown menu on click', () => {
+  it("shows dropdown menu on click", () => {
     renderDropdown();
-    fireEvent.click(screen.getByText('JD'));
-    expect(screen.getByText('Logout')).toBeInTheDocument();
+    fireEvent.click(screen.getByText("JD"));
+    expect(screen.getByText("Logout")).toBeInTheDocument();
   });
 
-  it('shows correct background color based on role', () => {
-    renderDropdown('admin');
-    fireEvent.click(screen.getByText('JD'));
-    const button = screen.getByText('JD');
-    expect(button).toHaveClass('bg-blue-500');
+  it("shows correct background color based on role", () => {
+    renderDropdown("admin");
+    fireEvent.click(screen.getByText("JD"));
+    const button = screen.getByText("JD");
+    expect(button).toHaveClass("bg-blue-500");
   });
 
-  it('logs out and redirects to login', () => {
+  it("logs out and redirects to login", () => {
     renderDropdown();
-    fireEvent.click(screen.getByText('JD'));
-    fireEvent.click(screen.getByText('Logout'));
-    expect(localStorage.getItem('token')).toBeNull();
-    expect(localStorage.getItem('userRole')).toBeNull();
+    fireEvent.click(screen.getByText("JD"));
+    fireEvent.click(screen.getByText("Logout"));
+    expect(localStorage.getItem("token")).toBeNull();
+    expect(localStorage.getItem("userRole")).toBeNull();
   });
 });

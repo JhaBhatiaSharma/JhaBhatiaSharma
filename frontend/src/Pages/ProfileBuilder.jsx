@@ -1,7 +1,6 @@
 //frontend/src/Pages/ProfileBuilder.jsx
-import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { User, Book, Code, Building2, GraduationCap, Plus } from 'lucide-react';
+import { User, Code, Building2, GraduationCap, Plus } from 'lucide-react';
 
 const ProfileBuilder = () => {
   return (

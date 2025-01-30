@@ -153,9 +153,8 @@
 // export default SignupScreen;
 
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { GraduationCap, Building2 } from 'lucide-react';
 import API from '../api';
 

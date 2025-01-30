@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
-import { MessageSquare, Search, Send, User, X } from "lucide-react";
+import { Search, Send, X } from "lucide-react";
 import API from '../api'
 
+// eslint-disable-next-line react/prop-types
 const MessagingSystem = ({ isOpen, onClose, userId, role }) => {
   const [conversations, setConversations] = useState([]);
   const [usersToChat, setUsersToChat] = useState([]);
@@ -147,7 +148,7 @@ const MessagingSystem = ({ isOpen, onClose, userId, role }) => {
     }
   };
   
-  
+  // eslint-disable-next-line no-unused-vars, unused-imports/no-unused-vars
   const handleConversationSelect = (conversation) => {
     setMessages([]); // Clear previous messages
     setActiveConversation(conversation);

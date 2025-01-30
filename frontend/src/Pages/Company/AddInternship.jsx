@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import API from '../../api'; 
 
@@ -98,6 +98,7 @@ const AddInternship = () => {
     delete submissionData.newSkill;
 
     try {
+      // eslint-disable-next-line no-unused-vars, unused-imports/no-unused-vars
       const response = await API.post('/internships/addinternship', submissionData);
       
       alert('Internship added successfully!');

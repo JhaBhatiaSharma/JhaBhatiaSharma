@@ -1,13 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Users,
-  AlertCircle,
-  BarChart2,
-  Settings,
   Search,
-  Bell,
   UserCog,
   Filter,
 } from 'lucide-react';
@@ -18,6 +13,7 @@ import API from '../api';
 const AdminDashboard = () => {
   const [users, setUsers] = useState([]); // Store fetched user data
   const [searchQuery, setSearchQuery] = useState('');
+  /* eslint-disable no-unused-vars, unused-imports/no-unused-vars */
   const [filterRole, setFilterRole] = useState('');
   const [internships, setInternships] = useState([]);
   const [loading, setLoading] = useState(true); // Loading state for API calls
@@ -27,6 +23,7 @@ const AdminDashboard = () => {
   const [isInternshipModalOpen, setInternshipModalOpen] = useState(false);
   const [complaints, setComplaints] = useState([]);
   const [isComplaintModalOpen, setComplaintModalOpen] = useState(false);
+  /* eslint-enable no-unused-vars, unused-imports/no-unused-vars */
   const [isMessagingOpen, setIsMessagingOpen] = useState(false);
   const [isStudentModalOpen,setStudentModalOpen]=useState(false)
   const [isRecruiterModalOpen,setRecruiterModalOpen]=useState(false)

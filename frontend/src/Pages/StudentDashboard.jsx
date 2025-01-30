@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Briefcase, Calendar, MessageSquare, Bell, FileText, Sparkles, MapPin, MessageCircleCodeIcon } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Briefcase, Calendar, FileText, Sparkles, MapPin, MessageCircleCodeIcon } from 'lucide-react';
 import CVBuilder from './CVBuilder';
 import MessagingSystem from './MessagingSystem';
 import DatePicker from 'react-datepicker';
@@ -18,6 +18,7 @@ const StudentDashboard = () => {
   const [showApplyModal, setShowApplyModal] = useState(false);
   const [showActiveInternshipsModal, setShowActiveInternshipsModal] = useState(false);
   const [activeInternships, setActiveInternships] = useState([]);
+  // eslint-disable-next-line no-unused-vars, unused-imports/no-unused-vars
   const [internships, setInternships] = useState([]);
   const [selectedInternship, setSelectedInternship] = useState(null);
   const [scheduledInterviews, setScheduledInterviews] = useState([]);

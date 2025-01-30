@@ -1,8 +1,8 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { LogOut, User, Settings, Building2 } from 'lucide-react';
+import { useState, useRef, useEffect } from 'react';
+import { LogOut, Settings } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import API from '../api'
-
+// eslint-disable-next-line react/prop-types
 const UserMenuDropdown = ({ role = 'student', initials = 'JD' }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -62,7 +62,7 @@ const UserMenuDropdown = ({ role = 'student', initials = 'JD' }) => {
         return 'bg-[#4A72FF] hover:bg-[#3A5FE6]';
     }
   };
-
+  // eslint-disable-next-line no-unused-vars, unused-imports/no-unused-vars
   const getProfilePath = () => {
     switch (role) {
       case 'admin':
