@@ -1,5 +1,6 @@
+//frontend/src/Pages/ProfileBuilder.jsx
 import React from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { User, Book, Code, Building2, GraduationCap, Plus } from 'lucide-react';
 
 const ProfileBuilder = () => {
@@ -26,11 +27,19 @@ const ProfileBuilder = () => {
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-gray-700">First Name</label>
-                  <input type="text" className="w-full p-2 border rounded-lg" placeholder="John" />
+                  <input
+                    type="text"
+                    className="w-full p-2 border rounded-lg"
+                    placeholder="John"
+                  />
                 </div>
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-gray-700">Last Name</label>
-                  <input type="text" className="w-full p-2 border rounded-lg" placeholder="Doe" />
+                  <input
+                    type="text"
+                    className="w-full p-2 border rounded-lg"
+                    placeholder="Doe"
+                  />
                 </div>
                 <div className="space-y-2 col-span-2">
                   <label className="text-sm font-medium text-gray-700">Professional Summary</label>
@@ -85,10 +94,7 @@ const ProfileBuilder = () => {
               <div className="space-y-4">
                 <div className="flex flex-wrap gap-2">
                   {['React', 'JavaScript', 'Node.js', 'Python', 'Git'].map((skill) => (
-                    <span
-                      key={skill}
-                      className="px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-sm flex items-center gap-2"
-                    >
+                    <span key={skill} className="px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-sm flex items-center gap-2">
                       {skill}
                       <button className="hover:text-blue-800">×</button>
                     </span>
@@ -190,10 +196,7 @@ const ProfileBuilder = () => {
                       <span className="text-sm text-yellow-600">In Progress</span>
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-1">
-                      <div
-                        className="bg-yellow-500 rounded-full h-1"
-                        style={{ width: '60%' }}
-                      ></div>
+                      <div className="bg-yellow-500 rounded-full h-1" style={{ width: '60%' }}></div>
                     </div>
                   </div>
 
@@ -203,10 +206,7 @@ const ProfileBuilder = () => {
                       <span className="text-sm text-yellow-600">In Progress</span>
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-1">
-                      <div
-                        className="bg-yellow-500 rounded-full h-1"
-                        style={{ width: '80%' }}
-                      ></div>
+                      <div className="bg-yellow-500 rounded-full h-1" style={{ width: '80%' }}></div>
                     </div>
                   </div>
                 </div>

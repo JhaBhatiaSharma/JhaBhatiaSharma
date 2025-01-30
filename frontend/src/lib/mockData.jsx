@@ -1,3 +1,4 @@
+//frontend/src/lib/mockData.jsx
 export const mockData = {
   students: [
     { id: 1, name: 'John Doe', role: 'Student', status: 'Active' },
@@ -12,3 +13,4 @@ export const mockData = {
     { id: 2, title: 'Backend Developer', company: 'WebSolutions', location: 'New York' },
   ],
 };
+

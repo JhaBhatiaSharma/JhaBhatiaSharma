@@ -1,5 +1,6 @@
+//frontend/src/Pages/InternshipApplication.jsx
 import React from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Building2, MapPin, Clock, Calendar, Users, ChevronLeft, Share2 } from 'lucide-react';
 
 const InternshipDetails = () => {
@@ -68,9 +69,9 @@ const InternshipDetails = () => {
                 <div>
                   <h3 className="text-lg font-semibold mb-3">About the Role</h3>
                   <p className="text-gray-600">
-                    We are seeking a passionate Software Developer Intern to join our innovative
-                    team. You will work on real-world projects, collaborate with experienced
-                    developers, and gain hands-on experience with modern technologies.
+                    We are seeking a passionate Software Developer Intern to join our innovative team. 
+                    You will work on real-world projects, collaborate with experienced developers, and 
+                    gain hands-on experience with modern technologies.
                   </p>
                 </div>
 
@@ -136,14 +137,12 @@ const InternshipDetails = () => {
                 <div className="pt-6 border-t">
                   <h4 className="font-semibold mb-3">About TechCorp Inc.</h4>
                   <p className="text-sm text-gray-600 mb-4">
-                    Leading technology company specializing in innovative software solutions. Over
-                    1000+ employees globally with a strong focus on developer growth.
+                    Leading technology company specializing in innovative software solutions.
+                    Over 1000+ employees globally with a strong focus on developer growth.
                   </p>
                   <div className="flex items-center gap-2 text-blue-600 hover:text-blue-700">
                     <Building2 className="h-4 w-4" />
-                    <a href="#" className="text-sm font-medium">
-                      View Company Profile
-                    </a>
+                    <a href="#" className="text-sm font-medium">View Company Profile</a>
                   </div>
                 </div>
               </div>

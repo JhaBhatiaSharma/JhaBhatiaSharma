@@ -2,30 +2,73 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../context/UserContext';
 import { GraduationCap, Building2, Mail, Lock } from 'lucide-react';
+import axios from 'axios';
+import API from '../api';
 
 const AuthenticationScreen = () => {
   const [userType, setUserType] = useState('student');
   const [formData, setFormData] = useState({
     email: '',
-    password: '',
+    password: ''
   });
-
+  
   const { login } = useUser();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await login({ type: userType, email: formData.email });
+      // Make API call to backend login endpoint
+      const response = await API.post(`/auth/${userType}/login`, {
+        email: formData.email,
+        password: formData.password,
+      });
+
+      const { token } = response.data;
+      localStorage.setItem('token', token);
+
+      // Decode token (if needed) or use response data to get user type and other info
+      const user = {
+        email: formData.email,
+        type: userType,
+        name: response.data.name || 'User', // Replace with actual name if returned from API
+      };
+
+      // Save token and user info using context
+      await login(user, token);
+
+      // Navigate to user-specific dashboard
       navigate(`/${userType}`);
     } catch (err) {
-      console.error(err);
+      console.error('Login failed:', err.response?.data?.message || err.message);
+      alert(err.response?.data?.message || 'Login failed. Please try again.');
     }
   };
 
+  const handleDemoAccount = (type) => {
+    const demoAccounts = {
+      student: {
+        email: 'student@example.com',
+        password: 'password123',
+        type: 'student',
+      },
+      company: {
+        email: 'company@example.com',
+        password: 'password123',
+        type: 'company',
+      },
+    };
+
+    setUserType(type);
+    setFormData({
+      email: demoAccounts[type].email,
+      password: demoAccounts[type].password,
+    });
+  };
+
   return (
-    <div className="min-h-screen bg-[#F8F9FA] flex items-center justify-center">
-      <div className="w-[360px] bg-white rounded-lg shadow-sm">
+    <div className="min-h-screen w-screen bg-[#F8F9FA] flex items-center justify-center">
+      <div className=" bg-white rounded-lg shadow-2xl">
         <div className="px-8 py-6">
           {/* Header */}
           <div className="mb-6">
@@ -39,7 +82,9 @@ const AuthenticationScreen = () => {
               type="button"
               onClick={() => setUserType('student')}
               className={`flex items-center justify-center gap-2 flex-1 px-4 py-2 rounded-lg text-sm transition-colors
-                ${userType === 'student' ? 'bg-[#4F46E5] text-white' : 'bg-[#1E1E1E] text-white'}`}
+                ${userType === 'student' 
+                  ? 'bg-[#4F46E5] text-white' 
+                  : 'bg-[#1E1E1E] text-white'}`}
             >
               <GraduationCap className="w-4 h-4" />
               Student
@@ -48,10 +93,23 @@ const AuthenticationScreen = () => {
               type="button"
               onClick={() => setUserType('company')}
               className={`flex items-center justify-center gap-2 flex-1 px-4 py-2 rounded-lg text-sm transition-colors
-                ${userType === 'company' ? 'bg-[#4F46E5] text-white' : 'bg-[#1E1E1E] text-white'}`}
+                ${userType === 'company' 
+                  ? 'bg-[#4F46E5] text-white' 
+                  : 'bg-[#1E1E1E] text-white'}`}
             >
               <Building2 className="w-4 h-4" />
               Company
+            </button>
+            <button
+              type="button"
+              onClick={() => setUserType('admin')}
+              className={`flex items-center justify-center gap-2 flex-1 px-4 py-2 rounded-lg text-sm transition-colors
+                ${userType === 'admin' 
+                  ? 'bg-[#4F46E5] text-white' 
+                  : 'bg-[#1E1E1E] text-white'}`}
+            >
+              <Building2 className="w-4 h-4" />
+              Admin
             </button>
           </div>
 
@@ -98,32 +156,30 @@ const AuthenticationScreen = () => {
             <p className="text-center text-sm text-gray-500 mb-4">Try demo accounts:</p>
             <div className="space-y-2">
               <button
-                onClick={() => {
-                  setFormData({
-                    email: 'student@example.com',
-                    password: 'password123',
-                  });
-                  setUserType('student');
-                }}
+                onClick={() => handleDemoAccount('student')}
                 className="w-full flex items-center justify-center gap-2 p-2 bg-[#F3F4F6] rounded-lg text-sm hover:bg-gray-200 transition-colors"
               >
                 <GraduationCap className="w-4 h-4" />
                 Demo Student Account
               </button>
               <button
-                onClick={() => {
-                  setFormData({
-                    email: 'company@example.com',
-                    password: 'password123',
-                  });
-                  setUserType('company');
-                }}
+                onClick={() => handleDemoAccount('company')}
                 className="w-full flex items-center justify-center gap-2 p-2 bg-[#F3F4F6] rounded-lg text-sm hover:bg-gray-200 transition-colors"
               >
                 <Building2 className="w-4 h-4" />
                 Demo Company Account
               </button>
             </div>
+          </div>
+
+          <div className="mt-6 text-center">
+            <p className="text-sm text-gray-500">Don't have an account?</p>
+            <button
+              onClick={() => navigate('/register')}
+              className="mt-2 bg-[#4F46E5] text-white py-2 px-4 rounded-lg text-sm font-medium hover:bg-[#4338CA] transition-colors"
+            >
+              Sign Up Here
+            </button>
           </div>
         </div>
       </div>

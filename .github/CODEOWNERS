@@ -4,14 +4,14 @@
 *       @shreeshjha
 
 # Frontend code
-/frontend/ @shreeshjha @SamarthBhatia
+/frontend/ @shreeshjha @SamarthBhatia @Satvik200
 
 # Backend code
 /backend/  @shreeshjha @Satvik200 @SamarthBhatia
 
 # Configuration files
-*.json     @shreeshjha
-*.yml      @shreeshjha
-*.yaml     @shreeshjha
+*.json     @shreeshjha @Satvik200 @SamarthBhatia
+*.yml      @shreeshjha @Satvik200 @SamarthBhatia
+*.yaml     @shreeshjha @Satvik200 @SamarthBhatia
 
 

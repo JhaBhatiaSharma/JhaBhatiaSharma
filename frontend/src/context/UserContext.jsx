@@ -1,4 +1,4 @@
-// src/context/UserContext.jsx
+// frontend/src/context/UserContext.jsx
 import React, { createContext, useState, useContext, useEffect } from 'react';
 
 // Define types for our context
@@ -27,7 +27,7 @@ export const UserProvider = ({ children }) => {
     try {
       setLoading(true);
       setError(null);
-
+      
       // Here you would typically make an API call
       // For now, we'll simulate an API call
       const user = {
@@ -35,7 +35,7 @@ export const UserProvider = ({ children }) => {
         email: userData.email,
         type: userData.type,
         name: userData.name || 'User',
-        timestamp: new Date().toISOString(),
+        timestamp: new Date().toISOString()
       };
 
       // Store in localStorage for persistence
@@ -64,15 +64,15 @@ export const UserProvider = ({ children }) => {
   };
 
   return (
-    <UserContext.Provider
-      value={{
+    <UserContext.Provider 
+      value={{ 
         user,
         login,
         logout,
         updateUser,
         loading,
         error,
-        isAuthenticated: !!user,
+        isAuthenticated: !!user 
       }}
     >
       {!loading ? children : <div>Loading...</div>}
