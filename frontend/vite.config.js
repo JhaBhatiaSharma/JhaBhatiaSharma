@@ -2,13 +2,11 @@ import path from "path";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 
-// Check if running in GitHub Pages
-const isGitHubPages = process.env.GITHUB_PAGES === "true";
+const isGitHubPages = process.env.GITHUB_ACTIONS === "true";
 
 export default defineConfig({
+  base: isGitHubPages ? "/JhaBhatiaSharma/" : "/",  // Adjust for GitHub Pages
   plugins: [react()],
-  base: isGitHubPages ? "/JhaBhatiaSharma/" : "/",
- // Set correct base path
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
