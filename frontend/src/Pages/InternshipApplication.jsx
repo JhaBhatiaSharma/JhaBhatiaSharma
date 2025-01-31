@@ -1,6 +1,20 @@
 //frontend/src/Pages/InternshipApplication.jsx
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Building2, MapPin, Clock, Calendar, Users, ChevronLeft, Share2 } from 'lucide-react';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Building2,
+  MapPin,
+  Clock,
+  Calendar,
+  Users,
+  ChevronLeft,
+  Share2,
+} from "lucide-react";
 
 const InternshipDetails = () => {
   return (
@@ -19,7 +33,9 @@ const InternshipDetails = () => {
             <CardHeader>
               <div className="flex justify-between items-start">
                 <div>
-                  <CardTitle className="text-2xl">Software Developer Intern</CardTitle>
+                  <CardTitle className="text-2xl">
+                    Software Developer Intern
+                  </CardTitle>
                   <CardDescription className="flex items-center gap-2 mt-2">
                     <Building2 className="h-4 w-4" />
                     TechCorp Inc.
@@ -68,18 +84,27 @@ const InternshipDetails = () => {
                 <div>
                   <h3 className="text-lg font-semibold mb-3">About the Role</h3>
                   <p className="text-gray-600">
-                    We are seeking a passionate Software Developer Intern to join our innovative team. 
-                    You will work on real-world projects, collaborate with experienced developers, and 
-                    gain hands-on experience with modern technologies.
+                    We are seeking a passionate Software Developer Intern to
+                    join our innovative team. You will work on real-world
+                    projects, collaborate with experienced developers, and gain
+                    hands-on experience with modern technologies.
                   </p>
                 </div>
 
                 <div>
                   <h3 className="text-lg font-semibold mb-3">Requirements</h3>
                   <ul className="list-disc list-inside text-gray-600 space-y-2">
-                    <li>Currently pursuing a degree in Computer Science or related field</li>
-                    <li>Strong understanding of web technologies and programming concepts</li>
-                    <li>Experience with React, Node.js, and modern JavaScript</li>
+                    <li>
+                      Currently pursuing a degree in Computer Science or related
+                      field
+                    </li>
+                    <li>
+                      Strong understanding of web technologies and programming
+                      concepts
+                    </li>
+                    <li>
+                      Experience with React, Node.js, and modern JavaScript
+                    </li>
                     <li>Excellent problem-solving and analytical skills</li>
                     <li>Strong communication and teamwork abilities</li>
                   </ul>
@@ -114,11 +139,18 @@ const InternshipDetails = () => {
                 {/* Skills Match */}
                 <div className="p-4 bg-green-50 rounded-lg">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-medium text-green-800">Skills Match</span>
-                    <span className="text-lg font-bold text-green-800">85%</span>
+                    <span className="text-sm font-medium text-green-800">
+                      Skills Match
+                    </span>
+                    <span className="text-lg font-bold text-green-800">
+                      85%
+                    </span>
                   </div>
                   <div className="w-full bg-green-200 rounded-full h-2">
-                    <div className="bg-green-600 rounded-full h-2" style={{ width: '85%' }}></div>
+                    <div
+                      className="bg-green-600 rounded-full h-2"
+                      style={{ width: "85%" }}
+                    ></div>
                   </div>
                 </div>
 
@@ -136,12 +168,15 @@ const InternshipDetails = () => {
                 <div className="pt-6 border-t">
                   <h4 className="font-semibold mb-3">About TechCorp Inc.</h4>
                   <p className="text-sm text-gray-600 mb-4">
-                    Leading technology company specializing in innovative software solutions.
-                    Over 1000+ employees globally with a strong focus on developer growth.
+                    Leading technology company specializing in innovative
+                    software solutions. Over 1000+ employees globally with a
+                    strong focus on developer growth.
                   </p>
                   <div className="flex items-center gap-2 text-blue-600 hover:text-blue-700">
                     <Building2 className="h-4 w-4" />
-                    <a href="#" className="text-sm font-medium">View Company Profile</a>
+                    <a href="#" className="text-sm font-medium">
+                      View Company Profile
+                    </a>
                   </div>
                 </div>
               </div>

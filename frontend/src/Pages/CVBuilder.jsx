@@ -1,36 +1,40 @@
-import { useEffect, useState } from 'react';
-import { X, FileText } from 'lucide-react';
-import API from '../api';
+import { useEffect, useState } from "react";
+import { X, FileText } from "lucide-react";
+import API from "../api";
 
 // eslint-disable-next-line react/prop-types
 const CVBuilder = ({ isOpen, onClose }) => {
-  const [template, setTemplate] = useState('professional');
+  const [template, setTemplate] = useState("professional");
   /* eslint-disable no-unused-vars, unused-imports/no-unused-vars */
-  const [activeTab, setActiveTab] = useState('personal');
+  const [activeTab, setActiveTab] = useState("personal");
   /* eslint-enable no-unused-vars, unused-imports/no-unused-vars */
   const [formData, setFormData] = useState({
     personalInfo: {
-      fullName: '',
-      email: '',
-      phone: '',
-      location: ''
+      fullName: "",
+      email: "",
+      phone: "",
+      location: "",
     },
-    education: [{
-      school: '',
-      degree: '',
-      fieldOfStudy: '',
-      graduationYear: ''
-    }],
-    experience: [{
-      company: '',
-      position: '',
-      startDate: '',
-      endDate: '',
-      description: '',
-      skills: []
-    }],
+    education: [
+      {
+        school: "",
+        degree: "",
+        fieldOfStudy: "",
+        graduationYear: "",
+      },
+    ],
+    experience: [
+      {
+        company: "",
+        position: "",
+        startDate: "",
+        endDate: "",
+        description: "",
+        skills: [],
+      },
+    ],
     skills: [],
-    newSkill: ''  // For skill input
+    newSkill: "", // For skill input
   });
 
   const [recruiters, setRecruiters] = useState([]);
@@ -40,17 +44,17 @@ const CVBuilder = ({ isOpen, onClose }) => {
     // Fetch the list of recruiters from the backend
     const fetchRecruiters = async () => {
       try {
-        const response = await API.get('/users/get-all-recruiters', {
+        const response = await API.get("/users/get-all-recruiters", {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`, // Ensure auth token is sent
+            Authorization: `Bearer ${localStorage.getItem("token")}`, // Ensure auth token is sent
           },
         });
         setRecruiters(response.data.recruiters);
       } catch (error) {
-        console.error('Failed to fetch recruiters:', error);
+        console.error("Failed to fetch recruiters:", error);
       }
     };
-  
+
     fetchRecruiters();
   }, []);
 
@@ -58,19 +62,17 @@ const CVBuilder = ({ isOpen, onClose }) => {
     setSelectedRecruiters((prev) =>
       prev.includes(recruiterId)
         ? prev.filter((id) => id !== recruiterId)
-        : [...prev, recruiterId]
+        : [...prev, recruiterId],
     );
   };
 
-  
-  
-
   const handleInputChange = (section, field, value, index = null) => {
-    setFormData(prev => {
-      if (section === 'newSkill') {  // Add this special case for newSkill
+    setFormData((prev) => {
+      if (section === "newSkill") {
+        // Add this special case for newSkill
         return {
           ...prev,
-          newSkill: value
+          newSkill: value,
         };
       }
       if (index !== null) {
@@ -80,43 +82,51 @@ const CVBuilder = ({ isOpen, onClose }) => {
       }
       return {
         ...prev,
-        [section]: { ...prev[section], [field]: value }
+        [section]: { ...prev[section], [field]: value },
       };
     });
   };
 
   const addSkill = () => {
     if (formData.newSkill.trim()) {
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
         skills: [...prev.skills, prev.newSkill.trim()],
-        newSkill: ''
+        newSkill: "",
       }));
     }
   };
 
   const removeSkill = (indexToRemove) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      skills: prev.skills.filter((_, index) => index !== indexToRemove)
+      skills: prev.skills.filter((_, index) => index !== indexToRemove),
     }));
   };
 
   const addSection = (section) => {
-    const emptyItem = section === 'education' 
-      ? { school: '', degree: '', fieldOfStudy: '', graduationYear: '' }
-      : { company: '', position: '', startDate: '', endDate: '', description: '', skills: [] };
+    const emptyItem =
+      section === "education"
+        ? { school: "", degree: "", fieldOfStudy: "", graduationYear: "" }
+        : {
+            company: "",
+            position: "",
+            startDate: "",
+            endDate: "",
+            description: "",
+            skills: [],
+          };
 
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [section]: [...prev[section], emptyItem]
+      [section]: [...prev[section], emptyItem],
     }));
   };
 
   const removeSection = (section, index) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [section]: prev[section].filter((_, i) => i !== index)
+      [section]: prev[section].filter((_, i) => i !== index),
     }));
   };
 
@@ -125,42 +135,43 @@ const CVBuilder = ({ isOpen, onClose }) => {
       // Format the data according to your CV model schema
       const cvData = {
         template: template,
-        user: localStorage.getItem('userId'), 
+        user: localStorage.getItem("userId"),
         data: {
           personalInfo: formData.personalInfo,
           skills: formData.skills,
-          education: formData.education.map(edu => ({
+          education: formData.education.map((edu) => ({
             school: edu.school,
             degree: edu.degree,
             fieldOfStudy: edu.fieldOfStudy,
-            graduationYear: edu.graduationYear
+            graduationYear: edu.graduationYear,
           })),
-          experience: formData.experience.map(exp => ({
+          experience: formData.experience.map((exp) => ({
             company: exp.company,
             position: exp.position,
             startDate: exp.startDate,
             endDate: exp.endDate,
-            description: exp.description
+            description: exp.description,
           })),
           visibility: selectedRecruiters,
-        }
+        },
       };
-  
+
       // Add debug logs
-      console.log('Submitting CV data:', cvData);
-      console.log('Authorization token:', localStorage.getItem('token'));
-  
+      console.log("Submitting CV data:", cvData);
+      console.log("Authorization token:", localStorage.getItem("token"));
+
       // Use the correct endpoint that matches your backend route
-      const response = await API.post('/cv', cvData);
-      
-      console.log('CV saved successfully:', response.data);
+      const response = await API.post("/cv", cvData);
+
+      console.log("CV saved successfully:", response.data);
       onClose();
     } catch (error) {
-      console.error('Error saving CV:', error);
-      console.error('Error response:', error.response?.data);
-      
+      console.error("Error saving CV:", error);
+      console.error("Error response:", error.response?.data);
+
       // More informative error message
-      const errorMessage = error.response?.data?.message || error.message || 'Failed to save CV';
+      const errorMessage =
+        error.response?.data?.message || error.message || "Failed to save CV";
       alert(errorMessage);
     }
   };
@@ -196,15 +207,15 @@ const CVBuilder = ({ isOpen, onClose }) => {
           <div className="flex-1">
             <div className="mb-6">
               <div className="flex gap-4 mb-6">
-                <button 
-                  className={`px-4 py-2 rounded-lg ${template === 'professional' ? 'bg-blue-600 text-white' : 'bg-gray-100'}`}
-                  onClick={() => setTemplate('professional')}
+                <button
+                  className={`px-4 py-2 rounded-lg ${template === "professional" ? "bg-blue-600 text-white" : "bg-gray-100"}`}
+                  onClick={() => setTemplate("professional")}
                 >
                   Professional
                 </button>
-                <button 
-                  className={`px-4 py-2 rounded-lg ${template === 'creative' ? 'bg-blue-600 text-white' : 'bg-gray-100'}`}
-                  onClick={() => setTemplate('creative')}
+                <button
+                  className={`px-4 py-2 rounded-lg ${template === "creative" ? "bg-blue-600 text-white" : "bg-gray-100"}`}
+                  onClick={() => setTemplate("creative")}
                 >
                   Creative
                 </button>
@@ -215,72 +226,98 @@ const CVBuilder = ({ isOpen, onClose }) => {
             <div className="space-y-8">
               {/* Personal Information */}
               <div>
-                <h3 className="text-lg font-medium mb-4">Personal Information</h3>
+                <h3 className="text-lg font-medium mb-4">
+                  Personal Information
+                </h3>
                 <div className="space-y-4">
                   <input
                     type="text"
                     placeholder="Full Name"
                     className="w-full p-3 border rounded-lg bg-white text-gray-90 placeholder-gray-500"
                     value={formData.personalInfo.fullName}
-                    onChange={(e) => handleInputChange('personalInfo', 'fullName', e.target.value)}
+                    onChange={(e) =>
+                      handleInputChange(
+                        "personalInfo",
+                        "fullName",
+                        e.target.value,
+                      )
+                    }
                   />
                   <input
                     type="email"
                     placeholder="Email"
                     className="w-full p-3 border rounded-lg bg-white text-gray-90 placeholder-gray-500"
                     value={formData.personalInfo.email}
-                    onChange={(e) => handleInputChange('personalInfo', 'email', e.target.value)}
+                    onChange={(e) =>
+                      handleInputChange("personalInfo", "email", e.target.value)
+                    }
                   />
                   <input
                     type="tel"
                     placeholder="Phone"
                     className="w-full p-3 border rounded-lg bg-white text-gray-90 placeholder-gray-500"
                     value={formData.personalInfo.phone}
-                    onChange={(e) => handleInputChange('personalInfo', 'phone', e.target.value)}
+                    onChange={(e) =>
+                      handleInputChange("personalInfo", "phone", e.target.value)
+                    }
                   />
                   <input
                     type="text"
                     placeholder="Location"
                     className="w-full p-3 border rounded-lg bg-white text-gray-90 placeholder-gray-500"
                     value={formData.personalInfo.location}
-                    onChange={(e) => handleInputChange('personalInfo', 'location', e.target.value)}
+                    onChange={(e) =>
+                      handleInputChange(
+                        "personalInfo",
+                        "location",
+                        e.target.value,
+                      )
+                    }
                   />
                 </div>
               </div>
 
               {/* Skills Section */}
-<div>
-  <h3 className="text-lg font-medium mb-4">Skills</h3>
-  <div className="flex gap-2 mb-4">
-    <input
-      type="text"
-      placeholder="Add a skill"
-      className="flex-1 p-3 border rounded-lg bg-white text-gray-900 placeholder-gray-500"
-      value={formData.newSkill}
-      onChange={(e) => setFormData(prev => ({ ...prev, newSkill: e.target.value }))}
-      onKeyPress={(e) => e.key === 'Enter' && addSkill()}
-    />
-    <button
-      onClick={addSkill}
-      className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-    >
-      Add
-    </button>
-  </div>
-  <div className="flex flex-wrap gap-2">
-    {formData.skills.map((skill, index) => (
-      <span
-        key={index}
-        className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full flex items-center gap-2"
-      >
-        {skill}
-        <button onClick={() => removeSkill(index)} className="hover:text-blue-900">
-          <X className="h-4 w-4" />
-        </button>
-      </span>
-    ))}
-  </div>
-</div>
+              <div>
+                <h3 className="text-lg font-medium mb-4">Skills</h3>
+                <div className="flex gap-2 mb-4">
+                  <input
+                    type="text"
+                    placeholder="Add a skill"
+                    className="flex-1 p-3 border rounded-lg bg-white text-gray-900 placeholder-gray-500"
+                    value={formData.newSkill}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        newSkill: e.target.value,
+                      }))
+                    }
+                    onKeyPress={(e) => e.key === "Enter" && addSkill()}
+                  />
+                  <button
+                    onClick={addSkill}
+                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                  >
+                    Add
+                  </button>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {formData.skills.map((skill, index) => (
+                    <span
+                      key={index}
+                      className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full flex items-center gap-2"
+                    >
+                      {skill}
+                      <button
+                        onClick={() => removeSkill(index)}
+                        className="hover:text-blue-900"
+                      >
+                        <X className="h-4 w-4" />
+                      </button>
+                    </span>
+                  ))}
+                </div>
+              </div>
 
               {/* Education Section */}
               <div>
@@ -293,14 +330,28 @@ const CVBuilder = ({ isOpen, onClose }) => {
                         placeholder="School/University"
                         className="w-full p-3 border rounded-lg bg-white text-gray-90 placeholder-gray-500"
                         value={edu.school}
-                        onChange={(e) => handleInputChange('education', 'school', e.target.value, index)}
+                        onChange={(e) =>
+                          handleInputChange(
+                            "education",
+                            "school",
+                            e.target.value,
+                            index,
+                          )
+                        }
                       />
                       <input
                         type="text"
                         placeholder="Degree"
                         className="w-full p-3 border rounded-lg bg-white text-gray-90 placeholder-gray-500"
                         value={edu.degree}
-                        onChange={(e) => handleInputChange('education', 'degree', e.target.value, index)}
+                        onChange={(e) =>
+                          handleInputChange(
+                            "education",
+                            "degree",
+                            e.target.value,
+                            index,
+                          )
+                        }
                       />
                       <div className="flex gap-4">
                         <input
@@ -308,20 +359,34 @@ const CVBuilder = ({ isOpen, onClose }) => {
                           placeholder="Field of Study"
                           className="flex-1 p-3 border rounded-lg bg-white text-gray-90 placeholder-gray-500"
                           value={edu.fieldOfStudy}
-                          onChange={(e) => handleInputChange('education', 'fieldOfStudy', e.target.value, index)}
+                          onChange={(e) =>
+                            handleInputChange(
+                              "education",
+                              "fieldOfStudy",
+                              e.target.value,
+                              index,
+                            )
+                          }
                         />
                         <input
                           type="number"
                           placeholder="Graduation Year"
                           className="w-32 p-3 border rounded-lg bg-white text-gray-90 placeholder-gray-500"
                           value={edu.graduationYear}
-                          onChange={(e) => handleInputChange('education', 'graduationYear', e.target.value, index)}
+                          onChange={(e) =>
+                            handleInputChange(
+                              "education",
+                              "graduationYear",
+                              e.target.value,
+                              index,
+                            )
+                          }
                         />
                       </div>
                     </div>
                     {formData.education.length > 1 && (
                       <button
-                        onClick={() => removeSection('education', index)}
+                        onClick={() => removeSection("education", index)}
                         className="mt-4 text-red-600 hover:text-red-700"
                       >
                         Remove
@@ -330,7 +395,7 @@ const CVBuilder = ({ isOpen, onClose }) => {
                   </div>
                 ))}
                 <button
-                  onClick={() => addSection('education')}
+                  onClick={() => addSection("education")}
                   className="w-full p-3 border border-dashed rounded-lg text-gray-500 hover:bg-gray-50"
                 >
                   + Add Education
@@ -341,21 +406,38 @@ const CVBuilder = ({ isOpen, onClose }) => {
               <div>
                 <h3 className="text-lg font-medium mb-4">Experience</h3>
                 {formData.experience.map((exp, index) => (
-                  <div key={index} className="p-4 border rounded-lg mb-4 bg-white text-gray-90 placeholder-gray-500">
+                  <div
+                    key={index}
+                    className="p-4 border rounded-lg mb-4 bg-white text-gray-90 placeholder-gray-500"
+                  >
                     <div className="space-y-4">
                       <input
                         type="text"
                         placeholder="Company"
                         className="w-full p-3 border rounded-lg bg-white text-gray-90 placeholder-gray-500"
                         value={exp.company}
-                        onChange={(e) => handleInputChange('experience', 'company', e.target.value, index)}
+                        onChange={(e) =>
+                          handleInputChange(
+                            "experience",
+                            "company",
+                            e.target.value,
+                            index,
+                          )
+                        }
                       />
                       <input
                         type="text"
                         placeholder="Position"
                         className="w-full p-3 border rounded-lg bg-white text-gray-90 placeholder-gray-500"
                         value={exp.position}
-                        onChange={(e) => handleInputChange('experience', 'position', e.target.value, index)}
+                        onChange={(e) =>
+                          handleInputChange(
+                            "experience",
+                            "position",
+                            e.target.value,
+                            index,
+                          )
+                        }
                       />
                       <div className="flex gap-4">
                         <input
@@ -363,14 +445,28 @@ const CVBuilder = ({ isOpen, onClose }) => {
                           placeholder="Start Date"
                           className="flex-1 p-3 border rounded-lg bg-white text-gray-90 placeholder-gray-500"
                           value={exp.startDate}
-                          onChange={(e) => handleInputChange('experience', 'startDate', e.target.value, index)}
+                          onChange={(e) =>
+                            handleInputChange(
+                              "experience",
+                              "startDate",
+                              e.target.value,
+                              index,
+                            )
+                          }
                         />
                         <input
                           type="date"
                           placeholder="End Date"
                           className="flex-1 p-3 border rounded-lg bg-white text-gray-90 placeholder-gray-500"
                           value={exp.endDate}
-                          onChange={(e) => handleInputChange('experience', 'endDate', e.target.value, index)}
+                          onChange={(e) =>
+                            handleInputChange(
+                              "experience",
+                              "endDate",
+                              e.target.value,
+                              index,
+                            )
+                          }
                         />
                       </div>
                       <textarea
@@ -378,12 +474,19 @@ const CVBuilder = ({ isOpen, onClose }) => {
                         className="w-full p-3 border rounded-lg bg-white text-gray-90 placeholder-gray-500"
                         rows="3"
                         value={exp.description}
-                        onChange={(e) => handleInputChange('experience', 'description', e.target.value, index)}
+                        onChange={(e) =>
+                          handleInputChange(
+                            "experience",
+                            "description",
+                            e.target.value,
+                            index,
+                          )
+                        }
                       />
                     </div>
                     {formData.experience.length > 1 && (
                       <button
-                        onClick={() => removeSection('experience', index)}
+                        onClick={() => removeSection("experience", index)}
                         className="mt-4 text-red-600 hover:text-red-700"
                       >
                         Remove
@@ -392,7 +495,7 @@ const CVBuilder = ({ isOpen, onClose }) => {
                   </div>
                 ))}
                 <button
-                  onClick={() => addSection('experience')}
+                  onClick={() => addSection("experience")}
                   className="w-full p-3 border border-dashed rounded-lg text-gray-500 hover:bg-gray-50"
                 >
                   + Add Experience
@@ -400,13 +503,15 @@ const CVBuilder = ({ isOpen, onClose }) => {
               </div>
             </div>
             <div className="border-b-2 pb-4 pt-4">
-              <h3 className="text-lg font-medium mb-4 text-gray-800">Manage CV Visibility</h3>
+              <h3 className="text-lg font-medium mb-4 text-gray-800">
+                Manage CV Visibility
+              </h3>
               <div className="flex overflow-x-auto space-x-4 pb-2 max-w-full">
                 {recruiters.map((recruiter) => (
                   <label
                     key={recruiter._id}
                     className="flex-shrink-0 flex items-center gap-3 p-3 bg-white shadow-sm rounded-lg hover:bg-gray-50 border border-gray-200 w-10"
-                    style={{ minWidth: '33%' }} // Ensure three items are visible
+                    style={{ minWidth: "33%" }} // Ensure three items are visible
                   >
                     <input
                       type="checkbox"
@@ -423,50 +528,56 @@ const CVBuilder = ({ isOpen, onClose }) => {
                         <p className="text-sm font-medium text-gray-800">
                           {recruiter.firstName} {recruiter.lastName}
                         </p>
-                        <p className="text-xs text-gray-500">{recruiter.email}</p>
+                        <p className="text-xs text-gray-500">
+                          {recruiter.email}
+                        </p>
                       </div>
                     </div>
                   </label>
                 ))}
               </div>
             </div>
-
           </div>
 
           {/* Right Panel - Preview */}
           <div className="w-1/3 bg-gray-50 rounded-lg p-6">
-  <h3 className="text-lg font-medium mb-4">Preview</h3>
-  <div className="prose max-w-none">
-    {/* Personal Information */}
-    <div className="mb-6">
-      {formData.personalInfo.fullName && (
-        <h1 className="text-2xl font-bold mb-2">{formData.personalInfo.fullName}</h1>
-      )}
-      <div className="text-gray-600 space-y-1">
-        {formData.personalInfo.email && (
-          <p>{formData.personalInfo.email}</p>
-        )}
-        {formData.personalInfo.phone && (
-          <p>{formData.personalInfo.phone}</p>
-        )}
-        {formData.personalInfo.location && (
-          <p>{formData.personalInfo.location}</p>
-        )}
-      </div>
-    </div>
-              
-    {formData.skills.length > 0 && (
-      <>
-        <h2 className="text-xl font-semibold mt-6 mb-3">Skills</h2>
-        <div className="flex flex-wrap gap-2">
-          {formData.skills.map((skill, index) => (
-            <span key={index} className="px-2 py-1 bg-blue-100 text-blue-700 rounded">
-              {skill}
-            </span>
-          ))}
-        </div>
-      </>
-    )}
+            <h3 className="text-lg font-medium mb-4">Preview</h3>
+            <div className="prose max-w-none">
+              {/* Personal Information */}
+              <div className="mb-6">
+                {formData.personalInfo.fullName && (
+                  <h1 className="text-2xl font-bold mb-2">
+                    {formData.personalInfo.fullName}
+                  </h1>
+                )}
+                <div className="text-gray-600 space-y-1">
+                  {formData.personalInfo.email && (
+                    <p>{formData.personalInfo.email}</p>
+                  )}
+                  {formData.personalInfo.phone && (
+                    <p>{formData.personalInfo.phone}</p>
+                  )}
+                  {formData.personalInfo.location && (
+                    <p>{formData.personalInfo.location}</p>
+                  )}
+                </div>
+              </div>
+
+              {formData.skills.length > 0 && (
+                <>
+                  <h2 className="text-xl font-semibold mt-6 mb-3">Skills</h2>
+                  <div className="flex flex-wrap gap-2">
+                    {formData.skills.map((skill, index) => (
+                      <span
+                        key={index}
+                        className="px-2 py-1 bg-blue-100 text-blue-700 rounded"
+                      >
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                </>
+              )}
 
               {formData.education.length > 0 && (
                 <>
@@ -474,7 +585,9 @@ const CVBuilder = ({ isOpen, onClose }) => {
                   {formData.education.map((edu, index) => (
                     <div key={index} className="mb-4">
                       <h3 className="font-medium">{edu.school}</h3>
-                      <p>{edu.degree} in {edu.fieldOfStudy}</p>
+                      <p>
+                        {edu.degree} in {edu.fieldOfStudy}
+                      </p>
                       <p className="text-gray-600">{edu.graduationYear}</p>
                     </div>
                   ))}
@@ -483,13 +596,15 @@ const CVBuilder = ({ isOpen, onClose }) => {
 
               {formData.experience.length > 0 && (
                 <>
-                  <h2 className="text-xl font-semibold mt-6 mb-3">Experience</h2>
+                  <h2 className="text-xl font-semibold mt-6 mb-3">
+                    Experience
+                  </h2>
                   {formData.experience.map((exp, index) => (
                     <div key={index} className="mb-4">
                       <h3 className="font-medium">{exp.position}</h3>
                       <p className="text-gray-700">{exp.company}</p>
                       <p className="text-gray-600">
-                        {exp.startDate} - {exp.endDate || 'Present'}
+                        {exp.startDate} - {exp.endDate || "Present"}
                       </p>
                       <p className="mt-2">{exp.description}</p>
                     </div>

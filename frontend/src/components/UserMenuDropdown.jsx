@@ -1,14 +1,14 @@
-import { useState, useRef, useEffect } from 'react';
-import { LogOut, Settings } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
-import API from '../api'
+import { useState, useRef, useEffect } from "react";
+import { LogOut, Settings } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import API from "../api";
 // eslint-disable-next-line react/prop-types
-const UserMenuDropdown = ({ role = 'student', initials = 'JD' }) => {
+const UserMenuDropdown = ({ role = "student", initials = "JD" }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [email, setEmail] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [message, setMessage] = useState('');
+  const [email, setEmail] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [message, setMessage] = useState("");
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
 
@@ -19,58 +19,58 @@ const UserMenuDropdown = ({ role = 'student', initials = 'JD' }) => {
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   const handleLogout = () => {
     // Clear all auth-related items from localStorage
-    localStorage.removeItem('token');
-    localStorage.removeItem('userRole');
-    localStorage.removeItem('userData');
-    
+    localStorage.removeItem("token");
+    localStorage.removeItem("userRole");
+    localStorage.removeItem("userData");
+
     // Navigate to login page
-    navigate('/login');
+    navigate("/login");
   };
 
   const handlePasswordChange = async () => {
     try {
-      const response = await API.post('/users/reset-password', {
+      const response = await API.post("/users/reset-password", {
         email,
         newPassword,
       });
       setMessage(response.data.message);
       setTimeout(() => {
         setIsModalOpen(false);
-        setMessage('');
-        setEmail('');
-        setNewPassword('');
+        setMessage("");
+        setEmail("");
+        setNewPassword("");
       }, 1000);
     } catch (error) {
-      setMessage(error.response?.data?.message || 'Error changing password');
+      setMessage(error.response?.data?.message || "Error changing password");
     }
   };
 
   // Get background color based on role
   const getBgColor = () => {
     switch (role) {
-      case 'admin':
-        return 'bg-blue-500 hover:bg-blue-600';
-      case 'company':
-        return 'bg-indigo-500 hover:bg-indigo-600';
+      case "admin":
+        return "bg-blue-500 hover:bg-blue-600";
+      case "company":
+        return "bg-indigo-500 hover:bg-indigo-600";
       default:
-        return 'bg-[#4A72FF] hover:bg-[#3A5FE6]';
+        return "bg-[#4A72FF] hover:bg-[#3A5FE6]";
     }
   };
   // eslint-disable-next-line no-unused-vars, unused-imports/no-unused-vars
   const getProfilePath = () => {
     switch (role) {
-      case 'admin':
-        return '/admin/profile';
-      case 'company':
-        return '/company/profile';
+      case "admin":
+        return "/admin/profile";
+      case "company":
+        return "/company/profile";
       default:
-        return '/student/profile';
+        return "/student/profile";
     }
   };
 
@@ -82,7 +82,7 @@ const UserMenuDropdown = ({ role = 'student', initials = 'JD' }) => {
       >
         {initials}
       </button>
-      
+
       {isOpen && (
         <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-1 z-10">
           <button
@@ -116,7 +116,9 @@ const UserMenuDropdown = ({ role = 'student', initials = 'JD' }) => {
               />
             </div>
             <div className="mb-4">
-              <label className="block text-sm font-medium mb-2">New Password</label>
+              <label className="block text-sm font-medium mb-2">
+                New Password
+              </label>
               <input
                 type="password"
                 value={newPassword}
@@ -139,7 +141,9 @@ const UserMenuDropdown = ({ role = 'student', initials = 'JD' }) => {
                 Cancel
               </button>
             </div>
-            {message && <p className="mt-4 text-sm text-green-600">{message}</p>}
+            {message && (
+              <p className="mt-4 text-sm text-green-600">{message}</p>
+            )}
           </div>
         </div>
       )}

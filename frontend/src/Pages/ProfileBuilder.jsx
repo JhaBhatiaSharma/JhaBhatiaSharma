@@ -1,6 +1,12 @@
 //frontend/src/Pages/ProfileBuilder.jsx
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { User, Code, Building2, GraduationCap, Plus } from 'lucide-react';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { User, Code, Building2, GraduationCap, Plus } from "lucide-react";
 
 const ProfileBuilder = () => {
   return (
@@ -8,7 +14,9 @@ const ProfileBuilder = () => {
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-800">Build Your Profile</h1>
-        <p className="text-gray-600">Make your profile stand out to potential employers</p>
+        <p className="text-gray-600">
+          Make your profile stand out to potential employers
+        </p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -25,7 +33,9 @@ const ProfileBuilder = () => {
             <CardContent>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-gray-700">First Name</label>
+                  <label className="text-sm font-medium text-gray-700">
+                    First Name
+                  </label>
                   <input
                     type="text"
                     className="w-full p-2 border rounded-lg"
@@ -33,7 +43,9 @@ const ProfileBuilder = () => {
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-sm font-medium text-gray-700">Last Name</label>
+                  <label className="text-sm font-medium text-gray-700">
+                    Last Name
+                  </label>
                   <input
                     type="text"
                     className="w-full p-2 border rounded-lg"
@@ -41,7 +53,9 @@ const ProfileBuilder = () => {
                   />
                 </div>
                 <div className="space-y-2 col-span-2">
-                  <label className="text-sm font-medium text-gray-700">Professional Summary</label>
+                  <label className="text-sm font-medium text-gray-700">
+                    Professional Summary
+                  </label>
                   <textarea
                     className="w-full p-2 border rounded-lg"
                     rows="4"
@@ -65,11 +79,15 @@ const ProfileBuilder = () => {
                 <div className="p-4 border rounded-lg">
                   <div className="flex justify-between items-start">
                     <div>
-                      <h4 className="font-semibold">Bachelor of Computer Science</h4>
+                      <h4 className="font-semibold">
+                        Bachelor of Computer Science
+                      </h4>
                       <p className="text-gray-600">University of Technology</p>
                       <p className="text-sm text-gray-500">2020 - 2024</p>
                     </div>
-                    <button className="text-blue-600 hover:text-blue-700">Edit</button>
+                    <button className="text-blue-600 hover:text-blue-700">
+                      Edit
+                    </button>
                   </div>
                 </div>
 
@@ -92,12 +110,17 @@ const ProfileBuilder = () => {
             <CardContent>
               <div className="space-y-4">
                 <div className="flex flex-wrap gap-2">
-                  {['React', 'JavaScript', 'Node.js', 'Python', 'Git'].map((skill) => (
-                    <span key={skill} className="px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-sm flex items-center gap-2">
-                      {skill}
-                      <button className="hover:text-blue-800">×</button>
-                    </span>
-                  ))}
+                  {["React", "JavaScript", "Node.js", "Python", "Git"].map(
+                    (skill) => (
+                      <span
+                        key={skill}
+                        className="px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-sm flex items-center gap-2"
+                      >
+                        {skill}
+                        <button className="hover:text-blue-800">×</button>
+                      </span>
+                    ),
+                  )}
                 </div>
                 <div className="flex gap-2">
                   <input
@@ -126,15 +149,23 @@ const ProfileBuilder = () => {
                 <div className="p-4 border rounded-lg">
                   <div className="flex justify-between items-start">
                     <div>
-                      <h4 className="font-semibold">Software Developer Intern</h4>
+                      <h4 className="font-semibold">
+                        Software Developer Intern
+                      </h4>
                       <p className="text-gray-600">Tech Solutions Inc.</p>
-                      <p className="text-sm text-gray-500">June 2023 - August 2023</p>
+                      <p className="text-sm text-gray-500">
+                        June 2023 - August 2023
+                      </p>
                       <ul className="list-disc list-inside text-gray-600 mt-2 text-sm">
                         <li>Developed and maintained web applications</li>
-                        <li>Collaborated with senior developers on key projects</li>
+                        <li>
+                          Collaborated with senior developers on key projects
+                        </li>
                       </ul>
                     </div>
-                    <button className="text-blue-600 hover:text-blue-700">Edit</button>
+                    <button className="text-blue-600 hover:text-blue-700">
+                      Edit
+                    </button>
                   </div>
                 </div>
 
@@ -159,11 +190,18 @@ const ProfileBuilder = () => {
                 {/* Completion Progress */}
                 <div>
                   <div className="flex justify-between mb-2">
-                    <span className="text-sm font-medium text-gray-600">Overall Completion</span>
-                    <span className="text-sm font-medium text-blue-600">85%</span>
+                    <span className="text-sm font-medium text-gray-600">
+                      Overall Completion
+                    </span>
+                    <span className="text-sm font-medium text-blue-600">
+                      85%
+                    </span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div className="bg-blue-500 rounded-full h-2" style={{ width: '85%' }}></div>
+                    <div
+                      className="bg-blue-500 rounded-full h-2"
+                      style={{ width: "85%" }}
+                    ></div>
                   </div>
                 </div>
 
@@ -171,7 +209,9 @@ const ProfileBuilder = () => {
                 <div className="space-y-3">
                   <div>
                     <div className="flex justify-between mb-1">
-                      <span className="text-sm text-gray-600">Basic Information</span>
+                      <span className="text-sm text-gray-600">
+                        Basic Information
+                      </span>
                       <span className="text-sm text-green-600">Complete</span>
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-1">
@@ -192,20 +232,30 @@ const ProfileBuilder = () => {
                   <div>
                     <div className="flex justify-between mb-1">
                       <span className="text-sm text-gray-600">Skills</span>
-                      <span className="text-sm text-yellow-600">In Progress</span>
+                      <span className="text-sm text-yellow-600">
+                        In Progress
+                      </span>
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-1">
-                      <div className="bg-yellow-500 rounded-full h-1" style={{ width: '60%' }}></div>
+                      <div
+                        className="bg-yellow-500 rounded-full h-1"
+                        style={{ width: "60%" }}
+                      ></div>
                     </div>
                   </div>
 
                   <div>
                     <div className="flex justify-between mb-1">
                       <span className="text-sm text-gray-600">Experience</span>
-                      <span className="text-sm text-yellow-600">In Progress</span>
+                      <span className="text-sm text-yellow-600">
+                        In Progress
+                      </span>
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-1">
-                      <div className="bg-yellow-500 rounded-full h-1" style={{ width: '80%' }}></div>
+                      <div
+                        className="bg-yellow-500 rounded-full h-1"
+                        style={{ width: "80%" }}
+                      ></div>
                     </div>
                   </div>
                 </div>
