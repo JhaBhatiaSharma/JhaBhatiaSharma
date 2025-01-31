@@ -1,0 +1,17 @@
+# These owners will be the default owners for everything in
+# the repo. Unless a later match takes precedence,
+# they will be requested for review when someone opens a pull request.
+*       @shreeshjha
+
+# Frontend code
+/frontend/ @shreeshjha @SamarthBhatia
+
+# Backend code
+/backend/  @shreeshjha @SamarthBhatia
+
+# Configuration files
+*.json     @shreeshjha
+*.yml      @shreeshjha
+*.yaml     @shreeshjha
+
+
