@@ -1,4 +1,3 @@
-// controllers/recommendationController.js
 const CV = require("../models/Cv");
 const Internship = require("../models/Internship");
 const { calculateSimilarity, extractSkillsFromCV } = require("../utils/recommendationUtils");

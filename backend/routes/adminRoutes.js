@@ -7,7 +7,7 @@ const router = express.Router();
 router.use(authMiddleware); // Ensure all routes are authenticated
 router.use(roleMiddleware(["admin"])); // Restrict access to admin only
 
-router.get("/users", getAllUsers); // Fetch users (supports filters and pagination)
+router.get("/users", getAllUsers); // Fetch users 
 router.post("/users", addUser); // Add a new user
 router.put("/users/:id", editUser); // Edit user details
 router.delete("/users/:id", deleteUser); // Delete a user

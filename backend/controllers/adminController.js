@@ -6,8 +6,6 @@ const jwt = require("jsonwebtoken");
 exports.registerAdmin = async (req, res) => {
   try {
     const { firstName, lastName, email, password } = req.body;
-
-    // Check if the admin already exists
     if (password.length < 8) {
       return res.status(400).json({ message: "Password should be at least 8 characters long" });
     }
@@ -16,10 +14,7 @@ exports.registerAdmin = async (req, res) => {
       return res.status(400).json({ message: "Admin already exists" });
     }
 
-    // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
-
-    // Create new admin
     const admin = new User({
       firstName,
       lastName,
@@ -27,10 +22,7 @@ exports.registerAdmin = async (req, res) => {
       password: hashedPassword,
       role: "admin",
     });
-
-    // Save to the database
     await admin.save();
-
     res.status(201).json({ message: "Admin registered successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -41,20 +33,14 @@ exports.registerAdmin = async (req, res) => {
 exports.loginAdmin = async (req, res) => {
   try {
     const { email, password } = req.body;
-
-    // Find the admin
     const admin = await User.findOne({ email, role: "admin" });
     if (!admin) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
-
-    // Compare passwords
     const isMatch = await bcrypt.compare(password, admin.password);
     if (!isMatch) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
-
-    // Generate JWT
     const token = jwt.sign(
       { id: admin._id, role: "admin", email: admin.email },
       process.env.JWT_SECRET,
@@ -84,7 +70,7 @@ exports.getAllUsers = async (req, res) => {
   if (role) query.role = role;
 
   try {
-    const users = await User.find(query); // No pagination
+    const users = await User.find(query); 
     const total = users.length;
     res.json({ users, total });
   } catch (err) {
@@ -106,17 +92,13 @@ exports.addUser = async (req, res) => {
 // Edit user
 exports.editUser = async (req, res) => {
   try {
-    // Fields to update
     const { firstName, lastName, role, profile } = req.body;
-
-    // Validate fields (optional)
     const updates = {};
     if (firstName) updates.firstName = firstName;
     if (lastName) updates.lastName = lastName;
-    if (role) updates.role = role; // Ensure role is valid
-    if (profile) updates.profile = profile; // Optional profile updates
+    if (role) updates.role = role; 
+    if (profile) updates.profile = profile; 
 
-    // Find and update user
     const user = await User.findByIdAndUpdate(req.params.id, updates, { new: true });
     if (!user) return res.status(404).json({ error: "User not found" });
 

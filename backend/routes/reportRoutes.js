@@ -18,7 +18,7 @@ router.get(
   roleMiddleware(["admin"]),
   reportController.getUserAnalytics
 );
-// router.get('/download', reportController.downloadReport);
+
 
 router.get("/download", async (req, res) => {
   const { type } = req.query;
@@ -28,7 +28,7 @@ router.get("/download", async (req, res) => {
   }
 
   try {
-    // Generate the report (assuming `generateReportPDF` returns a buffer)
+
     const reportBuffer = await reportController.generateReportPDF(type);
 
     res.setHeader("Content-Type", "application/pdf");

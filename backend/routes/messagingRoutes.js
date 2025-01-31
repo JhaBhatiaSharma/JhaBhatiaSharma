@@ -4,7 +4,7 @@ const {
   getMessages,
   getRecentChats,
   startConversation,
-  getAvailableUsers, // Added this import
+  getAvailableUsers, 
 } = require("../controllers/messagingController");
 const { authMiddleware } = require("../middleware/authMiddleware");
 
@@ -18,6 +18,5 @@ router.post("/start", authMiddleware, startConversation); // Start a new convers
 
 router.get("/:userId", authMiddleware, getMessages); // Get messages in a conversation
 
-// New route for available users
 
 module.exports = router;

@@ -3,11 +3,11 @@ const Recruiter = require("../models/Recruiter");
 const jwt = require("jsonwebtoken");
 const Internship = require("../models/Internship");
 const User = require("../models/User");
+
+// Register a new recruiter
 exports.registerRecruiter = async (req, res) => {
   try {
     const { email, password, firstName, lastName, profile } = req.body;
-
-    // Check if the recruiter already exists
     if (password.length < 8) {
       return res.status(400).json({ message: "Password should be at least 8 characters long" });
     }
@@ -15,11 +15,8 @@ exports.registerRecruiter = async (req, res) => {
     if (existingRecruiter) {
       return res.status(400).json({ message: "Recruiter already exists" });
     }
-
-    // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create new recruiter
     const recruiter = new Recruiter({
       email,
       password: hashedPassword,
@@ -29,7 +26,6 @@ exports.registerRecruiter = async (req, res) => {
       role: "recruiter",
     });
 
-    // Save to the database
     await recruiter.save();
 
     res.status(201).json({ message: "Recruiter registered successfully" });
@@ -38,23 +34,21 @@ exports.registerRecruiter = async (req, res) => {
   }
 };
 
+// Login with a recruiter role
 exports.loginRecruiter = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Find the recruiter
     const recruiter = await Recruiter.findOne({ email });
     if (!recruiter) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    // Compare passwords
     const isMatch = await bcrypt.compare(password, recruiter.password);
     if (!isMatch) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    // Generate JWT
     const token = jwt.sign(
       { id: recruiter._id, role: "recruiter", email: recruiter.email },
       process.env.JWT_SECRET,
@@ -76,6 +70,7 @@ exports.loginRecruiter = async (req, res) => {
   }
 };
 
+// Get interviews specific to a recruiter
 exports.getRecruiterInterviews = async (req, res) => {
   try {
     const internships = await Internship.find({ recruiter: req.user.id }).populate({
@@ -89,7 +84,7 @@ exports.getRecruiterInterviews = async (req, res) => {
 
     const interviews = internships.flatMap((internship) =>
       internship.scheduledInterviews
-        .filter((interview) => interview.student) // Ensure valid student reference
+        .filter((interview) => interview.student) 
         .map((interview) => ({
           internshipTitle: internship.title,
           student: interview.student,
@@ -107,6 +102,7 @@ exports.getRecruiterInterviews = async (req, res) => {
   }
 };
 
+// Get all the recruiters
 exports.getAllRecruiters = async (req, res) => {
   const { search } = req.query;
   const query = { role: "recruiter" };

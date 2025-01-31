@@ -9,9 +9,9 @@ const { authMiddleware, roleMiddleware } = require("../middleware/authMiddleware
 
 const router = express.Router();
 
-router.post("/create-complaint", authMiddleware, createComplaint);
-router.get("/get-complaints", authMiddleware, roleMiddleware(["admin"]), getComplaints);
-router.patch("/:complaintId/resolve", authMiddleware, roleMiddleware(["admin"]), resolveComplaint);
-router.get("/my-complaints", authMiddleware, getMyComplaints);
+router.post("/create-complaint", authMiddleware, createComplaint); //Create a new complaint
+router.get("/get-complaints", authMiddleware, roleMiddleware(["admin"]), getComplaints); //Get all the complaints
+router.patch("/:complaintId/resolve", authMiddleware, roleMiddleware(["admin"]), resolveComplaint); //mark a complaint as resolved
+router.get("/my-complaints", authMiddleware, getMyComplaints); // Get the complaints of a logged in user
 
 module.exports = router;

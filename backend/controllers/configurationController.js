@@ -1,4 +1,3 @@
-// controllers/configurationController.js
 const Configuration = require("../models/Configuration");
 
 // Get all configurations
@@ -25,7 +24,7 @@ exports.updateConfiguration = async (req, res) => {
     const config = await Configuration.findOneAndUpdate(
       { type },
       { value },
-      { new: true, upsert: true } // Create if not exists
+      { new: true, upsert: true } 
     );
     res.status(200).json({ success: true, configuration: config });
   } catch (error) {

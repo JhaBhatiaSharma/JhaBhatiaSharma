@@ -1,14 +1,13 @@
 const CV = require("../models/Cv");
 
+// Create or update the CV of a student
 exports.createOrUpdateCV = async (req, res) => {
   try {
     const { template, data, visibility } = req.body;
 
-    // Check if the user already has a CV
     let cv = await CV.findOne({ user: req.user.id });
 
     if (cv) {
-      // Update the existing CV
       cv.template = template;
       cv.data = data;
       cv.visibility = visibility || [];
@@ -16,12 +15,11 @@ exports.createOrUpdateCV = async (req, res) => {
       return res.status(200).json({ message: "CV updated successfully", cv });
     }
 
-    // Create a new CV
     cv = new CV({
       user: req.user.id,
       template,
       data,
-      visibility: visibility || [], // Save visibility during creation
+      visibility: visibility || [], 
     });
     await cv.save();
     res.status(201).json({ message: "CV created successfully", cv });
@@ -59,6 +57,7 @@ exports.deleteCV = async (req, res) => {
   }
 };
 
+// Change visibility of the CV for different companies
 exports.updateVisibility = async (req, res) => {
   try {
     const { cvId, companyIds } = req.body;

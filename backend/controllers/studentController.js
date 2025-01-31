@@ -2,11 +2,13 @@ const bcrypt = require("bcryptjs");
 const Student = require("../models/Student");
 const jwt = require("jsonwebtoken");
 const Internship = require("../models/Internship");
+
+// Register a student
 exports.registerStudent = async (req, res) => {
   try {
     const { email, password, firstName, lastName, profile } = req.body;
 
-    // Check if the student already exists
+    
     if (password.length < 8) {
       return res.status(400).json({ message: "Password should be at least 8 characters long" });
     }
@@ -15,10 +17,7 @@ exports.registerStudent = async (req, res) => {
       return res.status(400).json({ message: "Student already exists" });
     }
 
-    // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
-
-    // Create new student
     const student = new Student({
       email,
       password: hashedPassword,
@@ -28,7 +27,6 @@ exports.registerStudent = async (req, res) => {
       role: "student",
     });
 
-    // Save to the database
     await student.save();
 
     res.status(201).json({ message: "Student registered successfully" });
@@ -37,23 +35,21 @@ exports.registerStudent = async (req, res) => {
   }
 };
 
+// Login as a student
 exports.loginStudent = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Find the student
     const student = await Student.findOne({ email });
     if (!student) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    // Compare passwords
     const isMatch = await bcrypt.compare(password, student.password);
     if (!isMatch) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    // Generate JWT
     const token = jwt.sign(
       { id: student._id, role: "student", email: student.email },
       process.env.JWT_SECRET,
@@ -75,6 +71,7 @@ exports.loginStudent = async (req, res) => {
   }
 };
 
+// Get the interviews lined up for a student
 exports.getStudentInterviews = async (req, res) => {
   try {
     const student = await Student.findById(req.user.id).populate("scheduledInterviews.internship");
@@ -89,11 +86,11 @@ exports.getStudentInterviews = async (req, res) => {
   }
 };
 
+// Get the interviews completed by the student
 exports.getStudentCompletedInterviews = async (req, res) => {
   try {
     const studentId = req.user.id;
 
-    // Fetch completed interviews
     const completedInterviews = await Internship.find({
       "scheduledInterviews.student": studentId,
       "scheduledInterviews.status": "Completed",
@@ -102,7 +99,6 @@ exports.getStudentCompletedInterviews = async (req, res) => {
       select: "firstName lastName email",
     });
 
-    // Filter and structure the response
     const completed = completedInterviews.flatMap((internship) =>
       internship.scheduledInterviews
         .filter(

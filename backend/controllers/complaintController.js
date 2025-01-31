@@ -1,5 +1,6 @@
 const Complaint = require("../models/Complaint");
 
+// Create a new complaint
 exports.createComplaint = async (req, res) => {
   try {
     const { title, description } = req.body;
@@ -13,6 +14,8 @@ exports.createComplaint = async (req, res) => {
   }
 };
 
+
+// Get all complaints
 exports.getComplaints = async (req, res) => {
   try {
     const complaints = await Complaint.find({ status: "pending" }).populate(
@@ -25,6 +28,7 @@ exports.getComplaints = async (req, res) => {
   }
 };
 
+// Change status to resolved
 exports.resolveComplaint = async (req, res) => {
   try {
     const { complaintId } = req.params;
@@ -44,6 +48,7 @@ exports.resolveComplaint = async (req, res) => {
   }
 };
 
+// Get complaints specific to a user
 exports.getMyComplaints = async (req, res) => {
   try {
     const userId = req.user.id; // Assuming user ID is available in req.user

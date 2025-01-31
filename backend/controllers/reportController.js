@@ -1,10 +1,10 @@
-// controllers/reportController.js
 const UsageLog = require("../models/UsageLog");
 const User = require("../models/User");
 const PDFDocument = require("pdfkit");
 // eslint-disable-next-line no-unused-vars, unused-imports/no-unused-vars
 const fs = require("fs");
 
+// Get usage statistics for admin 
 exports.getUsageStatistics = async (req, res) => {
   try {
     const totalRequests = await UsageLog.countDocuments();
@@ -18,6 +18,7 @@ exports.getUsageStatistics = async (req, res) => {
   }
 };
 
+// Get user analytics from admin
 exports.getUserAnalytics = async (req, res) => {
   try {
     const totalUsers = await User.countDocuments();
@@ -42,6 +43,7 @@ exports.getUserAnalytics = async (req, res) => {
   }
 };
 
+// Generating pdf fuction
 exports.generateReportPDF = async (type) => {
   const doc = new PDFDocument();
   const buffers = [];
@@ -49,7 +51,7 @@ exports.generateReportPDF = async (type) => {
   doc.on("data", (chunk) => buffers.push(chunk));
   doc.on("end", () => console.log("PDF generated successfully"));
 
-  // Add content to the PDF based on the type
+  
   switch (type) {
     case "usage-statistics":
       doc.text("Usage Statistics Report\n\n");

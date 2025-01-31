@@ -9,20 +9,21 @@ const {
 } = require("../controllers/cvController");
 const CV = require("../models/Cv");
 
-// Route to create or update a CV
-router.post("/", authMiddleware, createOrUpdateCV); // Changed from "/cv"
+//create or update a CV
+router.post("/", authMiddleware, createOrUpdateCV); 
 
-// Route to fetch the latest CV
+//fetch the latest CV
 router.get("/latest", authMiddleware, getCV); // Added this route
 
-// Route to fetch the CV of a logged-in user
+//fetch the CV of a logged-in user
 router.get("/", authMiddleware, getCV);
 
-// Route to delete a CV
+//delete a CV
 router.delete("/", authMiddleware, deleteCV);
 
-router.post("/update-visibility", authMiddleware, updateVisibility);
+router.post("/update-visibility", authMiddleware, updateVisibility); // change the visibility of the cv for different companies
 
+// Get the cv for a particular student
 router.get("/:studentId", authMiddleware, async (req, res) => {
   try {
     const { studentId } = req.params;

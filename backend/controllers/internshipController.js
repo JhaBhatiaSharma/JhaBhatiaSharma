@@ -4,37 +4,9 @@ const CV = require("../models/Cv");
 const { google } = require("googleapis");
 
 // eslint-disable-next-line no-unused-vars, unused-imports/no-unused-vars
-const calculateTotalMatchScore = (internship, studentProfile, userCV) => {
-  const skillsScore = calculateSkillMatch(
-    userCV.data.skills || [],
-    internship.requiredSkills || []
-  );
-  const experienceScore = calculateExperienceMatch(studentProfile?.profile?.experience || []);
-  const locationScore = calculateLocationPreference(
-    studentProfile?.profile?.location,
-    internship.location
-  );
 
-  // Weighted scoring
-  const weights = {
-    skills: 0.5, // 50% weight for skills match
-    experience: 0.3, // 30% weight for experience
-    location: 0.2, // 20% weight for location
-  };
 
-  const totalScore =
-    skillsScore.score * weights.skills +
-    experienceScore * weights.experience +
-    locationScore * weights.location;
-
-  return {
-    totalScore: totalScore * 100,
-    skillsMatched: skillsScore.matchingSkills,
-    hasLocationMatch: locationScore > 0,
-    hasExperienceMatch: experienceScore > 0.5,
-  };
-};
-
+// Skill matching of role and student
 const calculateSkillMatch = (cvSkills, internshipSkills) => {
   if (!cvSkills || !internshipSkills) return 0;
 
@@ -51,23 +23,26 @@ const calculateSkillMatch = (cvSkills, internshipSkills) => {
   };
 };
 
+// Experience matching of user and role
 const calculateExperienceMatch = (studentExperience) => {
   if (!studentExperience || studentExperience.length === 0) return 0;
 
-  // Calculate total months of experience
   const totalMonths = studentExperience.reduce((total, exp) => {
     return total + (exp.duration || 0);
   }, 0);
 
-  // Score based on months of experience (max score at 24 months)
   return Math.min(totalMonths / 24, 1);
 };
 
+
+// Location preference calculation
 const calculateLocationPreference = (studentLocation, internshipLocation) => {
   if (!studentLocation || !internshipLocation) return 1; // Default score if locations not specified
   return studentLocation.toLowerCase() === internshipLocation.toLowerCase() ? 1 : 0;
 };
 
+
+// Get the recommended internships of a student after getting the scores
 exports.getRecommendedInternships = async (req, res) => {
   try {
     // Get user's CV and student profile
@@ -83,14 +58,14 @@ exports.getRecommendedInternships = async (req, res) => {
       });
     }
 
-    // Extract skills and other relevant info
+
     const userSkills = userCV.data.skills || [];
     const studentExperience = studentProfile?.profile?.experience || [];
-    const preferredLocation = studentProfile?.profile?.university; // Using university location as preference
+    const preferredLocation = studentProfile?.profile?.university; 
 
-    // Get all available internships
+   
     const internships = await Internship.find({
-      applicants: { $ne: req.user.id }, // Exclude already applied internships
+      applicants: { $ne: req.user.id }, 
     })
       .populate("recruiter", "companyName")
       .lean();
@@ -137,6 +112,7 @@ exports.getRecommendedInternships = async (req, res) => {
   }
 };
 
+// Post a new internship by recruiter
 exports.addInternship = async (req, res) => {
   try {
     const {
@@ -173,6 +149,7 @@ exports.addInternship = async (req, res) => {
   }
 };
 
+// Get all the internships posted by all the recruiters
 exports.getAllInternships = async (req, res) => {
   try {
     const internships = await Internship.find();
@@ -182,6 +159,7 @@ exports.getAllInternships = async (req, res) => {
   }
 };
 
+// Get the internship based on its _id attribute
 exports.getInternshipById = async (req, res) => {
   try {
     const internship = await Internship.findById(req.params.id).populate(
@@ -197,6 +175,7 @@ exports.getInternshipById = async (req, res) => {
   }
 };
 
+// Apply to a specific internship taking the id as params
 exports.applyToInternship = async (req, res) => {
   try {
     const internship = await Internship.findById(req.params.id);
@@ -209,11 +188,9 @@ exports.applyToInternship = async (req, res) => {
       return res.status(400).json({ message: "You have already applied for this internship" });
     }
 
-    // Add the user to the internship's applicants list
     internship.applicants.push(req.user.id);
     await internship.save();
 
-    // Optionally update the student's profile
     const student = await Student.findById(req.user.id);
     if (student) {
       student.appliedInternships = student.appliedInternships || [];
@@ -228,6 +205,7 @@ exports.applyToInternship = async (req, res) => {
   }
 };
 
+// Get the internships posted by a specific recruiter
 exports.getRecruiterInternships = async (req, res) => {
   try {
     const internships = await Internship.find({ recruiter: req.user.id }).populate(
@@ -240,12 +218,13 @@ exports.getRecruiterInternships = async (req, res) => {
   }
 };
 
+// Get the internships applied for by a student
 exports.getStudentInternships = async (req, res) => {
   try {
-    // Find the logged-in student and populate applied internships
+    
     const student = await Student.findById(req.user.id).populate({
       path: "appliedInternships",
-      populate: { path: "recruiter", select: "firstName lastName email" }, // Populate recruiter details if needed
+      populate: { path: "recruiter", select: "firstName lastName email" }, 
     });
 
     if (!student) {
@@ -299,6 +278,8 @@ const auth = new google.auth.GoogleAuth({
   scopes: ["https://www.googleapis.com/auth/calendar"],
 });
 
+
+// Schedule interview for a student
 exports.scheduleInterview = async (req, res) => {
   try {
     const { id: internshipId } = req.params;
@@ -370,6 +351,7 @@ exports.scheduleInterview = async (req, res) => {
   }
 };
 
+// Chnage status of interview to completed if it is done
 exports.markInterviewAsCompleted = async (req, res) => {
   try {
     const { internshipId, studentId } = req.params;
@@ -379,7 +361,6 @@ exports.markInterviewAsCompleted = async (req, res) => {
       return res.status(404).json({ message: "Internship not found" });
     }
 
-    // Find and update the interview status in the internship
     const interview = internship.scheduledInterviews.find(
       (interview) => interview.student.toString() === studentId
     );
@@ -391,7 +372,6 @@ exports.markInterviewAsCompleted = async (req, res) => {
     interview.status = "Completed";
     await internship.save();
 
-    // Update the student's scheduledInterviews status
     const student = await Student.findById(studentId);
     if (!student) {
       return res.status(404).json({ message: "Student not found" });
