@@ -34,7 +34,7 @@ const CVBuilder = ({ isOpen, onClose }) => {
       },
     ],
     skills: [],
-    newSkill: "", // For skill input
+    newSkill: "", 
   });
 
   const [recruiters, setRecruiters] = useState([]);
@@ -132,7 +132,7 @@ const CVBuilder = ({ isOpen, onClose }) => {
 
   const handleSubmit = async () => {
     try {
-      // Format the data according to your CV model schema
+      
       const cvData = {
         template: template,
         user: localStorage.getItem("userId"),
@@ -156,11 +156,11 @@ const CVBuilder = ({ isOpen, onClose }) => {
         },
       };
 
-      // Add debug logs
+     
       console.log("Submitting CV data:", cvData);
       console.log("Authorization token:", localStorage.getItem("token"));
 
-      // Use the correct endpoint that matches your backend route
+     
       const response = await API.post("/cv", cvData);
 
       console.log("CV saved successfully:", response.data);
@@ -169,7 +169,7 @@ const CVBuilder = ({ isOpen, onClose }) => {
       console.error("Error saving CV:", error);
       console.error("Error response:", error.response?.data);
 
-      // More informative error message
+     
       const errorMessage =
         error.response?.data?.message || error.message || "Failed to save CV";
       alert(errorMessage);

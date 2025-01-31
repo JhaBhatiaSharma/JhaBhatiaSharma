@@ -1,4 +1,3 @@
-// frontend/src/context/UserContext.jsx
 import { createContext, useState, useContext, useEffect } from "react";
 
 // Define types for our context
@@ -28,8 +27,6 @@ export const UserProvider = ({ children }) => {
       setLoading(true);
       setError(null);
 
-      // Here you would typically make an API call
-      // For now, we'll simulate an API call
       const user = {
         id: Math.random().toString(),
         email: userData.email,

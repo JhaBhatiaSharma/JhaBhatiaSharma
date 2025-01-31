@@ -1,4 +1,3 @@
-//frontend/src/Pages/InternshipApplication.jsx
 import {
   Card,
   CardContent,

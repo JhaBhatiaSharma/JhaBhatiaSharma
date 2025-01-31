@@ -29,7 +29,6 @@ const UserMenuDropdown = ({ role = "student", initials = "JD" }) => {
     localStorage.removeItem("userRole");
     localStorage.removeItem("userData");
 
-    // Navigate to login page
     navigate("/login");
   };
 

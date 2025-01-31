@@ -45,8 +45,8 @@ const AdminDashboard = () => {
   const [selectedConfig, setSelectedConfig] = useState(null); // Tracks which config is being edited
   const [isConfigModalOpen, setIsConfigModalOpen] = useState(false);
   const [editData, setEditData] = useState("");
-
-  const fetchUsers = async () => {
+  
+  const fetchUsers = async () => { //Fetches all users
     try {
       setLoading(true);
       const response = await API.get("/admin/users", {
@@ -66,7 +66,7 @@ const AdminDashboard = () => {
   }, []);
 
   useEffect(() => {
-    const fetchInternships = async () => {
+    const fetchInternships = async () => {  //Fetches all internships
       try {
         const response = await API.get("/internships/allinternships");
         setInternships(response.data);
@@ -79,7 +79,7 @@ const AdminDashboard = () => {
   }, []);
 
   const handleSearch = async () => {
-    await fetchUsers();
+    await fetchUsers();  // handles searching of users
   };
 
   const openInternshipModal = () => {
@@ -170,7 +170,7 @@ const AdminDashboard = () => {
     }
   };
 
-  const handleDeleteUser = async () => {
+  const handleDeleteUser = async () => { // Delete user from db
     if (!editingUser) return;
 
     try {
@@ -896,7 +896,7 @@ const AdminDashboard = () => {
                 >
                   {editingUser ? "Update User" : "Add User"}
                 </button>
-                {editingUser && ( // Show the Delete button only if editingUser is set
+                {editingUser && ( 
                   <button
                     onClick={() => setConfirmDeleteOpen(true)}
                     className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"

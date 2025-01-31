@@ -1,4 +1,3 @@
-//frontend/src/Pages/ProfileBuilder.jsx
 import {
   Card,
   CardContent,

@@ -129,7 +129,7 @@ const CompanyDashboard = () => {
       alert("Failed to schedule interview. Please try again.");
     }
   };
-
+  // Mark the interview as completed
   const handleMarkAsCompleted = async (internshipId, studentId) => {
     try {
       await API.patch(

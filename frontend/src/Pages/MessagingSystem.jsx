@@ -194,7 +194,7 @@ const MessagingSystem = ({ isOpen, onClose, userId, role }) => {
 
   if (!isOpen) return null;
 
-  // Rest of your render code remains the same...
+  
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
       <div className="bg-white rounded-xl w-full max-w-4xl h-[600px] flex overflow-hidden relative">

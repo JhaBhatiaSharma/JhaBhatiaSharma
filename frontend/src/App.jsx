@@ -1,4 +1,4 @@
-//frontend/src/App.jsx
+
 import {
   BrowserRouter as Router,
   Route,

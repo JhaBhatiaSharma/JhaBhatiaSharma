@@ -1,4 +1,3 @@
-// frontend/src/Pages/Company/InternshipDetails.jsx
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -11,11 +10,11 @@ const InternshipDetails = () => {
   useEffect(() => {
     const fetchAllInternships = async () => {
       try {
-        const recruiterId = "1234"; // Replace with actual recruiter ID
+        const recruiterId = "1234"; 
         const response = await axios.get(
           `/fetch_all-internship?id=${recruiterId}`,
           {
-            headers: { usertype: "recruiter" }, // Adjust headers as required
+            headers: { usertype: "recruiter" }, 
           },
         );
         setAllInternships(response.data.data);
