@@ -4,6 +4,7 @@ on:
     branches: [main, develop, backup, feature/prototype-v1-testing]
   pull_request:
     branches: [main, develop, backup, feature/prototype-v1-testing]
+
 jobs:
   setup:
     runs-on: ubuntu-latest
@@ -25,12 +26,10 @@ jobs:
 
       - name: Install dependencies
         run: |
-          # Install all root dependencies, including Husky
           npm install
 
       - name: Husky Install
         run: |
-          # Initialize Husky hooks manually after installation
           npx husky install
           chmod +x .husky/*
 
@@ -55,9 +54,9 @@ jobs:
       - name: Install dependencies
         run: npm ci || npm install
 
-      - name: Run ESLint
-        run: npm run lint
-     
+      - name: Run ESLint (Frontend)
+        run: npx eslint . --config eslint.config.js --fix --ignore-pattern "dist" --ignore-pattern "node_modules" --ignore-pattern "src/__tests__/**" --ignore-pattern "src/tests/**"
+
       - name: Run tests
         run: npm test -- --watchAll=false --ci
 
@@ -85,5 +84,8 @@ jobs:
       - name: Install dependencies
         run: npm ci || npm install
 
-      - name: Run ESLint
-        run: npm run lint
+      - name: Run ESLint (Backend)
+        run: npx eslint . --config eslint.config.cjs --fix --ignore-pattern "dist" --ignore-pattern "node_modules" --ignore-pattern "coverage" --ignore-pattern "__tests__/**" --ignore-pattern "credentials/**"
+
+      - name: Run tests
+        run: npm test -- --watchAll=false --ci
