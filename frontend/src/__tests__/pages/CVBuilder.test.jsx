@@ -1,6 +1,6 @@
 import { render, screen, fireEvent, act, within } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import CVBuilder from "../../pages/CVBuilder";
+import CVBuilder from "../../Pages/CVBuilder";
 
 // Mock API
 jest.mock("../../api", () => ({

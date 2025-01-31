@@ -16,7 +16,7 @@ jest.mock("../../components/UserMenuDropdown", () => {
   };
 });
 
-jest.mock("../../pages/MessagingSystem", () => {
+jest.mock("../../Pages/MessagingSystem", () => {
   return function DummyMessagingSystem() {
     return <div>Messaging System</div>;
   };
@@ -30,7 +30,7 @@ jest.mock("../../api", () => ({
 }));
 
 // Import the component after mocks
-import AdminDashboard from "../../pages/AdminDashboard";
+import AdminDashboard from "../../Pages/AdminDashboard";
 
 describe("AdminDashboard", () => {
   beforeEach(() => {
