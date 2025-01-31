@@ -17,7 +17,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '20'
-          cache: 'npm'
 
       - name: Git Setup
         run: |
@@ -52,7 +51,7 @@ jobs:
           cache-dependency-path: frontend/package-lock.json
 
       - name: Install dependencies
-        run: npm ci || npm install
+        run: npm install --no-package-lock
 
       - name: Run ESLint (Frontend)
         run: npx eslint . --config eslint.config.js --fix --ignore-pattern "dist" --ignore-pattern "node_modules" --ignore-pattern "src/__tests__/**" --ignore-pattern "src/tests/**"
@@ -82,7 +81,7 @@ jobs:
           cache-dependency-path: backend/package-lock.json
 
       - name: Install dependencies
-        run: npm ci || npm install
+        run: npm install --no-package-lock
 
       - name: Run ESLint (Backend)
         run: npx eslint . --config eslint.config.cjs --fix --ignore-pattern "dist" --ignore-pattern "node_modules" --ignore-pattern "coverage" --ignore-pattern "__tests__/**" --ignore-pattern "credentials/**"
