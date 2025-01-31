@@ -1,4 +1,7 @@
 # InternHub S&C Platform - Next-Gen Internship Management
+<p align="center">
+  <img src="https://cdn.worldvectorlogo.com/logos/politecnico-di-milano.svg" alt="Politecnico di Milano" width="250">
+</p>
 
 ![Tech Stack](https://img.shields.io/badge/stack-MERN-61DAFB?logo=react&logoColor=white)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
@@ -216,4 +219,29 @@ backend/
 ├── utils/                # Helper functions
 └── ...other core files
 ```
+
+## 🎭 Contributors
+
+<table>
+  <tr>
+    <th>Contributor</th>
+    <th>Name</th>
+    <th>Course</th>
+  </tr>
+  <tr>
+    <td><img src="https://avatars.githubusercontent.com/u/32769890?v=4" width="100"></td>
+    <td><strong>Shreesh Kumar Jha</strong></td>
+    <td>MSc Computer Science & Engineering</td>
+  </tr>
+  <tr>
+    <td><img src="https://avatars.githubusercontent.com/u/76564396?v=4" width="100"></td>
+    <td><strong>Samarth Bhatia</strong></td>
+    <td>MSc Computer Science & Engineering</td>
+  </tr>
+  <tr>
+    <td><img src="https://avatars.githubusercontent.com/u/92645618?v=4" width="100"></td>
+    <td><strong>Satvik Sharma</strong></td>
+    <td>MSc Computer Science & Engineering</td>
+  </tr>
+</table>
 
