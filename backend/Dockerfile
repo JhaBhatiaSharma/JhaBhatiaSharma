@@ -1,22 +1,18 @@
-# backend/Dockerfile
-
-# Use an official Node.js image
 FROM node:18
 
-# Create app directory
 WORKDIR /app
 
-# Copy package.json and package-lock.json
+# Copy package files first
 COPY package*.json ./
 
 # Install dependencies
-RUN npm install
+RUN npm install --only=production
 
-# Copy the rest of the backend code
+# Copy source code
 COPY . .
 
-# Expose the backend port
+# Expose port 5001
 EXPOSE 5001
 
-# By default we’ll run nodemon for hot reload in dev
-CMD ["npx", "nodemon", "server.js"]
+# Start the backend server
+CMD ["node", "server.js"]
