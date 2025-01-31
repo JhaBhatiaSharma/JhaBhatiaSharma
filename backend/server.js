@@ -1,7 +1,7 @@
 // server.js
-const { PORT } = require('./config/env');
-const connectDB = require('./utils/database');
-const app = require('./app');
+const { PORT } = require("./config/env");
+const connectDB = require("./utils/database");
+const app = require("./app");
 
 const startServer = async () => {
   try {
@@ -11,10 +11,9 @@ const startServer = async () => {
       console.log(`Server running on port ${PORT}`);
     });
   } catch (error) {
-    console.error('Failed to start server', error);
+    console.error("Failed to start server", error);
     process.exit(1);
   }
 };
 
 startServer();
-

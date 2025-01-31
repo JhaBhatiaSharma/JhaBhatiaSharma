@@ -1,4 +1,4 @@
-const Complaint = require('../models/Complaint');
+const Complaint = require("../models/Complaint");
 
 exports.createComplaint = async (req, res) => {
   try {
@@ -15,7 +15,10 @@ exports.createComplaint = async (req, res) => {
 
 exports.getComplaints = async (req, res) => {
   try {
-    const complaints = await Complaint.find({ status: 'pending' }).populate('userId', 'firstName lastName role');
+    const complaints = await Complaint.find({ status: "pending" }).populate(
+      "userId",
+      "firstName lastName role"
+    );
     res.status(200).json({ success: true, data: complaints });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
@@ -28,11 +31,11 @@ exports.resolveComplaint = async (req, res) => {
 
     const complaint = await Complaint.findByIdAndUpdate(
       complaintId,
-      { status: 'resolved' },
+      { status: "resolved" },
       { new: true }
     );
     if (!complaint) {
-      return res.status(404).json({ success: false, message: 'Complaint not found' });
+      return res.status(404).json({ success: false, message: "Complaint not found" });
     }
 
     res.status(200).json({ success: true, data: complaint });
@@ -42,11 +45,11 @@ exports.resolveComplaint = async (req, res) => {
 };
 
 exports.getMyComplaints = async (req, res) => {
-    try {
-      const userId = req.user.id; // Assuming user ID is available in req.user
-      const complaints = await Complaint.find({ userId });
-      res.status(200).json({ success: true, data: complaints });
-    } catch (error) {
-      res.status(500).json({ success: false, message: error.message });
-    }
-  };
+  try {
+    const userId = req.user.id; // Assuming user ID is available in req.user
+    const complaints = await Complaint.find({ userId });
+    res.status(200).json({ success: true, data: complaints });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};

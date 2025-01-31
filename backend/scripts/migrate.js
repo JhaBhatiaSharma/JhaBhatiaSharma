@@ -1,14 +1,14 @@
 // scripts/migrate.js
-const mongoose = require('mongoose');
-require('dotenv').config();
+const mongoose = require("mongoose");
+require("dotenv").config();
 
-const Student = require('../models/Student');
-const Internship = require('../models/Internship');
+const Student = require("../models/Student");
+const Internship = require("../models/Internship");
 
 const migrateDatabase = async () => {
   try {
     await mongoose.connect(process.env.MONGODB_URI);
-    console.log('Connected to MongoDB');
+    console.log("Connected to MongoDB");
 
     // Update Internships
     const internshipUpdateResult = await Internship.updateMany(
@@ -17,9 +17,9 @@ const migrateDatabase = async () => {
         $set: {
           requiredSkills: [],
           preferredSkills: [],
-          experienceLevel: 'beginner',
-          status: 'open'
-        }
+          experienceLevel: "beginner",
+          status: "open",
+        },
       }
     );
     console.log(`Updated ${internshipUpdateResult.modifiedCount} internships`);
@@ -31,32 +31,32 @@ const migrateDatabase = async () => {
     for (const student of students) {
       // Convert old skills array to new format
       if (Array.isArray(student.profile.skills)) {
-        const newSkills = student.profile.skills.map(skill => ({
+        const newSkills = student.profile.skills.map((skill) => ({
           name: skill,
-          proficiency: 'beginner',
-          yearsOfExperience: 0
+          proficiency: "beginner",
+          yearsOfExperience: 0,
         }));
 
         // Update the student document
         await Student.findByIdAndUpdate(student._id, {
           $set: {
-            'profile.skills': newSkills,
-            'recommendationPreferences': {
+            "profile.skills": newSkills,
+            recommendationPreferences: {
               remote: false,
               minStipend: 0,
               preferredDuration: 3,
-              interestedIndustries: []
-            }
-          }
+              interestedIndustries: [],
+            },
+          },
         });
         updatedStudents++;
       }
     }
     console.log(`Updated ${updatedStudents} student profiles`);
 
-    console.log('Migration completed successfully');
+    console.log("Migration completed successfully");
   } catch (error) {
-    console.error('Migration failed:', error);
+    console.error("Migration failed:", error);
   } finally {
     await mongoose.connection.close();
   }

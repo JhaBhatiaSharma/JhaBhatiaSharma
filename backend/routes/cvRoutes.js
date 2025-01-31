@@ -5,15 +5,15 @@ const {
   createOrUpdateCV,
   getCV,
   deleteCV,
-  updateVisibility
+  updateVisibility,
 } = require("../controllers/cvController");
-const CV = require('../models/Cv')
+const CV = require("../models/Cv");
 
 // Route to create or update a CV
-router.post("/", authMiddleware, createOrUpdateCV);  // Changed from "/cv"
+router.post("/", authMiddleware, createOrUpdateCV); // Changed from "/cv"
 
 // Route to fetch the latest CV
-router.get("/latest", authMiddleware, getCV);  // Added this route
+router.get("/latest", authMiddleware, getCV); // Added this route
 
 // Route to fetch the CV of a logged-in user
 router.get("/", authMiddleware, getCV);
@@ -21,21 +21,20 @@ router.get("/", authMiddleware, getCV);
 // Route to delete a CV
 router.delete("/", authMiddleware, deleteCV);
 
-router.post("/update-visibility", authMiddleware, updateVisibility)
+router.post("/update-visibility", authMiddleware, updateVisibility);
 
-router.get('/:studentId', authMiddleware, async (req, res) => {
+router.get("/:studentId", authMiddleware, async (req, res) => {
   try {
     const { studentId } = req.params;
     const cv = await CV.findOne({ user: studentId });
     if (!cv) {
-      return res.status(404).json({ message: 'CV not found' });
+      return res.status(404).json({ message: "CV not found" });
     }
     res.status(200).json(cv);
   } catch (error) {
-    console.error('Error fetching CV:', error.message);
-    res.status(500).json({ message: 'Internal Server Error' });
+    console.error("Error fetching CV:", error.message);
+    res.status(500).json({ message: "Internal Server Error" });
   }
 });
-
 
 module.exports = router;

@@ -1,6 +1,6 @@
-const User = require('../models/User');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+const User = require("../models/User");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 // Register Admin
 exports.registerAdmin = async (req, res) => {
@@ -9,11 +9,11 @@ exports.registerAdmin = async (req, res) => {
 
     // Check if the admin already exists
     if (password.length < 8) {
-      return res.status(400).json({ message: 'Password should be at least 8 characters long' });
+      return res.status(400).json({ message: "Password should be at least 8 characters long" });
     }
-    const existingAdmin = await User.findOne({ email, role: 'admin' });
+    const existingAdmin = await User.findOne({ email, role: "admin" });
     if (existingAdmin) {
-      return res.status(400).json({ message: 'Admin already exists' });
+      return res.status(400).json({ message: "Admin already exists" });
     }
 
     // Hash the password
@@ -25,13 +25,13 @@ exports.registerAdmin = async (req, res) => {
       lastName,
       email,
       password: hashedPassword,
-      role: 'admin', 
+      role: "admin",
     });
 
     // Save to the database
     await admin.save();
 
-    res.status(201).json({ message: 'Admin registered successfully' });
+    res.status(201).json({ message: "Admin registered successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -43,22 +43,22 @@ exports.loginAdmin = async (req, res) => {
     const { email, password } = req.body;
 
     // Find the admin
-    const admin = await User.findOne({ email, role: 'admin' });
+    const admin = await User.findOne({ email, role: "admin" });
     if (!admin) {
-      return res.status(401).json({ message: 'Invalid credentials' });
+      return res.status(401).json({ message: "Invalid credentials" });
     }
 
     // Compare passwords
     const isMatch = await bcrypt.compare(password, admin.password);
     if (!isMatch) {
-      return res.status(401).json({ message: 'Invalid credentials' });
+      return res.status(401).json({ message: "Invalid credentials" });
     }
 
     // Generate JWT
     const token = jwt.sign(
-      { id: admin._id, role: 'admin', email:admin.email },
+      { id: admin._id, role: "admin", email: admin.email },
       process.env.JWT_SECRET,
-      { expiresIn: '1d' }
+      { expiresIn: "1d" }
     );
 
     res.status(200).json({
@@ -66,7 +66,7 @@ exports.loginAdmin = async (req, res) => {
       user: {
         id: admin._id,
         email: admin.email,
-        role: 'admin',
+        role: "admin",
         firstName: admin.firstName,
         lastName: admin.lastName,
       },
@@ -76,12 +76,11 @@ exports.loginAdmin = async (req, res) => {
   }
 };
 
-
 // Fetch all users
 exports.getAllUsers = async (req, res) => {
   const { search, role } = req.query;
   const query = {};
-  if (search) query.name = { $regex: search, $options: 'i' };
+  if (search) query.name = { $regex: search, $options: "i" };
   if (role) query.role = role;
 
   try {
@@ -92,7 +91,6 @@ exports.getAllUsers = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
-
 
 // Add user
 exports.addUser = async (req, res) => {
@@ -120,7 +118,7 @@ exports.editUser = async (req, res) => {
 
     // Find and update user
     const user = await User.findByIdAndUpdate(req.params.id, updates, { new: true });
-    if (!user) return res.status(404).json({ error: 'User not found' });
+    if (!user) return res.status(404).json({ error: "User not found" });
 
     res.json(user);
   } catch (err) {
@@ -128,13 +126,12 @@ exports.editUser = async (req, res) => {
   }
 };
 
-
 // Delete user
 exports.deleteUser = async (req, res) => {
   try {
     const user = await User.findByIdAndDelete(req.params.id);
-    if (!user) return res.status(404).json({ error: 'User not found' });
-    res.json({ message: 'User deleted' });
+    if (!user) return res.status(404).json({ error: "User not found" });
+    res.json({ message: "User deleted" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

@@ -1,5 +1,5 @@
 // middleware/logUsage.js
-const UsageLog = require('../models/UsageLog');
+const UsageLog = require("../models/UsageLog");
 
 const logUsage = async (req, res, next) => {
   try {
@@ -10,7 +10,7 @@ const logUsage = async (req, res, next) => {
       timestamp: new Date(),
     });
   } catch (err) {
-    console.error('Error logging usage:', err.message);
+    console.error("Error logging usage:", err.message);
   }
   next();
 };

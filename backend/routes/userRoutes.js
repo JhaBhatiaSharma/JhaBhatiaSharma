@@ -1,13 +1,17 @@
-const express = require('express');
-const { getUserProfile, updateUserProfile, getUsersByRole, resetPassword } = require('../controllers/userController');
-const {getAllRecruiters} = require('../controllers/recruiterController')
-const { authMiddleware, roleMiddleware } = require('../middleware/authMiddleware');
+const express = require("express");
+const {
+  getUserProfile,
+  updateUserProfile,
+  getUsersByRole,
+  resetPassword,
+} = require("../controllers/userController");
+const { getAllRecruiters } = require("../controllers/recruiterController");
+const { authMiddleware, roleMiddleware } = require("../middleware/authMiddleware");
 const router = express.Router();
 
-router.get('/profile', authMiddleware, getUserProfile);
-router.put('/profile', authMiddleware, updateUserProfile);
-router.get('/', authMiddleware, roleMiddleware(['admin']), getUsersByRole);
-router.post('/reset-password', authMiddleware,resetPassword);
-router.get('/get-all-recruiters', authMiddleware, getAllRecruiters)
+router.get("/profile", authMiddleware, getUserProfile);
+router.put("/profile", authMiddleware, updateUserProfile);
+router.get("/", authMiddleware, roleMiddleware(["admin"]), getUsersByRole);
+router.post("/reset-password", authMiddleware, resetPassword);
+router.get("/get-all-recruiters", authMiddleware, getAllRecruiters);
 module.exports = router;
-

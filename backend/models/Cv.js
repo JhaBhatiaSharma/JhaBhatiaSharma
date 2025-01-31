@@ -18,10 +18,9 @@ const cvSchema = new mongoose.Schema(
     },
     visibility: {
       type: [mongoose.Schema.Types.ObjectId],
-      ref: 'Recruiter',
+      ref: "Recruiter",
       default: [],
-  },
-  
+    },
   },
   { timestamps: true }
 );

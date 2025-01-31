@@ -13,7 +13,7 @@ exports.createOrUpdateCV = async (req, res) => {
       cv.data = data;
       cv.visibility = visibility || [];
       await cv.save();
-      return res.status(200).json({ message: 'CV updated successfully', cv });
+      return res.status(200).json({ message: "CV updated successfully", cv });
     }
 
     // Create a new CV
@@ -24,13 +24,12 @@ exports.createOrUpdateCV = async (req, res) => {
       visibility: visibility || [], // Save visibility during creation
     });
     await cv.save();
-    res.status(201).json({ message: 'CV created successfully', cv });
+    res.status(201).json({ message: "CV created successfully", cv });
   } catch (error) {
-    console.error('Error creating/updating CV:', error.message);
-    res.status(500).json({ message: 'Internal Server Error' });
+    console.error("Error creating/updating CV:", error.message);
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };
-
 
 // Get the logged-in user's CV
 exports.getCV = async (req, res) => {
@@ -62,15 +61,11 @@ exports.deleteCV = async (req, res) => {
 
 exports.updateVisibility = async (req, res) => {
   try {
-      const { cvId, companyIds } = req.body;
-      const updatedCV = await CV.findByIdAndUpdate(
-          cvId,
-          { visibility: companyIds },
-          { new: true }
-      );
-      res.status(200).json(updatedCV);
+    const { cvId, companyIds } = req.body;
+    const updatedCV = await CV.findByIdAndUpdate(cvId, { visibility: companyIds }, { new: true });
+    res.status(200).json(updatedCV);
   } catch (error) {
-      res.status(500).json({ error: 'Failed to update CV visibility.' });
+    void error;
+    res.status(500).json({ error: "Failed to update CV visibility." });
   }
 };
-

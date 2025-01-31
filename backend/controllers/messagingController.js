@@ -1,10 +1,11 @@
-const { Message, Conversation } = require('../models/Message');
-const User = require('../models/User');
-const Student = require('../models/Student');
-const Internship = require('../models/Internship');
+const { Message, Conversation } = require("../models/Message");
+const User = require("../models/User");
+// eslint-disable-next-line no-unused-vars, unused-imports/no-unused-vars
+const Student = require("../models/Student");
+// eslint-disable-next-line no-unused-vars, unused-imports/no-unused-vars
+const Internship = require("../models/Internship");
 
 // New function to get available users to chat with
-
 
 const getAvailableUsers = async (req, res) => {
   try {
@@ -16,8 +17,8 @@ const getAvailableUsers = async (req, res) => {
     // Add search filter
     if (search) {
       query.$or = [
-        { firstName: { $regex: search, $options: 'i' } },
-        { lastName: { $regex: search, $options: 'i' } },
+        { firstName: { $regex: search, $options: "i" } },
+        { lastName: { $regex: search, $options: "i" } },
       ];
     }
 
@@ -25,16 +26,15 @@ const getAvailableUsers = async (req, res) => {
     if (role) query.role = role;
 
     // Fetch users
-    const users = await User.find(query).select('firstName lastName role email profile.companyName');
+    const users = await User.find(query).select(
+      "firstName lastName role email profile.companyName"
+    );
     res.json(users);
   } catch (error) {
-    console.error('Error fetching available users:', error);
-    res.status(500).json({ message: 'Failed to fetch available users' });
+    console.error("Error fetching available users:", error);
+    res.status(500).json({ message: "Failed to fetch available users" });
   }
 };
-
-
-
 
 // Get recent conversations
 const getRecentChats = async (req, res) => {
@@ -44,13 +44,13 @@ const getRecentChats = async (req, res) => {
     const recentChats = await Conversation.find({
       participants: userId,
     })
-      .populate('participants', 'firstName lastName role profile.companyName') // Added profile.companyName
+      .populate("participants", "firstName lastName role profile.companyName") // Added profile.companyName
       .sort({ lastUpdated: -1 });
 
     res.status(200).json(recentChats || []);
   } catch (error) {
-    console.error('Error fetching recent chats:', error);
-    res.status(500).json({ message: 'Failed to fetch recent chats' });
+    console.error("Error fetching recent chats:", error);
+    res.status(500).json({ message: "Failed to fetch recent chats" });
   }
 };
 
@@ -61,15 +61,14 @@ const getMessages = async (req, res) => {
     // Fetch messages for the conversation
     const messages = await Message.find({ conversationId: userId })
       .sort({ timestamp: 1 })
-      .populate('sender', 'firstName lastName role profile.companyName');
+      .populate("sender", "firstName lastName role profile.companyName");
 
     res.status(200).json(messages || []);
   } catch (error) {
-    console.error('Error fetching messages:', error);
-    res.status(500).json({ message: 'Failed to fetch messages' });
+    console.error("Error fetching messages:", error);
+    res.status(500).json({ message: "Failed to fetch messages" });
   }
 };
-
 
 // Start a new conversation
 
@@ -79,13 +78,13 @@ const startConversation = async (req, res) => {
     const senderId = req.user.id; // Current user's ID from middleware
 
     if (!receiverId) {
-      return res.status(400).json({ message: 'Receiver ID is required.' });
+      return res.status(400).json({ message: "Receiver ID is required." });
     }
 
     // Check if a conversation already exists between these two users
     let conversation = await Conversation.findOne({
       participants: { $all: [senderId, receiverId] },
-    }).populate('participants', 'firstName lastName role profile.companyName');
+    }).populate("participants", "firstName lastName role profile.companyName");
 
     if (conversation) {
       // If conversation exists, return it
@@ -102,19 +101,16 @@ const startConversation = async (req, res) => {
 
     // Populate participants for the response
     conversation = await Conversation.findById(conversation._id).populate(
-      'participants',
-      'firstName lastName role profile.companyName'
+      "participants",
+      "firstName lastName role profile.companyName"
     );
 
     res.status(201).json(conversation);
   } catch (error) {
-    console.error('Error starting conversation:', error);
-    res.status(500).json({ message: 'Failed to start conversation' });
+    console.error("Error starting conversation:", error);
+    res.status(500).json({ message: "Failed to start conversation" });
   }
 };
-
-
-
 
 // Send a message
 const sendMessage = async (req, res) => {
@@ -122,7 +118,7 @@ const sendMessage = async (req, res) => {
     const { conversationId, content } = req.body;
 
     if (!conversationId || !content) {
-      return res.status(400).json({ message: 'Conversation ID and content are required.' });
+      return res.status(400).json({ message: "Conversation ID and content are required." });
     }
 
     const message = new Message({
@@ -141,21 +137,22 @@ const sendMessage = async (req, res) => {
     });
 
     // Populate sender details before sending response
-    const populatedMessage = await Message.findById(message._id)
-      .populate('sender', 'firstName lastName role profile.companyName');
+    const populatedMessage = await Message.findById(message._id).populate(
+      "sender",
+      "firstName lastName role profile.companyName"
+    );
 
     res.status(201).json(populatedMessage);
   } catch (error) {
-    console.error('Error sending message:', error);
-    res.status(500).json({ message: 'Failed to send message' });
+    console.error("Error sending message:", error);
+    res.status(500).json({ message: "Failed to send message" });
   }
 };
-
 
 module.exports = {
   getRecentChats,
   getMessages,
   startConversation,
   sendMessage,
-  getAvailableUsers
+  getAvailableUsers,
 };

@@ -1,10 +1,14 @@
-const Internship = require('../models/Internship');
-const Student=require('../models/Student')
-const CV = require('../models/Cv')
-const { google } = require('googleapis');
+const Internship = require("../models/Internship");
+const Student = require("../models/Student");
+const CV = require("../models/Cv");
+const { google } = require("googleapis");
 
+// eslint-disable-next-line no-unused-vars, unused-imports/no-unused-vars
 const calculateTotalMatchScore = (internship, studentProfile, userCV) => {
-  const skillsScore = calculateSkillMatch(userCV.data.skills || [], internship.requiredSkills || []);
+  const skillsScore = calculateSkillMatch(
+    userCV.data.skills || [],
+    internship.requiredSkills || []
+  );
   const experienceScore = calculateExperienceMatch(studentProfile?.profile?.experience || []);
   const locationScore = calculateLocationPreference(
     studentProfile?.profile?.location,
@@ -13,50 +17,48 @@ const calculateTotalMatchScore = (internship, studentProfile, userCV) => {
 
   // Weighted scoring
   const weights = {
-    skills: 0.5,      // 50% weight for skills match
-    experience: 0.3,  // 30% weight for experience
-    location: 0.2     // 20% weight for location
+    skills: 0.5, // 50% weight for skills match
+    experience: 0.3, // 30% weight for experience
+    location: 0.2, // 20% weight for location
   };
 
-  const totalScore = (
+  const totalScore =
     skillsScore.score * weights.skills +
     experienceScore * weights.experience +
-    locationScore * weights.location
-  );
+    locationScore * weights.location;
 
   return {
     totalScore: totalScore * 100,
     skillsMatched: skillsScore.matchingSkills,
     hasLocationMatch: locationScore > 0,
-    hasExperienceMatch: experienceScore > 0.5
+    hasExperienceMatch: experienceScore > 0.5,
   };
 };
 
-
 const calculateSkillMatch = (cvSkills, internshipSkills) => {
   if (!cvSkills || !internshipSkills) return 0;
-  
-  const normalizedCvSkills = cvSkills.map(skill => skill.toLowerCase());
-  const normalizedInternshipSkills = internshipSkills.map(skill => skill.toLowerCase());
-  
-  const matchingSkills = normalizedCvSkills.filter(skill => 
+
+  const normalizedCvSkills = cvSkills.map((skill) => skill.toLowerCase());
+  const normalizedInternshipSkills = internshipSkills.map((skill) => skill.toLowerCase());
+
+  const matchingSkills = normalizedCvSkills.filter((skill) =>
     normalizedInternshipSkills.includes(skill)
   );
-  
+
   return {
     score: matchingSkills.length / internshipSkills.length,
-    matchingSkills
+    matchingSkills,
   };
 };
 
 const calculateExperienceMatch = (studentExperience) => {
   if (!studentExperience || studentExperience.length === 0) return 0;
-  
+
   // Calculate total months of experience
   const totalMonths = studentExperience.reduce((total, exp) => {
     return total + (exp.duration || 0);
   }, 0);
-  
+
   // Score based on months of experience (max score at 24 months)
   return Math.min(totalMonths / 24, 1);
 };
@@ -71,13 +73,13 @@ exports.getRecommendedInternships = async (req, res) => {
     // Get user's CV and student profile
     const [userCV, studentProfile] = await Promise.all([
       CV.findOne({ user: req.user.id }).sort({ createdAt: -1 }).lean(),
-      Student.findById(req.user.id).lean()
+      Student.findById(req.user.id).lean(),
     ]);
 
     if (!userCV) {
       return res.status(404).json({
         success: false,
-        message: 'Please create a CV first to get personalized recommendations'
+        message: "Please create a CV first to get personalized recommendations",
       });
     }
 
@@ -88,51 +90,51 @@ exports.getRecommendedInternships = async (req, res) => {
 
     // Get all available internships
     const internships = await Internship.find({
-      applicants: { $ne: req.user.id } // Exclude already applied internships
-    }).populate('recruiter', 'companyName').lean();
+      applicants: { $ne: req.user.id }, // Exclude already applied internships
+    })
+      .populate("recruiter", "companyName")
+      .lean();
 
     // Calculate match scores and add recommendations
-    const recommendedInternships = internships.map(internship => {
+    const recommendedInternships = internships.map((internship) => {
       const skillMatch = calculateSkillMatch(userSkills, internship.requiredSkills || []);
       const experienceScore = calculateExperienceMatch(studentExperience);
       const locationScore = calculateLocationPreference(preferredLocation, internship.location);
 
       // Calculate weighted score (skills: 50%, experience: 30%, location: 20%)
-      const totalScore = (skillMatch.score * 0.5) + (experienceScore * 0.3) + (locationScore * 0.2);
+      const totalScore = skillMatch.score * 0.5 + experienceScore * 0.3 + locationScore * 0.2;
 
       return {
         ...internship,
         matchScore: totalScore * 100, // Convert to percentage
         matchingSkills: skillMatch.matchingSkills,
-        recommendationReason: `${skillMatch.matchingSkills.length > 0 
-          ? `Matches ${skillMatch.matchingSkills.length} of your skills: ${skillMatch.matchingSkills.join(', ')}. ` 
-          : ''}${experienceScore > 0 
-          ? `Your experience level is suitable. ` 
-          : ''}${locationScore > 0 
-          ? `Location matches your preference.` 
-          : ''}`
+        recommendationReason: `${
+          skillMatch.matchingSkills.length > 0
+            ? `Matches ${skillMatch.matchingSkills.length} of your skills: ${skillMatch.matchingSkills.join(", ")}. `
+            : ""
+        }${experienceScore > 0 ? `Your experience level is suitable. ` : ""}${
+          locationScore > 0 ? `Location matches your preference.` : ""
+        }`,
       };
     });
 
+    // Sort by match score and return top matches
+    const sortedRecommendations = recommendedInternships
+      .sort((a, b) => b.matchScore - a.matchScore)
+      .slice(0, 10); // Get top 10 matches
 
-   // Sort by match score and return top matches
-   const sortedRecommendations = recommendedInternships
-   .sort((a, b) => b.matchScore - a.matchScore)
-   .slice(0, 10); // Get top 10 matches
-
- res.json({
-   success: true,
-   recommendations: sortedRecommendations
- });
-
-} catch (error) {
- console.error('Error in getRecommendedInternships:', error);
- res.status(500).json({
-   success: false,
-   message: 'Error fetching recommendations',
-   error: error.message
- });
-}
+    res.json({
+      success: true,
+      recommendations: sortedRecommendations,
+    });
+  } catch (error) {
+    console.error("Error in getRecommendedInternships:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error fetching recommendations",
+      error: error.message,
+    });
+  }
 };
 
 exports.addInternship = async (req, res) => {
@@ -146,7 +148,7 @@ exports.addInternship = async (req, res) => {
       requiredSkills,
       preferredSkills,
       experienceLevel,
-      applicationDeadline
+      applicationDeadline,
     } = req.body;
 
     const internship = new Internship({
@@ -157,16 +159,16 @@ exports.addInternship = async (req, res) => {
       stipend: parseFloat(stipend),
       requiredSkills: requiredSkills || [],
       preferredSkills: preferredSkills || [],
-      experienceLevel: experienceLevel || 'beginner',
+      experienceLevel: experienceLevel || "beginner",
       applicationDeadline: applicationDeadline || null,
       recruiter: req.user.id,
-      status: 'open'
+      status: "open",
     });
 
     await internship.save();
     res.status(201).json(internship);
   } catch (error) {
-    console.error('Error adding internship:', error);
+    console.error("Error adding internship:", error);
     res.status(500).json({ message: error.message });
   }
 };
@@ -182,9 +184,12 @@ exports.getAllInternships = async (req, res) => {
 
 exports.getInternshipById = async (req, res) => {
   try {
-    const internship = await Internship.findById(req.params.id).populate('recruiter', 'firstName lastName email');
+    const internship = await Internship.findById(req.params.id).populate(
+      "recruiter",
+      "firstName lastName email"
+    );
     if (!internship) {
-      return res.status(404).json({ message: 'Internship not found' });
+      return res.status(404).json({ message: "Internship not found" });
     }
     res.json(internship);
   } catch (error) {
@@ -196,12 +201,12 @@ exports.applyToInternship = async (req, res) => {
   try {
     const internship = await Internship.findById(req.params.id);
     if (!internship) {
-      return res.status(404).json({ message: 'Internship not found' });
+      return res.status(404).json({ message: "Internship not found" });
     }
 
     // Check if the user has already applied
     if (internship.applicants.includes(req.user.id)) {
-      return res.status(400).json({ message: 'You have already applied for this internship' });
+      return res.status(400).json({ message: "You have already applied for this internship" });
     }
 
     // Add the user to the internship's applicants list
@@ -216,56 +221,55 @@ exports.applyToInternship = async (req, res) => {
       await student.save();
     }
 
-    res.json({ message: 'Application submitted successfully' });
+    res.json({ message: "Application submitted successfully" });
   } catch (error) {
-    console.error('Error in applyToInternship:', error);
+    console.error("Error in applyToInternship:", error);
     res.status(500).json({ message: error.message });
   }
 };
 
-
 exports.getRecruiterInternships = async (req, res) => {
   try {
-    const internships = await Internship.find({ recruiter: req.user.id }).populate('applicants', 'firstName lastName email');
+    const internships = await Internship.find({ recruiter: req.user.id }).populate(
+      "applicants",
+      "firstName lastName email"
+    );
     res.json(internships);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-
 exports.getStudentInternships = async (req, res) => {
   try {
     // Find the logged-in student and populate applied internships
     const student = await Student.findById(req.user.id).populate({
-      path: 'appliedInternships',
-      populate: { path: 'recruiter', select: 'firstName lastName email' }, // Populate recruiter details if needed
+      path: "appliedInternships",
+      populate: { path: "recruiter", select: "firstName lastName email" }, // Populate recruiter details if needed
     });
 
     if (!student) {
-      return res.status(404).json({ message: 'Student not found' });
+      return res.status(404).json({ message: "Student not found" });
     }
 
     res.json(student.appliedInternships);
   } catch (error) {
-    console.error('Error fetching student internships:', error);
+    console.error("Error fetching student internships:", error);
     res.status(500).json({ message: error.message });
   }
 };
 
-
-
 // Fetch applicants for recruiter's internships
 exports.getApplicantsForRecruiter = async (req, res) => {
   try {
-    console.log('Recruiter ID from req.user:', req.user.id);
+    console.log("Recruiter ID from req.user:", req.user.id);
 
     const internships = await Internship.find({ recruiter: req.user.id }).populate({
-      path: 'applicants',
-      select: 'firstName lastName email profile.skills profile.experience',
+      path: "applicants",
+      select: "firstName lastName email profile.skills profile.experience",
     });
 
-    console.log('Internships:', internships);
+    console.log("Internships:", internships);
 
     const applicants = internships.flatMap((internship) =>
       internship.applicants.map((applicant) => ({
@@ -280,19 +284,19 @@ exports.getApplicantsForRecruiter = async (req, res) => {
       }))
     );
 
-    console.log('Applicants:', applicants);
+    console.log("Applicants:", applicants);
 
     res.status(200).json(applicants);
   } catch (error) {
-    console.error('Error fetching applicants:', error);
-    res.status(500).json({ message: 'Failed to fetch applicants' });
+    console.error("Error fetching applicants:", error);
+    res.status(500).json({ message: "Failed to fetch applicants" });
   }
 };
 
-const calendar = google.calendar('v3');
+const calendar = google.calendar("v3");
 const auth = new google.auth.GoogleAuth({
-  keyFile: './credentials/studenc-9f5932ef024b.json',
-  scopes: ['https://www.googleapis.com/auth/calendar'],
+  keyFile: "./credentials/studenc-9f5932ef024b.json",
+  scopes: ["https://www.googleapis.com/auth/calendar"],
 });
 
 exports.scheduleInterview = async (req, res) => {
@@ -321,11 +325,11 @@ exports.scheduleInterview = async (req, res) => {
       description: `Interview scheduled for ${student.profile.name}`,
       start: {
         dateTime: new Date(scheduleDate).toISOString(),
-        timeZone: 'UTC',
+        timeZone: "UTC",
       },
       end: {
         dateTime: new Date(new Date(scheduleDate).getTime() + 3600000).toISOString(), // 1-hour duration
-        timeZone: 'UTC',
+        timeZone: "UTC",
       },
       conferenceData: {
         createRequest: { requestId: `${internshipId}-${applicantId}` },
@@ -334,17 +338,16 @@ exports.scheduleInterview = async (req, res) => {
 
     const calendarResponse = await calendar.events.insert({
       auth: authClient,
-      calendarId: 'primary',
+      calendarId: "primary",
       resource: event,
       conferenceDataVersion: 1,
     });
-    
 
     const meetLink = calendarResponse.data.htmlLink;
 
     // Save Interview Details
     internship.scheduledInterviews = internship.scheduledInterviews || [];
-    console.log
+    console.log;
     internship.scheduledInterviews.push({
       student: applicantId,
       dateTime: scheduleDate,
@@ -367,14 +370,13 @@ exports.scheduleInterview = async (req, res) => {
   }
 };
 
-
 exports.markInterviewAsCompleted = async (req, res) => {
   try {
     const { internshipId, studentId } = req.params;
 
     const internship = await Internship.findById(internshipId);
     if (!internship) {
-      return res.status(404).json({ message: 'Internship not found' });
+      return res.status(404).json({ message: "Internship not found" });
     }
 
     // Find and update the interview status in the internship
@@ -383,16 +385,16 @@ exports.markInterviewAsCompleted = async (req, res) => {
     );
 
     if (!interview) {
-      return res.status(404).json({ message: 'Interview not found' });
+      return res.status(404).json({ message: "Interview not found" });
     }
 
-    interview.status = 'Completed';
+    interview.status = "Completed";
     await internship.save();
 
     // Update the student's scheduledInterviews status
     const student = await Student.findById(studentId);
     if (!student) {
-      return res.status(404).json({ message: 'Student not found' });
+      return res.status(404).json({ message: "Student not found" });
     }
 
     const studentInterview = student.scheduledInterviews.find(
@@ -400,13 +402,13 @@ exports.markInterviewAsCompleted = async (req, res) => {
     );
 
     if (studentInterview) {
-      studentInterview.status = 'Completed';
+      studentInterview.status = "Completed";
       await student.save();
     }
 
-    res.status(200).json({ message: 'Interview marked as completed successfully' });
+    res.status(200).json({ message: "Interview marked as completed successfully" });
   } catch (error) {
-    console.error('Error marking interview as completed:', error);
-    res.status(500).json({ message: 'Failed to mark interview as completed' });
+    console.error("Error marking interview as completed:", error);
+    res.status(500).json({ message: "Failed to mark interview as completed" });
   }
 };
