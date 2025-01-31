@@ -7,12 +7,12 @@ import {
 } from "react-router-dom";
 import { UserProvider } from "./context/UserContext";
 import ProtectedRoute from "./components/ProtectedRoute";
-import AuthenticationScreen from "./pages/AuthenticationScreen";
+import AuthenticationScreen from "./Pages/AuthenticationScreen";
 import AdminDashboard from "./Pages/AdminDashboard";
-import StudentDashboard from "./pages/StudentDashboard";
+import StudentDashboard from "./Pages/StudentDashboard";
 import CompanyDashboard from "./Pages/Company/CompanyDashboard";
-import ProfileBuilder from "./pages/ProfileBuilder";
-import InternshipApplication from "./pages/InternshipApplication";
+import ProfileBuilder from "./Pages/ProfileBuilder";
+import InternshipApplication from "./Pages/InternshipApplication";
 import SignupScreen from "./Pages/SignupScreen";
 import AddInternship from "./Pages/Company/AddInternship";
 import InternshipDetails from "./Pages/Company/InternshipDetails";
