@@ -3,7 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - feature/prototype-v1-testing  # Change this if deploying from another branch
+      - main # Change this if deploying from another branch
 
 permissions:
   contents: read
