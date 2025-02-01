@@ -8,7 +8,6 @@ exports.registerStudent = async (req, res) => {
   try {
     const { email, password, firstName, lastName, profile } = req.body;
 
-    
     if (password.length < 8) {
       return res.status(400).json({ message: "Password should be at least 8 characters long" });
     }

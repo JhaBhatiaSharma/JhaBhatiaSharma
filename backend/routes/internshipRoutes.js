@@ -55,7 +55,6 @@ router.get("/applicants", authMiddleware, roleMiddleware(["recruiter"]), getAppl
 router.post("/:id/apply", authMiddleware, roleMiddleware(["student"]), applyToInternship);
 router.post("/:id/schedule", authMiddleware, roleMiddleware(["recruiter"]), scheduleInterview);
 
-
 router.get("/:id([a-fA-F0-9]{24})", getInternshipById);
 
 router.patch("/:internshipId/interviews/:studentId/completed", markInterviewAsCompleted);

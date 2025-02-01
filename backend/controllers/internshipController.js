@@ -5,7 +5,6 @@ const { google } = require("googleapis");
 
 // eslint-disable-next-line no-unused-vars, unused-imports/no-unused-vars
 
-
 // Skill matching of role and student
 const calculateSkillMatch = (cvSkills, internshipSkills) => {
   if (!cvSkills || !internshipSkills) return 0;
@@ -34,13 +33,11 @@ const calculateExperienceMatch = (studentExperience) => {
   return Math.min(totalMonths / 24, 1);
 };
 
-
 // Location preference calculation
 const calculateLocationPreference = (studentLocation, internshipLocation) => {
   if (!studentLocation || !internshipLocation) return 1; // Default score if locations not specified
   return studentLocation.toLowerCase() === internshipLocation.toLowerCase() ? 1 : 0;
 };
-
 
 // Get the recommended internships of a student after getting the scores
 exports.getRecommendedInternships = async (req, res) => {
@@ -58,14 +55,12 @@ exports.getRecommendedInternships = async (req, res) => {
       });
     }
 
-
     const userSkills = userCV.data.skills || [];
     const studentExperience = studentProfile?.profile?.experience || [];
-    const preferredLocation = studentProfile?.profile?.university; 
+    const preferredLocation = studentProfile?.profile?.university;
 
-   
     const internships = await Internship.find({
-      applicants: { $ne: req.user.id }, 
+      applicants: { $ne: req.user.id },
     })
       .populate("recruiter", "companyName")
       .lean();
@@ -221,10 +216,9 @@ exports.getRecruiterInternships = async (req, res) => {
 // Get the internships applied for by a student
 exports.getStudentInternships = async (req, res) => {
   try {
-    
     const student = await Student.findById(req.user.id).populate({
       path: "appliedInternships",
-      populate: { path: "recruiter", select: "firstName lastName email" }, 
+      populate: { path: "recruiter", select: "firstName lastName email" },
     });
 
     if (!student) {
@@ -277,7 +271,6 @@ const auth = new google.auth.GoogleAuth({
   keyFile: "./credentials/studenc-9f5932ef024b.json",
   scopes: ["https://www.googleapis.com/auth/calendar"],
 });
-
 
 // Schedule interview for a student
 exports.scheduleInterview = async (req, res) => {

@@ -19,7 +19,6 @@ router.get(
   reportController.getUserAnalytics
 );
 
-
 router.get("/download", async (req, res) => {
   const { type } = req.query;
 
@@ -28,7 +27,6 @@ router.get("/download", async (req, res) => {
   }
 
   try {
-
     const reportBuffer = await reportController.generateReportPDF(type);
 
     res.setHeader("Content-Type", "application/pdf");

@@ -7,7 +7,6 @@ const { registerAdmin, loginAdmin } = require("../controllers/adminController");
 
 const router = express.Router();
 
-
 // Student Authentication Routes
 router.post("/student/register", registerStudent);
 router.post("/student/login", loginStudent);

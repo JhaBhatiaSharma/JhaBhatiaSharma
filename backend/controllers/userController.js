@@ -1,8 +1,6 @@
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
 
-
-
 exports.resetPassword = async (req, res) => {
   try {
     const { email, newPassword } = req.body;
@@ -11,7 +9,6 @@ exports.resetPassword = async (req, res) => {
       return res.status(400).json({ message: "Password should be at least 8 characters long." });
     }
 
-    
     if (req.user.email !== email) {
       return res.status(403).json({ message: "You can only change your own password." });
     }

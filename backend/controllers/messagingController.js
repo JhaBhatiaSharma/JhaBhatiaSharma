@@ -5,15 +5,13 @@ const Student = require("../models/Student");
 // eslint-disable-next-line no-unused-vars, unused-imports/no-unused-vars
 const Internship = require("../models/Internship");
 
-
 // Get the available users to chat with
 const getAvailableUsers = async (req, res) => {
   try {
     const { search, role } = req.query;
-    const userId = req.user.id; 
+    const userId = req.user.id;
 
     const query = { _id: { $ne: userId } }; // Exclude current user
-
 
     if (search) {
       query.$or = [
@@ -42,7 +40,7 @@ const getRecentChats = async (req, res) => {
     const recentChats = await Conversation.find({
       participants: userId,
     })
-      .populate("participants", "firstName lastName role profile.companyName") 
+      .populate("participants", "firstName lastName role profile.companyName")
       .sort({ lastUpdated: -1 });
 
     res.status(200).json(recentChats || []);
@@ -55,7 +53,7 @@ const getRecentChats = async (req, res) => {
 // Get the message history
 const getMessages = async (req, res) => {
   try {
-    const { userId } = req.params; 
+    const { userId } = req.params;
     const messages = await Message.find({ conversationId: userId })
       .sort({ timestamp: 1 })
       .populate("sender", "firstName lastName role profile.companyName");
@@ -70,8 +68,8 @@ const getMessages = async (req, res) => {
 // Start a new conversation
 const startConversation = async (req, res) => {
   try {
-    const { receiverId } = req.body; 
-    const senderId = req.user.id; 
+    const { receiverId } = req.body;
+    const senderId = req.user.id;
 
     if (!receiverId) {
       return res.status(400).json({ message: "Receiver ID is required." });

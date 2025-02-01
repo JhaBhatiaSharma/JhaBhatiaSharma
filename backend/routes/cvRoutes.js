@@ -10,7 +10,7 @@ const {
 const CV = require("../models/Cv");
 
 //create or update a CV
-router.post("/", authMiddleware, createOrUpdateCV); 
+router.post("/", authMiddleware, createOrUpdateCV);
 
 //fetch the latest CV
 router.get("/latest", authMiddleware, getCV); // Added this route

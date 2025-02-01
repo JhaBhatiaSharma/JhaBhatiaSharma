@@ -14,7 +14,6 @@ exports.createComplaint = async (req, res) => {
   }
 };
 
-
 // Get all complaints
 exports.getComplaints = async (req, res) => {
   try {

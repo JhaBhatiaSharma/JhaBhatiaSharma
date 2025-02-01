@@ -70,7 +70,7 @@ exports.getAllUsers = async (req, res) => {
   if (role) query.role = role;
 
   try {
-    const users = await User.find(query); 
+    const users = await User.find(query);
     const total = users.length;
     res.json({ users, total });
   } catch (err) {
@@ -96,8 +96,8 @@ exports.editUser = async (req, res) => {
     const updates = {};
     if (firstName) updates.firstName = firstName;
     if (lastName) updates.lastName = lastName;
-    if (role) updates.role = role; 
-    if (profile) updates.profile = profile; 
+    if (role) updates.role = role;
+    if (profile) updates.profile = profile;
 
     const user = await User.findByIdAndUpdate(req.params.id, updates, { new: true });
     if (!user) return res.status(404).json({ error: "User not found" });

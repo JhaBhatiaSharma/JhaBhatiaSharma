@@ -19,7 +19,7 @@ exports.createOrUpdateCV = async (req, res) => {
       user: req.user.id,
       template,
       data,
-      visibility: visibility || [], 
+      visibility: visibility || [],
     });
     await cv.save();
     res.status(201).json({ message: "CV created successfully", cv });

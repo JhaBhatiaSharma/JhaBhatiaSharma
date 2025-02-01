@@ -4,7 +4,7 @@ const PDFDocument = require("pdfkit");
 // eslint-disable-next-line no-unused-vars, unused-imports/no-unused-vars
 const fs = require("fs");
 
-// Get usage statistics for admin 
+// Get usage statistics for admin
 exports.getUsageStatistics = async (req, res) => {
   try {
     const totalRequests = await UsageLog.countDocuments();
@@ -51,7 +51,6 @@ exports.generateReportPDF = async (type) => {
   doc.on("data", (chunk) => buffers.push(chunk));
   doc.on("end", () => console.log("PDF generated successfully"));
 
-  
   switch (type) {
     case "usage-statistics":
       doc.text("Usage Statistics Report\n\n");

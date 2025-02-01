@@ -84,7 +84,7 @@ exports.getRecruiterInterviews = async (req, res) => {
 
     const interviews = internships.flatMap((internship) =>
       internship.scheduledInterviews
-        .filter((interview) => interview.student) 
+        .filter((interview) => interview.student)
         .map((interview) => ({
           internshipTitle: internship.title,
           student: interview.student,
