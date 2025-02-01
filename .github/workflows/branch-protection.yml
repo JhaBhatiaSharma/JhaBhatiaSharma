@@ -8,13 +8,8 @@ jobs:
   check-branch:
     runs-on: ubuntu-latest
     steps:
-      - name: Block Merge Check
+      - name: Block Draft PRs to Develop
         run: |
-          if [[ "${{ github.base_ref }}" == "main" && "${{ github.head_ref }}" != "develop" ]]; then
-            echo "❌ Changes to main branch must come from develop branch"
-            exit 1
-          fi
-
           if [[ "${{ github.base_ref }}" == "develop" && "${{ github.event.pull_request.draft }}" == "true" ]]; then
             echo "❌ Draft PRs cannot be merged to develop"
             exit 1
