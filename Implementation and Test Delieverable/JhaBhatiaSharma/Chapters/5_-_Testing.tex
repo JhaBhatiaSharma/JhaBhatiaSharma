@@ -1,0 +1,547 @@
+\section{Backend Testing}
+\label{sec:backend_testing}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{|p{3.2cm}|p{4cm}|p{3.5cm}|p{5cm}|}
+\hline
+\multicolumn{4}{|c|}{\textbf{Admin Controller Tests}} \\ 
+\hline
+\textbf{Functionality} & \textbf{Test Description} & \textbf{Input/Conditions} & \textbf{Assertions/Expected Outcome} \\
+\hline
+\multirow{3}{*}{\texttt{registerAdmin}}
+ & Register a new admin          & Valid admin details   & Admin registered successfully, status: 201 \\ \cline{2-4}
+ & Validate password length      & Password length < 8   & Returns 400, message: "Password should be at least 8 characters long" \\ \cline{2-4}
+ & Admin with existing email     & Existing admin email  & Returns 400, message: "Admin already exists" \\
+\hline
+\multirow{2}{*}{\texttt{loginAdmin}}
+ & Login admin with correct credentials   & Valid email and password  & Returns 200, token present \\ \cline{2-4}
+ & Login admin with incorrect credentials & Invalid password          & Returns 401, message: "Invalid credentials" \\
+\hline
+\end{tabular}
+\caption{Admin Controller Tests}
+\label{tab:admin_controller_tests}
+\end{table}
+
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{|p{3.2cm}|p{4cm}|p{3.5cm}|p{5cm}|}
+\hline
+\multicolumn{4}{|c|}{\textbf{Auth Controller Tests}} \\ 
+\hline
+\textbf{Functionality} & \textbf{Test Description} & \textbf{Input/Conditions} & \textbf{Assertions/Expected Outcome} \\
+\hline
+\multirow{2}{*}{\texttt{register}}
+ & Register new user             & Valid user details         & User registered successfully, status: 201 \\ \cline{2-4}
+ & Handle registration errors    & Hashing fails              & Returns 500, message: "Hashing failed" \\
+\hline
+\multirow{3}{*}{\texttt{login}}
+ & Login user successfully       & Valid email and password   & Returns 200, token present \\ \cline{2-4}
+ & Invalid credentials           & Incorrect password         & Returns 401, message: "Invalid credentials" \\ \cline{2-4}
+ & Handle login errors           & Database error            & Returns 500, message: "Database error" \\
+\hline
+\end{tabular}
+\caption{Auth Controller Tests}
+\label{tab:auth_controller_tests}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{|p{3.2cm}|p{4cm}|p{3.5cm}|p{5cm}|}
+\hline
+\multicolumn{4}{|c|}{\textbf{Complaint Controller Tests}} \\
+\hline
+\textbf{Functionality} & \textbf{Test Description} & \textbf{Input/Conditions} & \textbf{Assertions/Expected Outcome} \\
+\hline
+\multirow{2}{*}{\texttt{createComplaint}}
+ & Create a complaint
+ & Valid complaint details
+ & Returns 201, complaint created successfully \\ \cline{2-4}
+ & Handle creation errors
+ & Database error during complaint creation
+ & Returns 500, message: "Creation error" \\
+\hline
+\multirow{2}{*}{\texttt{getComplaints}}
+ & Fetch all pending complaints
+ & -
+ & Returns 200, complaints fetched successfully \\ \cline{2-4}
+ & Handle fetching errors
+ & Database error
+ & Returns 500, message: "Fetch error" \\
+\hline
+\multirow{2}{*}{\texttt{resolveComplaint}}
+ & Resolve a complaint
+ & Valid complaint ID
+ & Returns 200, complaint resolved \\ \cline{2-4}
+ & Resolve non-existent complaint
+ & Invalid complaint ID
+ & Returns 404, message: "Complaint not found" \\
+\hline
+\end{tabular}
+\caption{Complaint Controller Tests}
+\label{tab:complaint_controller_tests}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{|p{4.2cm}|p{4cm}|p{3.5cm}|p{5cm}|}
+\hline
+\multicolumn{4}{|c|}{\textbf{Configuration Controller Tests}} \\
+\hline
+\textbf{Functionality} & \textbf{Test Description} & \textbf{Input/Conditions} & \textbf{Assertions/Expected Outcome} \\
+\hline
+\multirow{2}{*}{\texttt{getConfigurations}}
+ & Fetch all configurations
+ & -
+ & Returns 200, configurations fetched successfully \\ \cline{2-4}
+ & Handle fetching errors
+ & Database error
+ & Returns 500, message: "Failed to fetch configurations." \\
+\hline
+\multirow{4}{*}{\texttt{updateConfiguration}}
+ & Update existing configuration
+ & Valid configuration data
+ & Returns 200, configuration updated successfully \\ \cline{2-4}
+ & Create new configuration
+ & New configuration data
+ & Returns 200, configuration created successfully \\ \cline{2-4}
+ & Handle update errors
+ & Database error
+ & Returns 500, message: "Failed to update configuration." \\ \cline{2-4}
+ & Resolve non-existent complaint
+ & Invalid complaint ID
+ & Returns 404, message: "Complaint not found" \\ \cline{2-4}
+\hline
+\end{tabular}
+\caption{Configuration Controller Tests (Updated)}
+\label{tab:configuration_controller_tests}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{|p{3.2cm}|p{4cm}|p{3.5cm}|p{5cm}|}
+\hline
+\multicolumn{4}{|c|}{\textbf{CV Controller Tests}} \\
+\hline
+\textbf{Functionality} & \textbf{Test Description} & \textbf{Input/Conditions} & \textbf{Assertions/Expected Outcome} \\
+\hline
+\multirow{2}{*}{\texttt{createOrUpdateCV}}
+ & Create a new CV
+ & Valid CV details
+ & Returns 201, CV created successfully \\ \cline{2-4}
+ & Update existing CV
+ & Existing CV with updated details
+ & Returns 200, CV updated successfully \\
+\hline
+\multirow{2}{*}{\texttt{getCV}}
+ & Fetch user CV
+ & Valid user ID
+ & Returns 200, CV fetched successfully \\ \cline{2-4}
+ & Fetch non-existent CV
+ & Invalid user ID
+ & Returns 404, message: "CV not found" \\
+\hline
+\multirow{2}{*}{\texttt{deleteCV}}
+ & Delete user CV
+ & Valid CV ID
+ & Returns 200, CV deleted successfully \\ \cline{2-4}
+ & Delete non-existent CV
+ & Invalid CV ID
+ & Returns 404, message: "CV not found" \\
+\hline
+\end{tabular}
+\caption{CV Controller Tests}
+\label{tab:cv_controller_tests}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{|p{3.5cm}|p{4cm}|p{3.5cm}|p{5cm}|}
+\hline
+\multicolumn{4}{|c|}{\textbf{Internship Controller Tests}} \\
+\hline
+\textbf{Functionality} & \textbf{Test Description} & \textbf{Input/Conditions} & \textbf{Assertions/Expected Outcome} \\
+\hline
+\texttt{addInternship} &
+Add a new internship &
+Valid internship details &
+Returns 201, internship added successfully \\
+\hline
+\texttt{applyToInternship} &
+Apply to an internship &
+Internship not found &
+Returns 404, message: "Internship not found" \\
+\hline
+\end{tabular}
+\caption{Internship Controller Tests}
+\label{tab:internship_controller_tests}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{|p{3.5cm}|p{4cm}|p{3.5cm}|p{5cm}|}
+\hline
+\multicolumn{4}{|c|}{\textbf{Messaging Controller Tests}} \\
+\hline
+\textbf{Functionality} & \textbf{Test Description} & \textbf{Input/Conditions} & \textbf{Assertions/Expected Outcome} \\
+\hline
+\texttt{getAvailableUsers} & Fetch available users & - & Returns 200, users fetched successfully \\
+\hline
+\texttt{getRecentChats} & Fetch recent chats & - & Returns 200, chats fetched successfully \\
+\hline
+\texttt{getMessages} & Fetch messages & Valid conversation ID & Returns 200, messages fetched successfully \\
+\hline
+\texttt{startConversation} & Start a new conversation & Valid receiver ID & Returns 201, conversation started successfully \\
+\hline
+\texttt{sendMessage} & Send a message & Valid message content & Returns 201, message sent successfully \\
+\hline
+\end{tabular}
+\caption{Messaging Controller Tests}
+\label{tab:messaging_controller_tests}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{|p{4.8cm}|p{4cm}|p{3.5cm}|p{5cm}|}
+\hline
+\multicolumn{4.5}{|c|}{\textbf{Recommendation Controller Tests}} \\
+\hline
+\textbf{Functionality} & \textbf{Test Description} & \textbf{Input/Conditions} & \textbf{Assertions/Expected Outcome} \\
+\hline
+\multirow{2}{*}{\texttt{getRecommendedInternships}}
+ & Fetch recommended internships     & Database error & Returns 500, message: "Error fetching recommendations" \\ \cline{2-4}
+ & Fetch with no CV                 & User has no CV & Returns 404, message: "No CV found. Please create a CV first." \\
+\hline
+\end{tabular}
+\caption{Recommendation Controller Tests}
+\label{tab:recommendation_controller_tests}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{|p{3.5cm}|p{4cm}|p{3.5cm}|p{5cm}|}
+\hline
+\multicolumn{4}{|c|}{\textbf{Recruiter Controller Tests}} \\
+\hline
+\textbf{Functionality} & \textbf{Test Description} & \textbf{Input/Conditions} & \textbf{Assertions/Expected Outcome} \\
+\hline
+\multirow{2}{*}{\texttt{registerRecruiter}}
+ & Register a new recruiter   & Valid recruiter details & Returns 201, recruiter registered successfully \\ \cline{2-4}
+ & Validate password length   & Password length < 8     & Returns 400, message: "Password should be at least 8 characters long" \\
+\hline
+\texttt{loginRecruiter} 
+ & Login recruiter with correct credentials 
+ & Valid email and password
+ & Returns 200, token present \\
+\hline
+\end{tabular}
+\caption{Recruiter Controller Tests}
+\label{tab:recruiter_controller_tests}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{|p{3.7cm}|p{4cm}|p{3.5cm}|p{5cm}|}
+\hline
+\multicolumn{4}{|c|}{\textbf{Report Controller Tests}} \\
+\hline
+\textbf{Functionality} & \textbf{Test Description} & \textbf{Input/Conditions} & \textbf{Assertions/Expected Outcome} \\
+\hline
+\texttt{getUsageStatistics} &
+Fetch usage statistics &
+- &
+Returns 200, statistics fetched successfully \\
+\hline
+\texttt{getUserAnalytics} &
+Fetch user analytics &
+- &
+Returns 200, analytics fetched successfully \\
+\hline
+\texttt{generateReportPDF} &
+Generate a report PDF &
+Valid report type &
+Returns generated PDF as a buffer \\
+\hline
+\end{tabular}
+\caption{Report Controller Tests}
+\label{tab:report_controller_tests}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{|p{3.2cm}|p{4cm}|p{3.5cm}|p{5cm}|}
+\hline
+\multicolumn{4}{|c|}{\textbf{Student Controller Tests}} \\
+\hline
+\textbf{Functionality} & \textbf{Test Description} & \textbf{Input/Conditions} & \textbf{Assertions/Expected Outcome} \\
+\hline
+\texttt{registerStudent} &
+Register a new student &
+Valid student details &
+Returns 201, student registered successfully \\
+\hline
+\texttt{loginStudent} &
+Login student with correct credentials &
+Valid email and password &
+Returns 200, token present \\
+\hline
+\end{tabular}
+\caption{Student Controller Tests}
+\label{tab:student_controller_tests}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{|p{3.5cm}|p{4cm}|p{3.5cm}|p{5cm}|}
+\hline
+\multicolumn{4}{|c|}{\textbf{User Controller Tests}} \\
+\hline
+\textbf{Functionality} & \textbf{Test Description} & \textbf{Input/Conditions} & \textbf{Assertions/Expected Outcome} \\
+\hline
+\texttt{getUserProfile} &
+Fetch user profile &
+Valid user ID &
+Returns 200, user profile fetched successfully \\
+\hline
+\texttt{updateUserProfile} &
+Update user profile &
+Valid user details &
+Returns 200, profile updated successfully \\
+\hline
+\end{tabular}
+\caption{User Controller Tests}
+\label{tab:user_controller_tests}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{|p{3.2cm}|p{4cm}|p{3.5cm}|p{5cm}|}
+\hline
+\multicolumn{4}{|c|}{\textbf{Health Check}} \\
+\hline
+\textbf{Functionality} & \textbf{Test Description} & \textbf{Input/Conditions} & \textbf{Assertions/Expected Outcome} \\
+\hline
+\texttt{Health Check} &
+Check server health &
+- &
+Returns 200, message: "Server is healthy" \\
+\hline
+\end{tabular}
+\caption{Health Check}
+\label{tab:health_check}
+\end{table}
+
+\clearpage   % optional, to force all floats (tables) to print before next section
+
+\section{Frontend Testing}
+\label{sec:frontend_testing}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{|p{3.4cm}|p{4cm}|p{4cm}|p{5cm}|}
+\hline
+\multicolumn{4}{|c|}{\textbf{UI Component Tests}} \\
+\hline
+\textbf{Component} & \textbf{Test Description} & \textbf{Input/Conditions} & \textbf{Assertions/Expected Outcome} \\
+\hline
+\multirow{4}{*}{\texttt{ProtectedRoute}}
+ & Renders allowed content      
+ & Valid user role and route (Role: student, Route: \texttt{/student}) 
+ & Displays \texttt{"Student Dashboard"} \\ \cline{2-4}
+ & Redirects unauthenticated   
+ & No user authentication (Route: \texttt{/student})
+ & Redirects to \texttt{"Login Page"} \\ \cline{2-4}
+ & Redirects unauthorized      
+ & Unauthorized role for route (Role: student, Route: \texttt{/admin})
+ & Displays \texttt{"Student Dashboard"} \\ \cline{2-4}
+ & Renders alternate route     
+ & Valid user role and alternate route (Role: student, Route: \texttt{/profile})
+ & Displays \texttt{"Profile Page"} \\
+\hline
+\multirow{4}{*}{\texttt{UserMenuDropdown}}
+ & Renders dropdown button     
+ & \texttt{-} (Initials: JD)
+ & Displays \texttt{"JD"} \\ \cline{2-4}
+ & Shows dropdown menu         
+ & Click on dropdown button (Button clicked)
+ & Displays \texttt{"Logout"} \\ \cline{2-4}
+ & Background color by role    
+ & Admin role (Role: admin)
+ & Button has class \texttt{bg-blue-500} \\ \cline{2-4}
+ & Logout functionality        
+ & Click on logout (Clicked logout)
+ & Clears token, redirects to login \\
+\hline
+\end{tabular}
+\caption{UI/Front-End Component Tests}
+\label{tab:ui_component_tests}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{|p{3cm}|p{4cm}|p{4cm}|p{5cm}|}
+\hline
+\multicolumn{4}{|c|}{\textbf{AddInternship UI Tests}} \\
+\hline
+\textbf{Component} & \textbf{Test Description} & \textbf{Input/Conditions} & \textbf{Assertions/Expected Outcome} \\
+\hline
+\multirow{9}{*}{\texttt{AddInternship}}
+ & Renders form               & Loads component                     & Displays all form fields and buttons \\ \cline{2-4}
+ & Handles input changes      & User inputs valid data \newline (Title, description, location)  
+                              & Updates input fields accordingly \\ \cline{2-4}
+ & Validates duration         & User inputs invalid duration \newline (Duration > 24) 
+                              & Displays \texttt{"Duration cannot exceed 24 months"} \\ \cline{2-4}
+ & Validates stipend          & User inputs negative stipend \newline (Stipend < 0)
+                              & Displays \texttt{"Stipend must be a non-negative number"} \\ \cline{2-4}
+ & Adds and removes skills    & Add and remove skills \newline (Skill added/removed)
+                              & Updates skill list accordingly \\ \cline{2-4}
+ & Handles form submission    & Submits valid data \newline (Valid form fields)
+                              & Sends API request, displays success message \\ \cline{2-4}
+ & Handles submission error   & API error on submission \newline (Server error during submission)
+                              & Displays error alert \\ \cline{2-4}
+ & Disables submit on error   & Validation errors \newline (Invalid inputs)
+                              & Submit button is disabled \\ \cline{2-4}
+ & Cancel button click        & User clicks cancel \newline (Cancel clicked)
+                              & Redirects to company dashboard \\
+\hline
+\end{tabular}
+\caption{AddInternship Component Tests}
+\label{tab:add_internship_tests}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{|p{3cm}|p{4cm}|p{4cm}|p{5cm}|}
+\hline
+\multicolumn{4}{|c|}{\textbf{Admin Dashboard UI Tests}} \\
+\hline
+\textbf{Component} & \textbf{Test Description} & \textbf{Input/Conditions} & \textbf{Assertions/Expected Outcome} \\
+\hline
+\multirow{2}{*}{\texttt{AdminDashboard}}
+ & Renders main sections 
+ & Loads component 
+ & Displays \texttt{"User Management"}, \texttt{"Generate Reports"} \\ \cline{2-4}
+ & Handles user interactions
+ & Button clicks
+ & Renders appropriate sections \\
+\hline
+\end{tabular}
+\caption{Admin Dashboard UI Tests}
+\label{tab:admin_dashboard_ui_tests}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{|p{3cm}|p{4cm}|p{4cm}|p{5cm}|}
+\hline
+\multicolumn{4}{|c|}{\textbf{Authentication Screen UI Tests}} \\
+\hline
+\textbf{Component} & \textbf{Test Description} & \textbf{Input/Conditions} & \textbf{Assertions/Expected Outcome} \\
+\hline
+\multirow{2}{*}{\texttt{Authentication Screen}}
+ & Renders login form
+ & Loads component
+ & Displays email and password input fields \\ \cline{2-4}
+ & Handles form submission
+ & Valid email and password
+ & Calls login function \\
+\hline
+\end{tabular}
+\caption{Authentication Screen UI Tests}
+\label{tab:authentication_screen_ui_tests}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{|p{3cm}|p{4cm}|p{4cm}|p{5cm}|}
+\hline
+\multicolumn{4}{|c|}{\textbf{Company Dashboard UI Tests}} \\
+\hline
+\textbf{Component} & \textbf{Test Description} & \textbf{Input/Conditions} & \textbf{Assertions/Expected Outcome} \\
+\hline
+\multirow{3}{*}{\texttt{CompanyDashboard}}
+ & Renders dashboard
+ & Loads component
+ & Displays dashboard header, buttons, and stats sections \\ \cline{2-4}
+ & Handles navigation
+ & User clicks on action buttons \newline (Click events)
+ & Navigates to respective pages \\ \cline{2-4}
+ & Opens messaging system
+ & User clicks "Open Messaging" \newline (Button clicked)
+ & Displays messaging system \\
+\hline
+\end{tabular}
+\caption{Company Dashboard UI Tests}
+\label{tab:company_dashboard_ui_tests}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{|p{3cm}|p{4cm}|p{4cm}|p{5cm}|}
+\hline
+\multicolumn{4}{|c|}{\textbf{CVBuilder UI Tests}} \\
+\hline
+\textbf{Component} & \textbf{Test Description} & \textbf{Input/Conditions} & \textbf{Assertions/Expected Outcome} \\
+\hline
+\multirow{5}{*}{\texttt{CVBuilder}}
+ & Renders main sections
+ & Component is open \newline (Open state)
+ & Displays \texttt{"Personal Information"} and \texttt{"Skills"} sections \\ \cline{2-4}
+ & Adds personal info
+ & User inputs valid details \newline (Name, email, phone, location)
+ & Updates form fields accordingly \\ \cline{2-4}
+ & Adds and removes skills
+ & Add and remove skills \newline (Skill added and removed)
+ & Updates skill list accordingly \\ \cline{2-4}
+ & Template switching
+ & User switches CV template \newline (Template selection)
+ & Updates selected template \\ \cline{2-4}
+ & Submits CV
+ & User submits valid data \newline (Filled form)
+ & Sends API request, closes form \\
+\hline
+\end{tabular}
+\caption{CVBuilder UI Tests}
+\label{tab:cvbuilder_ui_tests}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{|p{3.5cm}|p{4cm}|p{4cm}|p{5cm}|}
+\hline
+\multicolumn{4}{|c|}{\textbf{InternshipDetails UI Tests}} \\
+\hline
+\textbf{Component} & \textbf{Test Description} & \textbf{Input/Conditions} & \textbf{Assertions/Expected Outcome} \\
+\hline
+\multirow{2}{*}{\texttt{InternshipDetails}}
+ & Renders internship details 
+ & Loads component 
+ & Displays internship details, requirements, and benefits \\ \cline{2-4}
+ & Handles back
+ & User clicks "Back to Search" \newline (Click event)
+ & Navigates to search page \\
+\hline
+\end{tabular}
+\caption{InternshipDetails UI Tests}
+\label{tab:internshipdetails_ui_tests}
+\end{table}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{|p{3.5cm}|p{4cm}|p{4cm}|p{5cm}|}
+\hline
+\multicolumn{4}{|c|}{\textbf{StudentDashboard UI Tests}} \\
+\hline
+\textbf{Component} & \textbf{Test Description} & \textbf{Input/Conditions} & \textbf{Assertions/Expected Outcome} \\
+\hline
+\texttt{StudentDashboard} 
+ & Renders dashboard 
+ & Loads component 
+ & Displays header, stats, action buttons, and recent matches \\
+\hline
+\end{tabular}
+\caption{StudentDashboard UI Tests}
+\label{tab:studentdashboard_ui_tests}
+\end{table}
+

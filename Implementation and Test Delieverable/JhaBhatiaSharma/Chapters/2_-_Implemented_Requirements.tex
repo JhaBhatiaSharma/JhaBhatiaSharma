@@ -1,0 +1,426 @@
+\section{Overview}
+\label{sec:overview}
+This section describes the functionalities that have been implemented in relation to the requirements specified in the RASD paper. Every feature of the system is mentioned below, along with an explanation of how to handle the database, front end, and back end.
+
+\section{User Management}
+\subsection*{Implemented Requirements}
+\begin{itemize}
+    \item \textbf{[F1.1]} : The system allows students, companies, and university administrators to register with verified email addresses.
+    \item \textbf{[F1.3]} : The system allows users to update their profile information, including contact details and preferences.
+    \item \textbf{[F1.4]} : The system enforces role-based access control for students, companies, and administrators.
+    \item \textbf{[F1.5]} : The system supports password reset functionality with email verification.
+    \item \textbf{[F1.6]} : The system maintains audit logs of all user authentication activities.
+    \item \textbf{[F1.7]} : The system allows users to manage notification preferences.
+    \item \textbf{[F1.8]} : The system enforces strong password policies.
+\end{itemize}
+
+\subsection*{Non-Implemented Requirements}
+\begin{itemize}
+    \item \textbf{[F1.2]} : Secure authentication with optional two-factor verification has not been implemented due to time constraints and the additional complexity of integrating multi-factor authentication systems at this stage of development.
+\end{itemize}
+
+\subsection*{Database}
+\paragraph{Tables:}
+\begin{itemize}
+    \item \texttt{users}: Stores user details, including email, password, role, and status.
+    \item \texttt{user\_profiles}\textbf{(Student, Recruiter, Admin)}: Contains user-specific details such as contact information and preferences.
+    \item \texttt{notification\_preferences}: Stores user preferences for managing notifications.
+\end{itemize}
+
+\paragraph{Constraints:}
+\begin{itemize}
+    \item Emails are unique across all users and validated during registration.
+    \item Passwords are hashed and salted using bcrypt before storage.
+    \item Role-based constraints ensure that data integrity is maintained for each user type (student, company, administrator).
+\end{itemize}
+
+\subsection*{Back-end}
+\paragraph{Controllers:}
+\begin{itemize}
+    \item \texttt{userController.js}:
+    \begin{itemize}
+        \item Handles user registration (\texttt{POST /register}), login (\texttt{POST /login}), and password reset functionality (\texttt{POST /reset-password}).
+        \item Verifies email addresses during registration by sending an email with a verification token.
+    \end{itemize}
+    \item \texttt{studentController.js}, \texttt{recruiterController.js}, \texttt{adminController.js}:
+    \begin{itemize}
+        \item Role-specific logic for profile updates and account management.
+    \end{itemize}
+\end{itemize}
+
+\paragraph{Functions:}
+\begin{itemize}
+    \item \textbf{Registration Validation:} Ensures that all required fields (e.g., email, password, role) are provided and correctly formatted.
+    \item \textbf{Role Enforcement:} Restricts access to certain endpoints based on the role field stored in JWT tokens.
+\end{itemize}
+
+\subsection*{Front-end}
+\paragraph{Application and Website:}
+\begin{itemize}
+    \item \textbf{Registration:} Students, companies, and administrators register using forms with dynamic validation feedback.
+    \item \textbf{Profile Updates:} Users can update personal details (e.g., contact information) through a dedicated profile section.
+    \item \textbf{Password Reset:} Users initiate a password reset process, with password strength validation before submission.
+    \item \textbf{Role-Based Dashboards:} Students, companies, and administrators are redirected to role-specific dashboards post-login.
+\end{itemize}
+
+\subsection*{Commentary on Non-Implemented Requirements}
+\begin{itemize}
+    \item \textbf{[F1.2]} : Multi-factor authentication was excluded due to the effort required for integrating and managing a third-party authentication service, such as Google Authenticator or Twilio for SMS. This feature is planned for future iterations to enhance security.
+\end{itemize}
+
+\section{CV Management}
+\subsection*{Implemented Requirements}
+\begin{itemize}
+    \item \textbf{[F2.1]} : The system provides customizable CV templates for students.
+    \item \textbf{[F2.2]} : Students can create and store multiple versions of their CVs.
+    \item \textbf{[F2.3]} : Students can update their CVs at any time.
+    \item \textbf{[F2.4]} : Students can control CV visibility to specific companies.
+    \item \textbf{[F2.6]} : The system validates skill entries against a standardized skill database.
+\end{itemize}
+
+\subsection*{Non-Implemented Requirements}
+\begin{itemize}
+    \item [\textbf{F2.7]} : Document uploads (e.g., certificates, portfolios).
+    \item \textbf{[F2.8]} : Tracking CV view statistics for students.
+\end{itemize}
+
+\subsection*{Database}
+\paragraph{Model:} \texttt{Cv}
+\paragraph{Fields:}
+\begin{itemize}
+    \item \textbf{user:} References the User model to associate the CV with a specific student.
+    \item \textbf{template:} Stores the CV template identifier.
+    \item \textbf{data:} Contains the detailed CV content, including sections like Education, Skills, and Experience.
+    \item \textbf{visibility:} An array of company IDs defining which companies can view the CV.
+\end{itemize}
+
+\paragraph{Constraints:}
+\begin{itemize}
+    \item A student can have only one active CV at a time, with version updates stored dynamically.
+    \item The \texttt{visibility} field ensures that only authorized companies can access the CV.
+\end{itemize}
+
+\subsection*{Back-End}
+\paragraph{Routes:} Defined in \texttt{cvRoutes.js}
+\begin{itemize}
+    \item \texttt{POST /:} Creates or updates a CV for the logged-in user.
+    \item \texttt{GET /latest:} Fetches the latest CV of the logged-in user.
+    \item \texttt{DELETE /:} Deletes the logged-in user’s CV.
+    \item \texttt{POST /update-visibility:} Updates the visibility settings for a CV.
+    \item \texttt{GET /:studentId:} Retrieves a specific student’s CV by their ID.
+\end{itemize}
+
+\paragraph{Controllers:} Defined in \texttt{cvController.js}
+\begin{itemize}
+    \item \textbf{createOrUpdateCV:} Handles both creation and updates to a CV. If a CV already exists for a student, it updates the template, data, and visibility fields.
+    \item \textbf{getCV:} Retrieves the logged-in user’s CV. If none exists, returns a 404 error.
+    \item \textbf{deleteCV:} Deletes the logged-in user’s CV.
+    \item \textbf{updateVisibility:} Updates the list of companies that can view a specific CV.
+\end{itemize}
+
+\subsection*{Front-End}
+\paragraph{Application:}
+\begin{itemize}
+    \item \textbf{CV Builder:}
+    \begin{itemize}
+        \item Students can select templates and customize sections like Education, Skills, and Experience.
+        \item Live previews of the CV are available during editing.
+    \end{itemize}
+    \item \textbf{Visibility Management:}
+    \begin{itemize}
+        \item A toggle interface allows students to manage company permissions for viewing their CVs.
+    \end{itemize}
+\end{itemize}
+
+\paragraph{Website:}
+\begin{itemize}
+    \item The CV builder is integrated with the student dashboard.
+    \item Visibility settings can be updated directly from the CV management panel.
+\end{itemize}
+
+\subsection*{Commentary on Non-Implemented Requirements}
+\begin{itemize}
+    \item \textbf{[F2.7]} Document upload functionality has not been implemented due to the complexity of file storage and retrieval. This feature is planned for future development.
+    \item \textbf{[F2.8]} CV view statistics tracking is excluded as an analytics framework for monitoring company interactions has not yet been integrated.
+\end{itemize}
+
+\section{Internship Management}
+\subsection*{Implemented Requirements}
+\begin{itemize}
+    \item \textbf{[F3.1]} : The system allows companies to create detailed internship postings.
+    \item \textbf{[F3.2]} : Provides an application tracking system for companies.
+    \item \textbf{[F3.3]} : Automatically notifies students of application status changes.
+    \item \textbf{[F3.4]} : Provides advanced search and filtering capabilities.
+    \item \textbf{[F3.6]} : Enables bulk application processing for companies.
+    \item \textbf{[F3.7]} : Supports multiple rounds of application review.
+    \item \textbf{[F3.8]} : Maintains a history of all internship postings.
+\end{itemize}
+
+\subsection*{Non-Implemented Requirements}
+\begin{itemize}
+    \item \textbf{[F3.5]} : Allowing companies to set application deadlines.
+\end{itemize}
+
+\subsection*{Database}
+\paragraph{Model:} \texttt{Internship}
+\paragraph{Fields:}
+\begin{itemize}
+    \item \textbf{Core Details:} \texttt{title}, \texttt{description}, \texttt{location}, \texttt{duration}, \texttt{stipend}.
+    \item \textbf{Skills:} \texttt{requiredSkills} (mandatory), \texttt{preferredSkills} (optional).
+    \item \textbf{Experience:} \texttt{experienceLevel} (e.g., beginner, intermediate, advanced).
+    \item \textbf{Applicants:} Stores references to users who applied.
+    \item \textbf{Interviews:} Includes details of scheduled interviews.
+    \item \textbf{Status:} Tracks whether the internship is open, closed, or draft.
+    \item \textbf{Timestamps:} \texttt{createdAt}, \texttt{updatedAt} fields auto-generated by Mongoose.
+\end{itemize}
+
+\subsection*{Back-End}
+\paragraph{Routes:} Defined in \texttt{internshipRoutes.js}
+\begin{itemize}
+    \item \texttt{POST /addinternship:} Adds a new internship (role restricted to recruiters).
+    \item \texttt{GET /allinternships:} Retrieves all internship postings.
+    \item \texttt{POST /:id/apply:} Allows students to apply for internships.
+    \item \texttt{GET /recommended:} Provides personalized internship recommendations for students.
+    \item \texttt{PATCH /:internshipId/interviews/:studentId/completed:} Marks interviews as completed.
+\end{itemize}
+
+\paragraph{Controllers:}
+\begin{itemize}
+    \item \textbf{addInternship:} Handles creation of internships, validates inputs, and ensures required fields are present.
+    \item \textbf{getAllInternships:} Fetches all internships, sorted by the latest postings.
+    \item \textbf{applyToInternship:} Handles application submissions, ensuring no duplicate applications.
+\end{itemize}
+
+\subsection*{Front-End}
+\paragraph{Application:}
+\begin{itemize}
+    \item \textbf{For Companies:} A guided form for creating internships with fields for \texttt{title}, \texttt{description}, \texttt{skills}, and experience requirements.
+    \item \textbf{For Students:} Search and filter functionalities to find internships based on location, skills, and duration.
+    \item \textbf{Dashboard Integration:} Displays a list of applied internships with their status.
+\end{itemize}
+
+\paragraph{Website:}
+\begin{itemize}
+    \item Applications dashboard for recruiters, showing real-time updates on applications received.
+\end{itemize}
+
+\subsection*{Commentary on Non-Implemented Requirements}
+\begin{itemize}
+    \item \textbf{[F3.5]} Application deadlines are not implemented in this version due to the additional logic required to enforce and validate deadlines during application submissions. This feature is planned for future iterations.
+\end{itemize}
+
+\section{Interview Management}
+\subsection*{Implemented Requirements}
+\begin{itemize}
+    \item \textbf{[F4.1]} : The system provides a calendar interface for interview scheduling.
+    \item \textbf{[F4.2]} : Tracks interview status and progress.
+    \item \textbf{[F4.5]} : Supports virtual interview link generation.
+    \item \textbf{[F4.6]} : Allows rescheduling with mutual agreement.
+    \item \textbf{[F4.7]} : Maintains interview history.
+    \item \textbf{[F4.8]} : Supports multiple interview rounds.
+\end{itemize}
+
+\subsection*{Non-Implemented Requirements}
+\begin{itemize}
+    \item \textbf{[F4.3]} : Structured feedback collection from both parties is not implemented.
+    \item \textbf{[F4.4]} : Automated interview reminders are not supported.
+\end{itemize}
+
+\subsection*{Database}
+\paragraph{Model:} \texttt{Internship}
+\paragraph{Fields:}
+\begin{itemize}
+    \item \textbf{scheduledInterviews:} An array of interview objects, each containing:
+    \begin{itemize}
+        \item \textbf{student:} References the User model to identify the applicant.
+        \item \textbf{dateTime:} Date and time of the interview.
+        \item \textbf{meetLink:} Google Meet or other virtual link for the interview.
+        \item \textbf{status:} Tracks the interview state (Scheduled or Completed).
+    \end{itemize}
+\end{itemize}
+
+\paragraph{Model:} \texttt{Student}
+\paragraph{Fields:}
+\begin{itemize}
+    \item \textbf{scheduledInterviews:} Tracks interviews scheduled for the student, referencing internship details and interview metadata.
+\end{itemize}
+
+\subsection*{Back-End}
+\paragraph{Routes:} Defined in multiple controllers (\texttt{internshipRoutes.js}, \texttt{studentRoutes.js}, \texttt{recruiterRoutes.js}):
+\begin{itemize}
+    \item \texttt{POST /:id/schedule:} Schedules an interview for a student (role restricted to recruiters).
+    \item \texttt{GET /student/interviews:} Retrieves scheduled interviews for students.
+    \item \texttt{GET /recruiter/interviews:} Fetches interviews scheduled by recruiters.
+    \item \texttt{PATCH /:internshipId/interviews/:studentId/completed:} Marks an interview as completed.
+    \item \texttt{GET /student/completed-interviews:} Retrieves a student’s completed interviews.
+\end{itemize}
+
+\paragraph{Controllers:}
+\begin{itemize}
+    \item \textbf{scheduleInterview:} Generates a virtual link via Google Calendar API and saves interview details to both the internship and student profiles.
+    \item \textbf{getRecruiterInterviews:} Fetches all interviews related to a recruiter’s internships.
+    \item \textbf{getStudentInterviews:} Retrieves all scheduled interviews for a student.
+    \item \textbf{markInterviewAsCompleted:} Updates the interview status to Completed.
+\end{itemize}
+
+\subsection*{Front-End}
+\paragraph{Application:}
+\begin{itemize}
+    \item \textbf{Calendar Integration:}
+    \begin{itemize}
+        \item Students and recruiters can view interview schedules on an interactive calendar interface.
+        \item Recruiters can reschedule interviews using drag-and-drop functionality.
+    \end{itemize}
+    \item \textbf{Interview History:}
+    \begin{itemize}
+        \item Students can view completed interviews with details such as company name, date, and virtual link.
+    \end{itemize}
+\end{itemize}
+
+\paragraph{Website:}
+\begin{itemize}
+    \item Recruiters have a dashboard displaying all scheduled and completed interviews for their internships.
+    \item Students can access a list of upcoming interviews along with relevant details.
+\end{itemize}
+
+\subsection*{Commentary on Non-Implemented Requirements}
+\begin{itemize}
+    \item \textbf{[F4.3]} : Feedback collection was deprioritized in this iteration due to the additional database design and UI components required for structured feedback forms.
+    \item \textbf{[F4.4]} : Automated reminders for interviews were excluded to avoid the integration complexity of real-time notification systems. These will be considered in future versions.
+\end{itemize}
+
+\section{Recommendation System}
+\subsection*{Implemented Requirements}
+\begin{itemize}
+    \item \textbf{[F5.1]} : Matches students with internships based on skills alignment.
+    \item \textbf{[F5.2]} : Suggests qualified candidates to companies.
+    \item \textbf{[F5.3]} : Learns from user interactions to improve recommendations.
+    \item \textbf{[F5.4]} : Generates personalized internship suggestions.
+    \item \textbf{[F5.5]} : Considers location preferences in matching.
+    \item \textbf{[F5.6]} : Factors in past application success patterns.
+    \item \textbf{[F5.7]} : Updates recommendations in real-time.
+    \item \textbf{[F5.8]} : Explains recommendation reasoning to users.
+\end{itemize}
+
+\subsection*{Database}
+\paragraph{Model:} \texttt{Internship}
+\paragraph{Fields:}
+\begin{itemize}
+    \item \textbf{requiredSkills \& preferredSkills:} Define skill requirements for internships.
+    \item \textbf{location:} Captures location data for matching against student preferences.
+    \item \textbf{applicants:} Tracks users who have applied to the internship.
+\end{itemize}
+
+\paragraph{Model:} \texttt{Student}
+\paragraph{Fields:}
+\begin{itemize}
+    \item \textbf{profile.skills:} Stores the student's skills for alignment with internship requirements.
+    \item \textbf{profile.location:} Specifies location preferences.
+    \item \textbf{appliedInternships:} Tracks internships the student has applied for.
+\end{itemize}
+
+\subsection*{Back-End}
+\paragraph{Routes:} Defined in \texttt{internshipRoutes.js}
+\begin{itemize}
+    \item \texttt{GET /recommended:} Fetches recommended internships for a student based on their skills, location, and profile data.
+\end{itemize}
+
+\paragraph{Controllers:}
+\begin{itemize}
+    \item \textbf{getRecommendedInternships:}
+    \begin{itemize}
+        \item Fetches the student’s CV and profile data.
+        \item Matches internships using weighted scoring:
+        \begin{itemize}
+            \item \textbf{Skills Alignment (50\%):} Compares student skills with required and preferred skills.
+            \item \textbf{Experience Level (30\%):} Considers the total duration of relevant experiences.
+            \item \textbf{Location Match (20\%):} Matches student’s preferred location with internship location.
+        \end{itemize}
+        \item Excludes internships already applied for by the student.
+        \item Sorts and returns the top 10 recommendations with match scores and reasoning.
+    \end{itemize}
+    \item \textbf{calculateSkillMatch:} Compares student and internship skills, returning a similarity score and list of matching skills.
+    \item \textbf{calculateLocationPreference:} Scores based on the student’s preferred and internship location match.
+\end{itemize}
+
+\subsection*{Front-End}
+\paragraph{Application:}
+\begin{itemize}
+    \item \textbf{Dashboard Integration:}
+    \begin{itemize}
+        \item Displays personalized internship recommendations with match scores.
+        \item Shows reasons for each recommendation, such as skill match or location preference.
+    \end{itemize}
+    \item \textbf{Real-Time Updates:} Recommendations dynamically update based on profile or application changes.
+\end{itemize}
+
+\paragraph{Website:}
+\begin{itemize}
+    \item Search results highlight recommended internships, ranked by match score.
+    \item Filters allow students to refine recommendations based on additional criteria.
+\end{itemize}
+
+\section{Complaint Handling}
+\subsection*{Implemented Requirements}
+\begin{itemize}
+    \item \textbf{[F6.1]} : Provides a structured complaint submission interface.
+    \item \textbf{[F6.2]} : Routes complaints to appropriate university administrators.
+    \item \textbf{[F6.3]} : Tracks resolution progress for each complaint.
+    \item \textbf{[F6.4]} : Supports an appeals process.
+    \item \textbf{[F6.5]} : Maintains a complete complaint history.
+    \item \textbf{[F6.6]} : Enables communication between involved parties.
+    \item \textbf{[F6.7]} : Generates complaint resolution reports.
+    \item \textbf{[F6.8]} : Enforces resolution timeframes.
+\end{itemize}
+
+\subsection*{Database}
+\paragraph{Model:} \texttt{Complaint}
+\paragraph{Fields:}
+\begin{itemize}
+    \item \textbf{userId:} References the User model to identify the user who raised the complaint.
+    \item \textbf{role:} Specifies the role of the user (student or recruiter).
+    \item \textbf{title:} Title of the complaint for quick reference.
+    \item \textbf{description:} Detailed description of the issue.
+    \item \textbf{status:} Tracks the state of the complaint (pending or resolved).
+    \item \textbf{createdAt:} Timestamp for when the complaint was created.
+\end{itemize}
+
+\subsection*{Back-End}
+\paragraph{Routes:} Defined in \texttt{complaintRoutes.js}
+\begin{itemize}
+    \item \texttt{POST /create-complaint:} Allows students or recruiters to submit complaints.
+    \item \texttt{GET /get-complaints:} Fetches all pending complaints (restricted to admins).
+    \item \texttt{PATCH /:complaintId/resolve:} Marks a complaint as resolved (restricted to admins).
+    \item \texttt{GET /my-complaints:} Retrieves complaints submitted by the logged-in user.
+\end{itemize}
+
+\paragraph{Controllers:} Defined in \texttt{complaintController.js}
+\begin{itemize}
+    \item \textbf{createComplaint:} Handles the creation of complaints, validates inputs, and stores them in the database.
+    \item \textbf{getComplaints:} Retrieves all complaints with a pending status, populated with user details.
+    \item \textbf{resolveComplaint:} Updates the status of a complaint to be resolved.
+    \item \textbf{getMyComplaints:} Fetches complaints submitted by the logged-in user, allowing them to track their status.
+\end{itemize}
+
+\subsection*{Front-End}
+\paragraph{Application:}
+\begin{itemize}
+    \item \textbf{Complaint Submission Interface:}
+    \begin{itemize}
+        \item Students and recruiters can submit complaints through a structured form with fields for the title and description.
+    \end{itemize}
+    \item \textbf{Complaint History:}
+    \begin{itemize}
+        \item Displays a list of all submitted complaints with their statuses.
+        \item Provides real-time updates on resolution progress.
+    \end{itemize}
+\end{itemize}
+
+\paragraph{Website:}
+\begin{itemize}
+    \item \textbf{Admin Dashboard:}
+    \begin{itemize}
+        \item Administrators can view, filter, and resolve complaints.
+        \item Includes an interface for generating complaint resolution reports.
+    \end{itemize}
+\end{itemize}

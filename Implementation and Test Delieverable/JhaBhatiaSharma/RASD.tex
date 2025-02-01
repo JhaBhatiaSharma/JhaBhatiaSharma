@@ -1,0 +1,207 @@
+\documentclass{ConfigurationFiles/Politecnico_Di_Milano}
+
+
+% CONFIGURATIONS
+\usepackage{parskip} % For 
+\usepackage{booktabs}
+\usepackage{xcolor}
+%paragraph layout
+\usepackage{setspace} % For using single or double spacing
+\usepackage{emptypage} % To insert empty pages
+\usepackage{multicol} % To write in multiple columns (executive summary)
+\setlength\columnsep{15pt} % Column separation in executive summary
+\setlength\parindent{0pt} % Indentation
+\raggedbottom
+\usepackage{multirow}
+
+% PACKAGES FOR TITLES
+\usepackage{titlesec}
+% \titlespacing{\section}{left spacing}{before spacing}{after spacing}
+\titlespacing{\section}{0pt}{3.3ex}{2ex}
+\titlespacing{\subsection}{0pt}{3.3ex}{1.65ex}
+\titlespacing{\subsubsection}{0pt}{3.3ex}{1ex}
+\usepackage{color}
+\usepackage{enumitem}
+
+
+\usepackage{longtable}            % For multipage tables
+\usepackage{array}                % For p{width} column types
+\usepackage{booktabs}             % (Optional) for nicer rules
+\usepackage{lmodern}              %
+\usepackage{pdflscape}
+% PACKAGES FOR LANGUAGE AND FONT
+\usepackage[english]{babel} % The document is in English  
+\usepackage[utf8]{inputenc} % UTF8 encoding
+\usepackage[T1]{fontenc} % Font encoding
+\usepackage[11pt]{moresize} % Big fonts
+
+% PACKAGES FOR IMAGES
+\usepackage{graphicx}
+\usepackage{transparent} % Enables transparent images
+\usepackage{eso-pic} % For the background picture on the title page
+\usepackage{subfig} % Numbered and caption subfigures using \subfloat.
+\usepackage{tikz} % A package for high-quality hand-made figures.
+\usetikzlibrary{}
+\graphicspath{{./images/}} % Directory of the images
+\usepackage{amsthm} % Coloured "Theorem"
+\usepackage{thmtools}
+\usepackage{xcolor}
+\usepackage{float}
+
+% STANDARD MATH PACKAGES
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{bm}
+\usepackage[overload]{empheq} % For braced-style systems of equations.
+\usepackage{fix-cm} % To override original LaTeX restrictions on sizes
+
+% PACKAGES FOR TABLES
+\usepackage{tabularx}
+\usepackage{longtable} % Tables that can span several pages
+\usepackage{colortbl}
+
+% PACKAGES FOR ALGORITHMS (PSEUDO-CODE)
+\usepackage{algorithm}
+\usepackage{algorithmic}
+
+
+% PACKAGES FOR REFERENCES & BIBLIOGRAPHY
+\usepackage[
+    colorlinks=true,
+    linkcolor=black,
+    anchorcolor=black,
+    citecolor=black,
+    filecolor=black,
+    menucolor=black,
+    runcolor=black,
+    urlcolor=black
+]{hyperref} % Adds clickable links at references
+\usepackage{cleveref}
+\usepackage[square, numbers, sort&compress]{natbib} % Square brackets, citing references with numbers, citations sorted by appearance in the text and compressed
+\bibliographystyle{abbrvnat} % You may use a different style adapted to your field
+
+% OTHER PACKAGES
+\usepackage{pdfpages} % To include a pdf file
+\usepackage{afterpage}
+\usepackage{lipsum} % DUMMY PACKAGE
+\usepackage{fancyhdr}
+\usepackage{wasysym} % For the headers
+\usepackage{rotating}
+\usepackage{listings}
+\usepackage{hyperref}
+\input{ConfigurationFiles/alloy.sty}
+\fancyhf{}
+
+% Input of configuration file. Do not change config.tex file unless you really know what you are doing. 
+\input{ConfigurationFiles/config}
+
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+    language=alloy,
+    aboveskip=3mm,
+    belowskip=3mm,
+    showstringspaces=false,
+    columns=flexible,
+    basicstyle={\small\ttfamily},
+    numbers=none,
+    numberstyle=\tiny\color{gray},
+    keywordstyle=\bf\color{blue},
+    commentstyle=\it\color{dkgreen},
+    stringstyle=\color{mauve},
+    breaklines=true,
+    breakatwhitespace=true,
+    tabsize=3
+}
+
+
+
+
+
+
+
+%----------------------------------------------------------------------------
+%	BEGIN OF YOUR DOCUMENT
+%----------------------------------------------------------------------------
+
+
+
+\begin{document}
+    \fancypagestyle{plain}{%
+        \fancyhf{} % Clear all header and footer fields
+        \fancyhead[RO,RE]{\thepage} %RO=right odd, RE=right even
+        \renewcommand{\headrulewidth}{0pt}
+        \renewcommand{\footrulewidth}{0pt}}
+
+        
+    \pagestyle{empty} % No page numbers
+    \frontmatter % Use roman page numbering style (i, ii, iii, iv...) for the preamble pages
+
+    \puttitle{
+        title=Software Engineering 2\\Implementation \& Test Delieverable,
+        name1=Shreesh Kumar Jha - 11022306, % Author Name and Surname
+        name2=Samarth Bhatia - 11059097,
+        name3=Satvik Sharma - 11054680,
+        academicyear=2024-2025,
+        version=2.0,
+        releasedate=29/01/2025,
+    }
+    
+    
+    \startpreamble
+    \setcounter{page}{1} % Set page counter to 1
+
+
+% TABLE OF CONTENTS
+    \thispagestyle{empty}
+    \tableofcontents % Table of contents
+    \thispagestyle{empty}
+    \cleardoublepage
+
+    
+    \addtocontents{toc}{\vspace{1em}} % Add a gap in the Contents, for aesthetics
+    \mainmatter % Begin numeric (1,2,3...) page numbering
+
+
+    \chapter{Introduction}
+    \label{ch:introduction}%
+    \input{Chapters/1_-_Introduction}
+    \chapter{Implemented Requirements}
+    \label{ch:architectural_design}%
+    \input{Chapters/2_-_Implemented_Requirements}
+
+
+    \chapter{Design Choices}
+    \label{ch:user_interface_design}%
+    \input{Chapters/3_-_Design_Choices}
+
+    \chapter{Source Code Stucture} \label{ch:requirements_tracability}%
+    \input{Chapters/4_-_Source_Code_Structure}
+
+ \chapter{Testing}
+\label{ch:implementation_integration_test_plan}
+\input{Chapters/5_-_Testing}
+
+    \chapter{Installation Instructions}
+    \label{ch:effort_spent}%
+    \input{Chapters/6_-_Installation_Instructions}
+
+     \chapter{Effort Spent}
+    \label{ch:effort_spents}%
+    \input{Chapters/8._-_Effort_Spent}
+
+
+    \chapter{References}
+    \label{ch:references}%
+    \input{Chapters/7_-_References}
+
+% LIST OF TABLES
+    \listoftables
+    \cleardoublepage
+
+
+\end{document}

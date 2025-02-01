@@ -1,0 +1,426 @@
+This section provides a detailed explanation of the backend and frontend source code, covering the purpose of every file and folder in your project structure. The description is focused on providing a high-level understanding of what each part of the project contains.
+
+\section{Backend Project Structure}
+The backend is implemented using Node.js and Express.js, organized into modular directories. Below is an explanation of each directory and its files.
+
+\subsection{Root Directory}
+\begin{itemize}
+    \item \texttt{server.js}: The main entry point of the backend application. It initializes the Express server, connects to the database, and loads routes and middleware.
+    \item \texttt{app.js}: Configures middleware and error handling for the application.
+    \item \texttt{.env}: Environment variables, such as database connection strings, API keys, and port numbers.
+    \item \texttt{package.json} and \texttt{package-lock.json}: Define project dependencies, scripts, and metadata.
+    \item \texttt{babel.config.js}: Configures Babel for JavaScript transpilation.
+\end{itemize}
+
+\subsection{controllers/}
+The controllers directory contains the logic for handling incoming HTTP requests and returning responses. Each controller corresponds to a specific feature or domain.
+\begin{itemize}
+    \item \texttt{adminController.js}: Handles administrative functions, such as managing users and settings.
+    \item \texttt{authController.js}: Manages user authentication, including login, registration, and password resets.
+    \item \texttt{complaintController.js}: Processes complaints submitted by users.
+    \item \texttt{configurationController.js}: Handles system configuration settings.
+    \item \texttt{cvController.js}: Manages CV uploads, updates, and retrievals.
+    \item \texttt{internshipController.js}: Handles CRUD operations for internships.
+    \item \texttt{messagingController.js}: Enables communication between users.
+    \item \texttt{recommendationController.js}: Generates personalized recommendations for internships or candidates.
+    \item \texttt{recruiterController.js}: Manages recruiter-specific functionalities, such as posting internships.
+    \item \texttt{reportController.js}: Generates reports for admins and recruiters.
+    \item \texttt{studentController.js}: Handles student-specific functionalities, such as profile management and applications.
+    \item \texttt{userController.js}: General user operations, such as profile updates and retrieving user information.
+\end{itemize}
+
+\subsection{models/}
+This directory contains the Mongoose schemas for MongoDB collections.
+\begin{itemize}
+    \item \texttt{Complaint.js}: Schema for complaints, including fields like userId, description, and status.
+    \item \texttt{Configuration.js}: Stores system configurations, such as feature toggles.
+    \item \texttt{Cv.js}: Represents a student's CV, including file paths and metadata.
+    \item \texttt{Internship.js}: Schema for internships, with fields like title, company, description, and applications.
+    \item \texttt{Message.js}: Represents messages between users, including sender, receiver, and timestamps.
+    \item \texttt{Recruiter.js}: Schema for recruiters, including company information.
+    \item \texttt{Student.js}: Stores student details, such as name, email, and skills.
+    \item \texttt{UsageLog.js}: Tracks API usage and system activity for auditing.
+    \item \texttt{User.js}: Base schema for all users, storing common fields like email, password, and role.
+\end{itemize}
+
+\subsection{routes/}
+Defines all API endpoints and maps them to the respective controller methods.
+\begin{itemize}
+    \item \texttt{adminRoutes.js}: Routes for admin-specific operations (e.g., \texttt{/admin/manage-users}).
+    \item \texttt{authRoutes.js}: Authentication endpoints (e.g., \texttt{/auth/login}, \texttt{/auth/register}).
+    \item \texttt{complaintRoutes.js}: Endpoints for submitting and resolving complaints.
+    \item \texttt{configurationRoutes.js}: Routes for updating system configurations.
+    \item \texttt{cvRoutes.js}: Routes for uploading and managing CVs.
+    \item \texttt{internshipRoutes.js}: CRUD operations for internships (e.g., \texttt{/internships/create}).
+    \item \texttt{messagingRoutes.js}: Endpoints for sending and retrieving messages.
+    \item \texttt{recommendationRoutes.js}: Routes for generating recommendations.
+    \item \texttt{reportRoutes.js}: Endpoints for generating reports.
+    \item \texttt{userRoutes.js}: General user-related routes (e.g., \texttt{/user/profile}).
+\end{itemize}
+
+\subsection{middleware/}
+Contains reusable middleware for processing requests and responses.
+\begin{itemize}
+    \item \texttt{authMiddleware.js}: Verifies user authentication and role-based access control.
+    \item \texttt{errorHandler.js}: Centralized error handling for the application.
+    \item \texttt{logUsage.js}: Logs API usage for monitoring and debugging.
+\end{itemize}
+
+\subsection{utils/}
+Holds utility functions for common operations.
+\begin{itemize}
+    \item \texttt{hashPassword.js}: Functions for hashing and validating passwords.
+    \item \texttt{generateToken.js}: Creates JSON Web Tokens (JWTs) for authentication.
+\end{itemize}
+
+\subsection{config/}
+Configuration files for setting up the application environment.
+\begin{itemize}
+    \item \texttt{env.js}: Loads and exports environment variables.
+\end{itemize}
+
+\subsection{tests/}
+Contains unit and integration tests for backend functionality.
+\begin{itemize}
+    \item Examples:
+    \begin{itemize}
+        \item Tests for controllers (\texttt{authController.test.js}).
+        \item Route integration tests (\texttt{authRoutes.test.js}).
+    \end{itemize}
+\end{itemize}
+
+\section{Frontend Project Structure}
+The frontend uses React.js with Vite, organized into a modular directory structure for scalability and reusability.
+
+\subsection{Root Directory}
+\begin{itemize}
+    \item \texttt{main.jsx}: Entry point for rendering the React application.
+    \item \texttt{App.jsx}: Root component containing global routes and layouts.
+    \item \texttt{index.html}: HTML template for the application.
+    \item \texttt{package.json}: Lists dependencies like React, Vite, and testing libraries.
+\end{itemize}
+
+\subsection{components/}
+Contains reusable React components for UI elements.
+\begin{itemize}
+    \item \texttt{ProtectedRoute.jsx}: Handles route protection based on user authentication.
+    \item \texttt{UserMenuDropdown.jsx}: Dropdown menu for user navigation and settings.
+\end{itemize}
+
+\subsection{pages/}
+Contains React components representing individual pages.
+\begin{itemize}
+    \item \texttt{AdminDashboard.jsx}: Admin-specific dashboard showing user and system statistics.
+    \item \texttt{StudentDashboard.jsx}: Displays internship applications and updates for students.
+    \item \texttt{CompanyDashboard.jsx}: Allows recruiters to post and manage internships.
+    \item \texttt{CVBuilder.jsx}: Interface for students to create or upload CVs.
+    \item \texttt{InternshipApplication.jsx}: Page for applying to internships.
+\end{itemize}
+
+\subsection{context/}
+Implements global state management using React Context API.
+\begin{itemize}
+    \item \texttt{authContext.jsx}: Provides authentication state across the application.
+    \item \texttt{userContext.jsx}: Manages user data and roles globally.
+\end{itemize}
+
+\subsection{services/}
+Handles API interactions with the backend.
+\begin{itemize}
+    \item \texttt{api.js}: Functions for making HTTP requests (e.g., \texttt{getUser()}, \texttt{createInternship()}).
+\end{itemize}
+
+\subsection{assets/}
+Stores static files like images, icons, and fonts.
+
+\subsection{styles/}
+Contains global and component-specific styles.
+\begin{itemize}
+    \item \texttt{App.css}: Global styles for the application.
+\end{itemize}
+
+\subsection{tests/}
+Front-end test cases for React components and services.
+
+\usepackage{array}        % Usually included by default in many LaTeX distributions
+\usepackage{booktabs}     % Optional, for cleaner rules
+
+\subsection{API Endpoints Used}
+\begin{table}[h!]
+\centering
+\footnotesize                 % Make table text smaller
+\renewcommand{\arraystretch}{1.1} % Slightly increase row spacing (optional)
+\resizebox{\textwidth}{!}{%   % Force table to fit the text width
+\begin{tabular}{|p{3.8cm}|p{1.5cm}|p{2.8cm}|p{3.5cm}|p{6.5cm}|}
+\hline
+\textbf{Route} & \textbf{Method} & \textbf{Middleware} & \textbf{Controller} & \textbf{Description} \\ \hline
+/api/auth & Various & None & authRoutes & Handles authentication-related routes for students, recruiters, and administrators \\ \hline
+/api/internships & Various & authMiddleware & internshipRoutes & Manages internship-related operations (add, list, apply, schedule interviews) \\ \hline
+/api/users & Various & authMiddleware & userRoutes & Handles user-related operations (profiles, roles, recruiters) \\ \hline
+/api/cv & Various & authMiddleware & cvRoutes & Manages CV-related operations (create, update, fetch, delete) \\ \hline
+/api/recommendations & GET & authMiddleware & recommendationRoutes & Handles internship recommendations based on CV and profile data \\ \hline
+/api/messaging & Various & authMiddleware & messagingRoutes & Manages messaging and chat features between users \\ \hline
+/api/admin & Various & authMiddleware, roleMiddleware & adminRoutes & Admin operations such as managing users and roles \\ \hline
+/api/complaints & Various & authMiddleware & complaintRoutes & Handles creation, resolution, and retrieval of complaints \\ \hline
+/api/reports & Various & authMiddleware, roleMiddleware & reportRoutes & Provides usage statistics, user analytics, and downloadable reports \\ \hline
+/api/configurations & GET, PUT & authMiddleware & configurationRoutes & Manages application configurations and settings \\ \hline
+/api & ALL & logUsage & logUsage Middleware & Logs API usage data for analytics and tracking \\ \hline
+/health & GET & None & Inline Response & Health check for server status \\ \hline
+\end{tabular}
+}% end of resizebox
+\caption{API Endpoints Used}
+\label{tab:api_endpoints}
+\end{table}
+
+
+% Put everything in a rotated (landscape) environment
+\begin{landscape}
+
+% Use a smaller font (try \scriptsize or even \tiny if needed)
+\scriptsize
+\renewcommand{\arraystretch}{1.1} % Slightly increase row spacing
+
+% Column widths chosen so they sum comfortably under an A4 page in landscape
+% (approx 29.7cm wide minus 2cm total margin => ~27.7cm text width)
+\begin{longtable}{|
+  p{3cm}|
+  p{1.6cm}|
+  p{5.0cm}|
+  p{5.0cm}|
+  p{8.0cm}|
+}
+\caption{API Endpoints Overview}
+\label{tab:api_endpoints} \\
+
+% ======================== HEADERS & FOOTERS =========================
+\hline
+\textbf{Endpoint} & \textbf{Type} & \textbf{Params} & \textbf{Response Codes} & \textbf{Description} \\ 
+\hline
+\endfirsthead
+
+\multicolumn{5}{c}{\textbf{API Endpoints Overview} (continued)} \\[6pt]
+\hline
+\textbf{Endpoint} & \textbf{Type} & \textbf{Params} & \textbf{Response Codes} & \textbf{Description} \\
+\hline
+\endhead
+
+\hline
+\multicolumn{5}{r}{\scriptsize Continued on next page\ldots}\\
+\endfoot
+
+\hline
+\endlastfoot
+
+% ======================== TABLE CONTENT STARTS HERE =========================
+
+% Example row:
+\texttt{/users} &
+GET &
+\textbf{Query:} \{search, role\} &
+200: Success, 500: Server Error &
+Fetch all users with optional filters (search and role).\\ \hline
+
+\texttt{/users} &
+POST &
+\textbf{Body:} \{email, password, role, firstName, lastName\} &
+201: Created, 400: Validation Error &
+Add a new user to the system.\\ \hline
+
+\texttt{/users/:id} &
+PUT &
+\textbf{Body:} \{firstName, lastName, role, profile\} &
+200: Success, 404: User Not Found &
+Update an existing user's details.\\ \hline
+
+\texttt{/users/:id} &
+DELETE &
+\textbf{Path:} \{id\} &
+200: Deleted, 404: User Not Found &
+Delete a user by their ID.\\ \hline
+
+\texttt{/create-complaint} &
+POST &
+\textbf{Body:} \{title, description\} &
+201: Created, 500: Server Error &
+Create a new complaint for the current user.\\ \hline
+
+\texttt{/get-complaints} &
+GET &
+None &
+200: Success, 500: Server Error &
+Fetch all complaints (admin only).\\ \hline
+
+\texttt{/:complaintId/resolve} &
+PATCH &
+\textbf{Path:} \{complaintId\} &
+200: Resolved, 404: Complaint Not Found &
+Resolve a complaint by its ID (admin only).\\ \hline
+
+\texttt{/my-complaints} &
+GET &
+None &
+200: Success, 500: Server Error &
+Fetch complaints submitted by the current user.\\ \hline
+
+\texttt{/addinternship} &
+POST &
+\textbf{Body:} \{title, description, location, duration, stipend,
+requiredSkills, preferredSkills, experienceLevel, applicationDeadline\} &
+201: Created, 500: Server Error &
+Create a new internship (recruiter only).\\ \hline
+
+\texttt{/allinternships} &
+GET &
+None &
+200: Success, 500: Server Error &
+Fetch all available internships.\\ \hline
+
+\texttt{/:id/apply} &
+POST &
+\textbf{Path:} \{id\} &
+200: Applied, 404: Internship Not Found, 400: Already Applied &
+Apply for an internship (student only).\\ \hline
+
+\texttt{/recommended-internships} &
+GET &
+None &
+200: Success, 404: No CV Found &
+Fetch recommended internships based on the user's CV and profile.\\ \hline
+
+\texttt{/send} &
+POST &
+\textbf{Body:} \{conversationId, content\} &
+201: Created, 400: Validation Error &
+Send a new message within a conversation.\\ \hline
+
+\texttt{/start} &
+POST &
+\textbf{Body:} \{receiverId\} &
+201: Conversation Created, 400: Validation Error &
+Start a new conversation with another user.\\ \hline
+
+\texttt{/profile} &
+GET &
+None &
+200: Success, 500: Server Error &
+Fetch the current user's profile.\\ \hline
+
+\texttt{/profile} &
+PUT &
+\textbf{Body:} \{updates\} &
+200: Updated, 500: Server Error &
+Update the current user's profile.\\ \hline
+
+\texttt{/student/register} &
+POST &
+\textbf{Body:} \{email, password, firstName, lastName, profile\} &
+201: Registered, 400: Validation Error &
+Register a new student account.\\ \hline
+
+\texttt{/student/login} &
+POST &
+\textbf{Body:} \{email, password\} &
+200: Success, 401: Invalid Credentials &
+Login to a student account.\\ \hline
+
+\texttt{/company/register} &
+POST &
+\textbf{Body:} \{email, password, firstName, lastName, profile\} &
+201: Registered, 400: Validation Error &
+Register a new recruiter account.\\ \hline
+
+\texttt{/company/login} &
+POST &
+\textbf{Body:} \{email, password\} &
+200: Success, 401: Invalid Credentials &
+Login to a recruiter account.\\ \hline
+
+\texttt{/admin/register} &
+POST &
+\textbf{Body:} \{email, password, firstName, lastName\} &
+201: Registered, 400: Validation Error &
+Register a new admin account.\\ \hline
+
+\texttt{/admin/login} &
+POST &
+\textbf{Body:} \{email, password\} &
+200: Success, 401: Invalid Credentials &
+Login to an admin account.\\ \hline
+
+\multicolumn{5}{|l|}{\textbf{Configurations Endpoints}} \\ \hline
+
+\texttt{/} &
+GET &
+None &
+200: Success, 500: Server Error &
+Fetch all configurations.\\ \hline
+
+\texttt{/:type} &
+PUT &
+\textbf{Path:} \{type\}, \textbf{Body:} \{value\} &
+200: Updated, 500: Server Error &
+Update a specific configuration by type.\\ \hline
+
+\multicolumn{5}{|l|}{\textbf{CV Endpoints}} \\ \hline
+
+\texttt{/} &
+POST &
+\textbf{Body:} \{template, data, visibility\} &
+201: Created/Updated, 500: Server Error &
+Create or update a CV.\\ \hline
+
+\texttt{/latest} &
+GET &
+None &
+200: Success, 404: CV Not Found &
+Fetch the latest CV of the logged-in user.\\ \hline
+
+\texttt{/} &
+GET &
+None &
+200: Success, 404: CV Not Found &
+Fetch the logged-in user's CV.\\ \hline
+
+\texttt{/} &
+DELETE &
+None &
+200: Deleted, 404: CV Not Found &
+Delete the logged-in user's CV.\\ \hline
+
+\texttt{/update-visibility} &
+POST &
+\textbf{Body:} \{cvId, companyIds\} &
+200: Updated, 500: Server Error &
+Update the visibility of a CV for specific companies.\\ \hline
+
+\texttt{/:studentId} &
+GET &
+\textbf{Path:} \{studentId\} &
+200: Success, 404: CV Not Found &
+Fetch a specific student's CV by ID.\\ \hline
+
+\multicolumn{5}{|l|}{\textbf{Reports/Analytics Endpoints}} \\ \hline
+
+\texttt{/usage-statistics} &
+GET &
+None &
+200: Success, 500: Server Error &
+Fetch system usage statistics (admin only).\\ \hline
+
+\texttt{/user-analytics} &
+GET &
+None &
+200: Success, 500: Server Error &
+Fetch user analytics (admin only).\\ \hline
+
+\texttt{/download} &
+GET &
+\textbf{Query:} \{type\} &
+200: File Downloaded, 400: Missing Params, 500: Server Error &
+Download a specific report as a PDF.\\ \hline
+
+% ======================== TABLE CONTENT ENDS HERE =========================
+
+\end{longtable}
+
+\end{landscape}
