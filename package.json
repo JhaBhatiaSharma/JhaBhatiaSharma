@@ -1,54 +1,5 @@
 {
-  "name": "jha-bhatia-sharma",
-  "private": true,
-  "workspaces": [
-    "frontend",
-    "backend"
-  ],
-  "engines": {
-    "node": ">=20.0.0"
-  },
-  "scripts": {
-    "dev": "npm run dev --workspace=frontend",
-    "build": "npm run build --workspace=frontend",
-    "lint": "npm run lint --workspaces",
-    "lint:fix": "npm run lint:fix --workspaces",
-    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md,yml,yaml}\"",
-    "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json,md,yml,yaml}\"",
-    "prepare": "if [ -d \".git\" ] && [ -f \"node_modules/.bin/husky\" ]; then husky install; fi"
-  },
-  "devDependencies": {
-    "@commitlint/cli": "^17.8.1",
-    "@commitlint/config-conventional": "^17.8.1",
-    "eslint-config-prettier": "^8.0.0",
-    "eslint-plugin-prettier": "^4.0.0",
-    "husky": "^8.0.3",
-    "lint-staged": "^13.0.0",
-    "prettier": "^2.0.0"
-  },
-  "version": "1.0.0",
-  "description": "",
-  "main": "commitlint.config.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/shreeshjha/JhaBhatiaSharma.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/shreeshjha/JhaBhatiaSharma/issues"
-  },
-  "homepage": "https://github.com/shreeshjha/JhaBhatiaSharma#readme",
-  "lint-staged": {
-    "frontend/**/*.{js,jsx}": [
-      "cd frontend && eslint --fix"
-    ],
-    "backend/**/*.js": [
-      "cd backend && eslint --fix"
-    ],
-    "*.{json,md,yml,yaml}": [
-      "prettier --write"
-    ]
+  "dependencies": {
+    "mongoose": "^8.9.3"
   }
 }
