@@ -1,9 +1,9 @@
 module.exports = {
-  'frontend/**/*.{js,jsx}': [
-    'cd frontend && eslint --fix'
+  'DeliveryFolder/frontend/**/*.{js,jsx}': [
+    'cd DeliveryFolder/frontend && eslint --fix'
   ],
-  'backend/**/*.js': [
-    'cd backend && eslint --fix'
+  'DeliveryFolder/backend/**/*.js': [
+    'cd DeliveryFolder/backend && eslint --fix'
   ],
   '*.{json,md,yml,yaml}': [
     'prettier --write'

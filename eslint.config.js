@@ -4,7 +4,9 @@ export default [
   js.configs.recommended,
   {
     files: ['**/*.{js,jsx,mjs,cjs}'],
-    ignores: ['**/node_modules/**', '**/dist/**'],
+    ignores: ['**/node_modules/**', 
+      '**/DeliveryFolder/frontend/dist/**',
+      '**/DeliveryFolder/backend/node_modules/**'],
     languageOptions: {
       ecmaVersion: 'latest',
       sourceType: 'module',

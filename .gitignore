@@ -41,9 +41,9 @@ build/
 *.log
 
 # Dependency directories
-frontend/node_modules/
-backend/node_modules/
-backend/credentials/
+DeliveryFolder/frontend/node_modules/
+DeliveryFolder/backend/node_modules/
+DeliveryFolder/backend/credentials
 # Others
 *.lock
 package-lock.json

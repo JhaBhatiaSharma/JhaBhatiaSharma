@@ -3,14 +3,14 @@ version: '3.8'
 services:
   backend:
     build:
-      context: ./backend
+      context: ./DeliveryFolder/backend
       dockerfile: Dockerfile
     ports:
       - "5001:5001"
     env_file:
-      - ./backend/.env
+      - ./DeliveryFolder/backend/.env
     volumes:
-      - ./backend:/app:delegated
+      - ./DeliveryFolder/backend:/app:delegated
       - backend_node_modules:/app/node_modules
     command: ["npx", "nodemon", "server.js"]
     depends_on:
@@ -18,14 +18,14 @@ services:
 
   frontend:
     build:
-      context: ./frontend
+      context: ./DeliveryFolder/frontend
       dockerfile: Dockerfile
       args:
         TARGET: dev # Set default to development
     ports:
       - "5173:5173"
     volumes:
-      - ./frontend:/app:delegated
+      - ./DeliveryFolder/frontend:/app:delegated
       - frontend_node_modules:/app/node_modules
     command: ["npm", "run", "dev", "--", "--host"]
     depends_on:

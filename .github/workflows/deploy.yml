@@ -23,17 +23,17 @@ jobs:
           node-version: '20'
 
       - name: Install dependencies
-        working-directory: frontend
+        working-directory: DeliveryFolder/frontend
         run: npm install --no-package-lock  
 
       - name: Build project
-        working-directory: frontend
+        working-directory: DeliveryFolder/frontend
         run: npm run build
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: frontend/dist  # Ensure this is where Vite outputs the built files
+          path: DeliveryFolder/frontend/dist 
 
   deploy:
     needs: build

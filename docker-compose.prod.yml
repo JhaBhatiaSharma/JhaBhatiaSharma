@@ -3,7 +3,7 @@ version: '3.8'
 services:
   backend:
     build:
-      context: ./backend
+      context: ./DeliveryFolder/backend
       dockerfile: Dockerfile
     ports:
       - "5001:5001"
@@ -17,7 +17,7 @@ services:
 
   frontend:
     build:
-      context: ./frontend
+      context: ./DeliveryFolder/frontend
       dockerfile: Dockerfile
       args:
         TARGET: prod # Ensures frontend is built with Nginx
