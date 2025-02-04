@@ -95,7 +95,7 @@ cd JhaBhatiaSharma
 
 2. **Frontend Setup**
 ```bash
-cd frontend
+cd DeliveryFolder/frontend
 npm i
 ```
 
@@ -109,12 +109,12 @@ npm i
 
 ### Development Mode
 
-1. **Start Backend Server (from backend directory)**
+1. **Start Backend Server (from DeliveryFolder/backend directory)**
 ```bash
 npx nodemon server.js
 ```
 
-2. **Start Frontend (from backend directory)**
+2. **Start Frontend (from Delivery/frontend directory)**
 ```bash
 npm run dev
 ```
@@ -122,7 +122,7 @@ npm run dev
 3. **Production Build**
 ```bash
 # Frontend
-cd frontend
+cd Delivery/frontend
 npm run build
 
 # Backend
@@ -133,6 +133,7 @@ NODE_ENV=production node server.js
 ## 🐳 Docker Setup (Recommended)
 ```bash
 # Start full-stack application with hot-reload
+cd JhaBhatiaSharma
 docker-compose up --build
 ```
 
