@@ -1,0 +1,193 @@
+\section{Overview}
+\label{sec:overview}
+We adhered to the installation instructions found in \textbf{IT Document (ITD)v1}. The installation procedure was simple because of the comprehensive and well-organized guide. We encountered no problems throughout the installation, in contrast to other intricate setups. Every stage went without a hitch, and the system was successfully and consistently deployed.
+
+\section{Dependency Installation}
+\subsection{Backend Dependencies:}
+To install the backend, we followed these steps:
+
+\subsubsection{Installed Python and Virtual Environment}
+\begin{itemize}
+    \item Created a virtual environment and activated it using:
+\end{itemize}
+
+
+\begin{verbatim}
+python3 -m venv env
+source env/bin/activate  # For Linux/Mac  
+env\Scripts\activate  # For Windows  
+\end{verbatim}
+
+\subsubsection{Installed Required Python Packages}
+\begin{itemize}
+    \item Using the \texttt{requirements.txt} file from the repository:
+\end{itemize}
+
+\begin{verbatim}
+pip install -r requirements.txt
+\end{verbatim}
+
+\subsubsection{Installed Node.js and npm (For API Calls Testing)}
+\begin{itemize}
+    \item Installed Node.js (latest LTS version) and verified npm was installed properly:
+\end{itemize}
+
+\begin{verbatim}
+node -v
+npm -v
+\end{verbatim}
+
+\subsubsection{Installed MongoDB as the Database}
+\begin{itemize}
+    \item Since the backend uses MongoDB, we installed and ran it using:
+\end{itemize}
+
+\begin{verbatim}
+mongod --dbpath=/data/db
+\end{verbatim}
+
+\subsection{Frontend Dependencies}
+
+The frontend is built using React. The following dependencies were installed:
+
+\subsubsection{Installed React and Required Libraries}
+\begin{verbatim}
+npm install
+\end{verbatim}
+
+\subsubsection{Checked TailwindCSS and Other UI Libraries}
+\begin{itemize}
+    \item Verified TailwindCSS and Flowbite were installed correctly.
+\end{itemize}
+
+\subsection{Backend Dependencies}
+
+To install the backend, we followed these steps:
+
+\subsubsection{Installed Python and Virtual Environment}
+\begin{itemize}
+    \item Created a virtual environment and activated it using:
+\end{itemize}
+
+\begin{verbatim}
+python3 -m venv env
+source env/bin/activate  # For Linux/Mac  
+env\Scripts\activate  # For Windows  
+\end{verbatim}
+
+\subsubsection{Installed Required Python Packages}
+\begin{itemize}
+    \item Using the \texttt{requirements.txt} file from the repository:
+\end{itemize}
+
+\begin{verbatim}
+pip install -r requirements.txt
+\end{verbatim}
+
+\subsubsection{Installed Node.js and npm (For API Calls Testing)}
+\begin{itemize}
+    \item Installed Node.js (latest LTS version) and verified npm was installed properly:
+\end{itemize}
+
+\begin{verbatim}
+node -v
+npm -v
+\end{verbatim}
+
+\subsubsection{Installed MongoDB as the Database}
+\begin{itemize}
+    \item Since the backend uses MongoDB, we installed and ran it using:
+\end{itemize}
+
+\begin{verbatim}
+mongod --dbpath=/data/db
+\end{verbatim}
+
+\subsection{Frontend Dependencies}
+
+The frontend is built using React. The following dependencies were installed:
+
+\subsubsection*{Installed React and Required Libraries}
+\begin{verbatim}
+npm install
+\end{verbatim}
+
+\subsubsection*{Checked TailwindCSS and Other UI Libraries}
+\begin{itemize}
+    \item Verified TailwindCSS and Flowbite were installed correctly.
+\end{itemize}
+
+\section{Backend Installation}
+
+\subsection{Cloned the Repository}
+\begin{verbatim}
+git clone https://github.com/edogriba/GribaldoRosa.git
+cd ITD/backend
+\end{verbatim}
+
+\subsection{Started the Backend Server}
+Activated the virtual environment and ran the server:
+\begin{verbatim}
+source env/bin/activate  # For Linux/Mac
+python3 run.py
+\end{verbatim}
+
+\subsection{Database Initialization}
+Ran the \texttt{createDB.py} script to set up MongoDB collections.
+
+\section{Frontend Installation}
+
+\subsection{Navigated to the Frontend Directory}
+\begin{verbatim}
+cd ../frontend
+\end{verbatim}
+
+\subsection{Installed Frontend Dependencies}
+\begin{verbatim}
+npm install
+\end{verbatim}
+
+\subsection{Ran the Frontend Application}
+\begin{verbatim}
+npm start
+\end{verbatim}
+
+\subsection*{Accessed the Application on Localhost}
+Opened \texttt{http://localhost:3000} in a browser.
+
+\section*{Testing Environment Setup}
+
+\subsection{Tested API Endpoints using Postman}
+\begin{itemize}
+    \item All API requests responded as expected.
+\end{itemize}
+
+\subsection*{Tested User Registration \& Login}
+\begin{itemize}
+    \item Successfully created and logged in as a Student, Recruiter, and Admin.
+\end{itemize}
+
+\subsection{Internship Search \& Applications}
+\begin{itemize}
+    \item Verified that students could search and apply for internships.
+\end{itemize}
+
+\subsection{Messaging \& Complaints System}
+\begin{itemize}
+    \item Messages and complaints were successfully created and retrieved.
+\end{itemize}
+
+\section{Problems Encountered \& Documentation Incoherences}
+\begin{itemize}
+    \item \textbf{No Issues Faced During Installation.}
+    \item The provided IT Document (ITD) was clear and accurate, ensuring a smooth setup.
+    \item There were no missing dependencies or undocumented configurations.
+\end{itemize}
+
+\section{Observations}
+
+\begin{itemize}
+    \item Well-structured documentation made installation easy.
+    \item Database initialization was straightforward without requiring manual data imports.
+    \item No additional configurations were needed beyond those in the ITD.
+\end{itemize}

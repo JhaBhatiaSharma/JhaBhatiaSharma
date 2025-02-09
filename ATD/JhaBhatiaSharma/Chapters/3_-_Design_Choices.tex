@@ -1,0 +1,597 @@
+\section{Acceptance Test Cases}
+
+The \textbf{Students \& Companies (S\&C) platform} requirements are divided into two main categories:
+
+\begin{itemize}
+    \item \textbf{Core Requirements}: Fundamental system features that must be implemented and functional.
+    \item \textbf{Goal Reaching Requirements}: Additional functionalities mapped to user goals, improving usability and efficiency.
+\end{itemize}
+
+The following sections outline some important test cases, linking each requirement (R1, R2, etc.) from the \textit{RASD} document to its corresponding test.  
+\textbf{Overall: 23 Backend Tests.}
+
+\newpage
+\subsection{Core Requirements (Users)}
+
+\begin{table}[h]
+    \centering
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabular}{|c|p{4cm}|p{4cm}|p{4cm}|c|}
+        \hline
+        \textbf{Requirement} & \textbf{Test Description} & \textbf{Expected Outcome} & \textbf{Actual Outcome} & \textbf{Status} \\
+        \hline
+        R1 & Allow users to sign up. & Users can register successfully. & \ding{51} Works as expected. & \ding{51} Pass \\
+        \hline
+        R2 & Allow users to fill in profile information when signing up. & Profile data saved successfully. & \ding{51} Works as expected. & \ding{51} Pass \\
+        \hline
+        R3 & Allow users to log in. & Users can access their accounts. & \ding{51} Works as expected. & \ding{51} Pass \\
+        \hline
+        R4 & Allow users to log out. & Users are logged out securely. & \ding{51} Works as expected. & \ding{51} Pass \\
+        \hline
+        R5 & Allow users to update their profile information. & Profile updates are saved. & \ding{51} Works as expected. & \ding{51} Pass \\
+        \hline
+        R6 & Allow users to examine their own internships. & Users can see the internships they applied for. & \ding{51} Works as expected. & \ding{51} Pass \\
+        \hline
+    \end{tabular}
+    \caption{Core Requirements Test Cases for Users}
+    \label{tab:core_requirements}
+\end{table}
+
+\newpage
+\subsection{Student Requirements}
+
+\begin{table}[h]
+    \centering
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabular}{|c|p{3cm}|p{3cm}|p{3cm}|c|}
+        \hline
+        \textbf{Requirement} & \textbf{Test Description} & \textbf{Expected Outcome} & \textbf{Actual Outcome} & \textbf{Status} \\
+        \hline
+        R7 & Allow students to examine open internship positions. & Available internships are listed. & \ding{51} Works as expected. & \ding{51} Pass \\
+        \hline
+        R8 & Allow students to examine their own applications. & Applications and statuses are visible. & \ding{51} Works as expected. & \ding{51} Pass \\
+        \hline
+        R9 & Allow students to search for a specific internship position. & Search results match the criteria. & \ding{51} Works as expected. & \ding{51} Pass \\
+        \hline
+        R10 & Allow students to apply for an internship position. & Application is submitted successfully. & \ding{51} Works as expected. & \ding{51} Pass \\
+        \hline
+        R11 & Notify students when a suitable internship is opened. & Students receive notifications for relevant internships. & \ding{51} Works as expected. & \ding{51} Pass \\
+        \hline
+        R12 & List different internship positions aligned with student profiles. & Internships displayed match student skills. & \ding{51} Works as expected. & \ding{51} Pass \\
+        \hline
+    \end{tabular}
+    \caption{Student Requirements Test Cases}
+    \label{tab:student_requirements}
+\end{table}
+
+\newpage
+\subsection{Application Requirements}
+
+\begin{table}[h]
+    \centering
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabular}{|c|p{4cm}|p{4cm}|p{4.5cm}|c|}
+        \hline
+        \textbf{Requirement} & \textbf{Test Description} & \textbf{Expected Outcome} & \textbf{Actual Outcome} & \textbf{Status} \\
+        \hline
+        R13 & Allow students to confirm or refuse an accepted internship offer. & Students can accept/reject offers. & \ding{51} Works as expected. & \ding{51} Pass \\
+        \hline
+        R14 & Allow companies to request skill assessments and schedule interviews. & Recruiters can request interviews. & \ding{51} Works as expected. & \ding{51} Pass \\
+        \hline
+        R15 & Allow students to access interview details and links. & Interview details are available in the dashboard. & \ding{51} Works as expected. & \ding{51} Pass \\
+        \hline
+        R16 & Allow students to see the status of their applications. & Application status updates correctly. & \ding{51} Works as expected. & \ding{51} Pass \\
+        \hline
+    \end{tabular}
+    \caption{Application Requirements Test Cases}
+    \label{tab:application_requirements}
+\end{table}
+
+\newpage
+\subsection{Company Requirements}
+
+\begin{table}[h]
+    \centering
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabular}{|c|p{4cm}|p{3.5cm}|p{4cm}|c|}
+        \hline
+        \textbf{Requirement} & \textbf{Test Description} & \textbf{Expected Outcome} & \textbf{Actual Outcome} & \textbf{Status} \\
+        \hline
+        R17 & Allow companies to open and examine internship positions. & Companies can create and view internships. & \ding{51} Works as expected. & \ding{51} Pass \\
+        \hline
+        R18 & Allow companies to accept or reject applications. & Recruiters can update application statuses. & \ding{51} Works as expected. & \ding{51} Pass \\
+        \hline
+        R19 & Allow companies to close internship positions. & Internship status updates to "Closed." & \ding{51} Works as expected. & \ding{51} Pass \\
+        \hline
+        R20 & Notify companies when a new relevant student profile is available. & Recruiters receive notifications about matching students. & \ding{51} Works as expected. & \ding{51} Pass \\
+        \hline
+    \end{tabular}
+    \caption{Company Requirements Test Cases}
+    \label{tab:company_requirements}
+\end{table}
+
+\newpage
+\subsection{Feedback and Suggestions}
+\begin{table}[h]
+    \centering
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabular}{|c|p{4.5cm}|p{3.5cm}|p{4.5cm}|c|}
+        \hline
+        \textbf{Requirement} & \textbf{Test Description} & \textbf{Expected Outcome} & \textbf{Actual Outcome} & \textbf{Status} \\
+        \hline
+        R24 & Allow students and companies to rate the internship experience. & Ratings are recorded successfully. & \ding{51} Works as expected. & \ding{51} Pass \\
+        \hline
+        R25 & Allow students to provide feedback on the internship experience. & Students can submit feedback. & \ding{51} Works as expected. & \ding{51} Pass \\
+        \hline
+        R26 & Allow companies to send feedback/news to students. & Students receive feedback notifications. & \ding{51} Works as expected. & \ding{51} Pass \\
+        \hline
+        R27 & Allow both parties to file complaints about the internship. & Complaints are submitted and reviewed. & \ding{51} Works as expected. & \ding{51} Pass \\
+        \hline
+    \end{tabular}
+    \caption{Feedback and Suggestions Test Cases}
+    \label{tab:feedback_suggestions}
+\end{table}
+
+\subsection{Database Tests}
+
+The following tests verify the database operations for different modules in the \textbf{Students \& Companies (S\&C) platform}. These tests check insertion, retrieval, updates, and constraints for key entities.
+
+\subsubsection{Assessment Database Tests}
+
+\begin{table}[h]
+    \centering
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabular}{|p{5cm}|p{5cm}|p{4cm}|c|}
+        \hline
+        \textbf{Test Case} & \textbf{Description} & \textbf{Expected Outcome} & \textbf{Status} \\
+        \hline
+        Insert assessment & Add a new assessment record & \ding{51} Successfully inserted & \ding{51} Pass \\
+        \hline
+        Invalid insert & Insert invalid assessment data & \ding{55} Raises exception & \ding{51} Pass \\
+        \hline
+        Retrieve last assessment by application ID & Fetch last added assessment for an application & \ding{51} Retrieves latest assessment & \ding{51} Pass \\
+        \hline
+        Retrieve with invalid application ID & Query non-existent application ID & \ding{55} Returns None & \ding{51} Pass \\
+        \hline
+    \end{tabular}
+    \caption{Assessment Database Test Cases}
+    \label{tab:assessment_database_tests}
+\end{table}
+
+\subsubsection{Application Database Tests}
+
+\begin{table}[h]
+    \centering
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabular}{|p{5cm}|p{5cm}|p{4cm}|c|}
+        \hline
+        \textbf{Test Case} & \textbf{Description} & \textbf{Expected Outcome} & \textbf{Status} \\
+        \hline
+        Insert application & Add a new application entry & \ding{51} Successfully inserted & \ding{51} Pass \\
+        \hline
+        Invalid insert & Insert application with missing fields & \ding{55} Raises exception & \ding{51} Pass \\
+        \hline
+        Retrieve application by ID & Fetch an application record & \ding{51} Retrieves correct data & \ding{51} Pass \\
+        \hline
+        Retrieve application by student ID & Get applications for a student & \ding{51} Retrieves correct data & \ding{51} Pass \\
+        \hline
+        Retrieve application by internship ID & Get applications for an internship & \ding{51} Retrieves correct data & \ding{51} Pass \\
+        \hline
+        Update application status & Modify an application status & \ding{51} Status updates successfully & \ding{51} Pass \\
+        \hline
+    \end{tabular}
+    \caption{Application Database Test Cases}
+    \label{tab:application_database_tests}
+\end{table}
+
+\subsubsection{Company Database Tests}
+
+\begin{table}[h]
+    \centering
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabular}{|p{5cm}|p{5cm}|p{4cm}|c|}
+        \hline
+        \textbf{Test Case} & \textbf{Description} & \textbf{Expected Outcome} & \textbf{Status} \\
+        \hline
+        Insert company & Add a new company entry & \ding{51} Successfully inserted & \ding{51} Pass \\
+        \hline
+        Duplicate company insert & Try inserting a duplicate company & \ding{55} Raises exception & \ding{51} Pass \\
+        \hline
+        Retrieve company by ID & Fetch a company record & \ding{51} Retrieves correct data & \ding{51} Pass \\
+        \hline
+        Retrieve company by email & Fetch company details using email & \ding{51} Retrieves correct data & \ding{51} Pass \\
+        \hline
+        Update company details & Modify company profile data & \ding{51} Updates successfully & \ding{51} Pass \\
+        \hline
+    \end{tabular}
+    \caption{Company Database Test Cases}
+    \label{tab:company_database_tests}
+\end{table}
+
+\newpage
+\subsubsection{Complaint Database Tests}
+
+\begin{table}[h]
+    \centering
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabular}{|p{5cm}|p{5cm}|p{4cm}|c|}
+        \hline
+        \textbf{Test Case} & \textbf{Description} & \textbf{Expected Outcome} & \textbf{Status} \\
+        \hline
+        Insert complaint & Add a new complaint entry & \ding{51} Successfully inserted & \ding{51} Pass \\
+        \hline
+        Invalid insert & Insert complaint with missing fields & \ding{55} Raises exception & \ding{51} Pass \\
+        \hline
+        Retrieve complaints by internship ID & Fetch complaints for an internship & \ding{51} Retrieves correct data & \ding{51} Pass \\
+        \hline
+        Retrieve complaints for non-existent internship & Query complaints for a non-existent ID & \ding{55} Returns empty list & \ding{51} Pass \\
+        \hline
+    \end{tabular}
+    \caption{Complaint Database Test Cases}
+    \label{tab:complaint_database_tests}
+\end{table}
+
+\subsubsection{Internship Database Tests}
+
+\begin{table}[h]
+    \centering
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabular}{|p{5cm}|p{5cm}|p{4cm}|c|}
+        \hline
+        \textbf{Test Case} & \textbf{Description} & \textbf{Expected Outcome} & \textbf{Status} \\
+        \hline
+        Insert internship & Add a new internship entry & \ding{51} Successfully inserted & \ding{51} Pass \\
+        \hline
+        Invalid insert & Insert internship with missing fields & \ding{55} Raises exception & \ding{51} Pass \\
+        \hline
+        Retrieve internship by ID & Fetch internship details & \ding{51} Retrieves correct data & \ding{51} Pass \\
+        \hline
+        Retrieve internship by application ID & Fetch internship for a given application & \ding{51} Retrieves correct data & \ding{51} Pass \\
+        \hline
+        Retrieve internships by company ID & Fetch all internships posted by a company & \ding{51} Retrieves correct data & \ding{51} Pass \\
+        \hline
+        Update internship status & Modify internship state (e.g., ongoing, finished) & \ding{51} Updates successfully & \ding{51} Pass \\
+        \hline
+    \end{tabular}
+    \caption{Internship Database Test Cases}
+    \label{tab:internship_database_tests}
+\end{table}
+
+\newpage
+\subsubsection{Internship Position Database Tests}
+
+\begin{table}[h]
+    \centering
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabular}{|p{5cm}|p{5cm}|p{4cm}|c|}
+        \hline
+        \textbf{Test Case} & \textbf{Description} & \textbf{Expected Outcome} & \textbf{Status} \\
+        \hline
+        Insert internship position & Add a new internship listing & \ding{51} Successfully inserted & \ding{51} Pass \\
+        \hline
+        Invalid insert & Insert internship position with missing fields & \ding{55} Raises exception & \ding{51} Pass \\
+        \hline
+        Retrieve by ID & Fetch internship position details & \ding{51} Retrieves correct data & \ding{51} Pass \\
+        \hline
+        Retrieve by company ID & Fetch all internship positions for a company & \ding{51} Retrieves correct data & \ding{51} Pass \\
+        \hline
+        Retrieve by program name & Fetch internship positions by program name & \ding{51} Retrieves correct data & \ding{51} Pass \\
+        \hline
+        Search with filters & Filter internships by role, location, stipend & \ding{51} Retrieves filtered results & \ding{51} Pass \\
+        \hline
+        Update internship position status & Modify internship position state (e.g., Open, Closed) & \ding{51} Updates successfully & \ding{51} Pass \\
+        \hline
+    \end{tabular}
+    \caption{Internship Position Database Test Cases}
+    \label{tab:internship_position_database_tests}
+\end{table}
+
+\newpage
+\subsubsection{Student Database Tests}
+
+\begin{table}[h]
+    \centering
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabular}{|p{5cm}|p{5cm}|p{4cm}|c|}
+        \hline
+        \textbf{Test Case} & \textbf{Description} & \textbf{Expected Outcome} & \textbf{Status} \\
+        \hline
+        Insert student & Add a new student record & \ding{51} Successfully inserted & \ding{51} Pass \\
+        \hline
+        Retrieve by ID & Fetch student details & \ding{51} Retrieves correct data & \ding{51} Pass \\
+        \hline
+        Retrieve by email & Fetch student using email & \ding{51} Retrieves correct data & \ding{51} Pass \\
+        \hline
+        Update student profile & Modify student information & \ding{51} Updates successfully & \ding{51} Pass \\
+        \hline
+    \end{tabular}
+    \caption{Student Database Test Cases}
+    \label{tab:student_database_tests}
+\end{table}
+
+\newpage
+\subsubsection{University Database Tests}
+
+\begin{table}[h]
+    \centering
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabular}{|p{5cm}|p{5cm}|p{4cm}|c|}
+        \hline
+        \textbf{Test Case} & \textbf{Description} & \textbf{Expected Outcome} & \textbf{Status} \\
+        \hline
+        Insert university & Add a new university record & \ding{51} Successfully inserted & \ding{51} Pass \\
+        \hline
+        Retrieve by ID & Fetch university details & \ding{51} Retrieves correct data & \ding{51} Pass \\
+        \hline
+        Retrieve by email & Fetch university using email & \ding{51} Retrieves correct data & \ding{51} Pass \\
+        \hline
+        Update university details & Modify university profile information & \ding{51} Updates successfully & \ding{51} Pass \\
+        \hline
+    \end{tabular}
+    \caption{University Database Test Cases}
+    \label{tab:university_database_tests}
+\end{table}
+
+\newpage
+\subsubsection{User Database Tests}
+
+\begin{table}[h]
+    \centering
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabular}{|p{5cm}|p{5cm}|p{4cm}|c|}
+        \hline
+        \textbf{Test Case} & \textbf{Description} & \textbf{Expected Outcome} & \textbf{Status} \\
+        \hline
+        Insert user & Add a new user record & \ding{51} Successfully inserted & \ding{51} Pass \\
+        \hline
+        Duplicate user insert & Attempt to insert duplicate email & \ding{55} Raises exception & \ding{51} Pass \\
+        \hline
+        Check email uniqueness & Verify if an email is unique before registration & \ding{51} Returns correct boolean & \ding{51} Pass \\
+        \hline
+        Retrieve user type by email & Fetch account type of a user & \ding{51} Retrieves correct type & \ding{51} Pass \\
+        \hline
+        Retrieve user type by ID & Fetch account type using user ID & \ding{51} Retrieves correct type & \ding{51} Pass \\
+        \hline
+    \end{tabular}
+    \caption{User Database Test Cases}
+    \label{tab:user_database_tests}
+\end{table}
+
+\newpage
+\subsection{Model Tests}
+
+The following tests verify the model functionality within the \textbf{Students \& Companies (S\&C) platform}. These tests check class attributes, getters, setters, conversions to dictionary format, and integration with the database layer.
+
+\subsubsection{Assessment Model Tests}
+
+\begin{table}[h]
+    \centering
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabular}{|p{5cm}|p{5cm}|p{4cm}|c|}
+        \hline
+        \textbf{Test Case} & \textbf{Description} & \textbf{Expected Outcome} & \textbf{Status} \\
+        \hline
+        Get assessment ID & Retrieve the assessment ID & \ding{51} Returns correct ID & \ding{51} Pass \\
+        \hline
+        Get application ID & Retrieve associated application ID & \ding{51} Returns correct application ID & \ding{51} Pass \\
+        \hline
+        Get date & Retrieve assessment date & \ding{51} Returns correct date & \ding{51} Pass \\
+        \hline
+        Get link & Retrieve assessment link & \ding{51} Returns correct link & \ding{51} Pass \\
+        \hline
+        Convert to dictionary & Convert assessment object to dictionary format & \ding{51} Returns correct dict & \ding{51} Pass \\
+        \hline
+        Add assessment (valid) & Insert a new assessment & \ding{51} Successfully inserted & \ding{51} Pass \\
+        \hline
+        Add assessment (invalid) & Insert an assessment with error & \ding{55} Returns None & \ding{51} Pass \\
+        \hline
+        Get last assessment by application ID (valid) & Retrieve last assessment for a valid application & \ding{51} Returns correct assessment & \ding{51} Pass \\
+        \hline
+        Get last assessment by application ID (invalid) & Retrieve last assessment for a non-existent application & \ding{55} Returns None & \ding{51} Pass \\
+        \hline
+        Handle exception in get last assessment & Simulate an exception scenario & \ding{55} Raises exception & \ding{51} Pass \\
+        \hline
+    \end{tabular}
+    \caption{Assessment Model Test Cases}
+    \label{tab:assessment_model_tests}
+\end{table}
+
+\newpage
+\subsubsection{Application Model Tests}
+
+\begin{table}[h]
+    \centering
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabular}{|p{5cm}|p{5cm}|p{4cm}|c|}
+        \hline
+        \textbf{Test Case} & \textbf{Description} & \textbf{Expected Outcome} & \textbf{Status} \\
+        \hline
+        Get application ID & Retrieve application ID & \ding{51} Returns correct ID & \ding{51} Pass \\
+        \hline
+        Get student ID & Retrieve associated student ID & \ding{51} Returns correct ID & \ding{51} Pass \\
+        \hline
+        Get internship position ID & Retrieve associated internship position ID & \ding{51} Returns correct ID & \ding{51} Pass \\
+        \hline
+        Get status & Retrieve application status & \ding{51} Returns correct status & \ding{51} Pass \\
+        \hline
+        Convert to dictionary & Convert application object to dictionary format & \ding{51} Returns correct dict & \ding{51} Pass \\
+        \hline
+        Add application (valid) & Insert a new application & \ding{51} Successfully inserted & \ding{51} Pass \\
+        \hline
+        Add application (invalid) & Insert application with missing fields & \ding{55} Returns None & \ding{51} Pass \\
+        \hline
+        Retrieve by ID (valid) & Fetch application by valid ID & \ding{51} Returns correct data & \ding{51} Pass \\
+        \hline
+        Retrieve by ID (invalid) & Fetch application by non-existent ID & \ding{55} Returns None & \ding{51} Pass \\
+        \hline
+        Handle exception in get by ID & Simulate an exception in retrieval & \ding{55} Raises exception & \ding{51} Pass \\
+        \hline
+    \end{tabular}
+    \caption{Application Model Test Cases}
+    \label{tab:application_model_tests}
+\end{table}
+
+\newpage
+\subsubsection{University Model Tests}
+
+\begin{table}[h]
+    \centering
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabular}{|p{5cm}|p{5cm}|p{4cm}|c|}
+        \hline
+        \textbf{Test Case} & \textbf{Description} & \textbf{Expected Outcome} & \textbf{Status} \\
+        \hline
+        Get university ID & Retrieve the university ID & \ding{51} Returns correct ID & \ding{51} Pass \\
+        \hline
+        Get email & Retrieve email of the university & \ding{51} Returns correct email & \ding{51} Pass \\
+        \hline
+        Get university name & Retrieve the name of the university & \ding{51} Returns correct name & \ding{51} Pass \\
+        \hline
+        Convert to dictionary & Convert university object to dictionary format & \ding{51} Returns correct dict & \ding{51} Pass \\
+        \hline
+        Add university (valid) & Insert a new university & \ding{51} Successfully inserted & \ding{51} Pass \\
+        \hline
+        Add university (invalid) & Insert a university with missing fields & \ding{55} Returns None & \ding{51} Pass \\
+        \hline
+    \end{tabular}
+    \caption{University Model Test Cases}
+    \label{tab:university_model_tests}
+\end{table}
+
+\newpage
+\subsubsection{User Model Tests}
+
+\begin{table}[h]
+    \centering
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabular}{|p{5cm}|p{5cm}|p{4cm}|c|}
+        \hline
+        \textbf{Test Case} & \textbf{Description} & \textbf{Expected Outcome} & \textbf{Status} \\
+        \hline
+        Get user ID & Retrieve user ID & \ding{51} Returns correct ID & \ding{51} Pass \\
+        \hline
+        Get email & Retrieve user email & \ding{51} Returns correct email & \ding{51} Pass \\
+        \hline
+        Get user type & Retrieve user type (e.g., student, company) & \ding{51} Returns correct type & \ding{51} Pass \\
+        \hline
+        Validate correct password & Check correct password validation & \ding{51} Returns True & \ding{51} Pass \\
+        \hline
+        Validate incorrect password & Check incorrect password validation & \ding{55} Returns False & \ding{51} Pass \\
+        \hline
+        Get user type by email (valid) & Retrieve user type using email & \ding{51} Returns correct type & \ding{51} Pass \\
+        \hline
+    \end{tabular}
+    \caption{User Model Test Cases}
+    \label{tab:user_model_tests}
+\end{table}
+
+\subsection{Authentication Service Tests}
+
+These tests validate authentication-related functionalities, including validation of different input types, email uniqueness, and authentication attributes.
+
+\begin{longtable}{|p{5cm}|p{6cm}|p{3.5cm}|c|}
+    \hline
+    \textbf{Test Case} & \textbf{Description} & \textbf{Expected Outcome} & \textbf{Status} \\
+    \hline
+    \endfirsthead
+    
+    \hline
+    \textbf{Test Case} & \textbf{Description} & \textbf{Expected Outcome} & \textbf{Status} \\
+    \hline
+    \endhead
+    
+    \hline
+    \multicolumn{4}{|r|}{{Continued on next page}} \\
+    \hline
+    \endfoot
+    
+    \hline
+    \endlastfoot
+
+    String validation (valid) & Check if a valid string is detected correctly & \ding{51} Returns True & \ding{51} Pass \\
+    \hline
+    String validation (invalid) & Check if an integer is incorrectly treated as a string & \ding{55} Returns False & \ding{51} Pass \\
+    \hline
+    Integer validation (valid) & Validate correct integer inputs & \ding{51} Returns True & \ding{51} Pass \\
+    \hline
+    Integer validation (invalid) & Validate incorrect non-integer inputs & \ding{55} Returns False & \ding{51} Pass \\
+    \hline
+    Float validation (valid) & Validate correct float inputs & \ding{51} Returns True & \ding{51} Pass \\
+    \hline
+    Float validation (invalid) & Validate incorrect non-float inputs & \ding{55} Returns False & \ding{51} Pass \\
+    \hline
+    Email uniqueness check (valid) & Check if an unused email is detected correctly & \ding{51} Returns True & \ding{51} Pass \\
+    \hline
+    Email uniqueness check (invalid) & Check if an existing email is detected correctly & \ding{55} Returns False & \ding{51} Pass \\
+    \hline
+    Email uniqueness check (exception) & Handle exceptions during uniqueness check & \ding{55} Raises exception & \ding{51} Pass \\
+    \hline
+    Email format validation (valid) & Validate correct email formats & \ding{51} Returns True & \ding{51} Pass \\
+    \hline
+    Email format validation (invalid) & Validate incorrect email formats & \ding{55} Returns False & \ding{51} Pass \\
+    \hline
+    Phone number validation (valid) & Validate correct phone number formats & \ding{51} Returns True & \ding{51} Pass \\
+    \hline
+    Phone number validation (invalid) & Validate incorrect phone number formats & \ding{55} Returns False & \ding{51} Pass \\
+    \hline
+    Password validation (valid) & Validate strong passwords & \ding{51} Returns True & \ding{51} Pass \\
+    \hline
+    Password validation (invalid) & Validate weak passwords & \ding{55} Returns False & \ding{51} Pass \\
+    \hline
+    URL validation (valid) & Validate correct URLs & \ding{51} Returns True & \ding{51} Pass \\
+    \hline
+    URL validation (invalid) & Validate incorrect URLs & \ding{55} Returns False & \ding{51} Pass \\
+    \hline
+    Location validation (valid) & Validate correct locations & \ding{51} Returns True & \ding{51} Pass \\
+    \hline
+    Location validation (invalid) & Validate incorrect locations & \ding{55} Returns False & \ding{51} Pass \\
+    \hline
+    Name validation (valid) & Validate correct names & \ding{51} Returns True & \ding{51} Pass \\
+    \hline
+    Name validation (invalid) & Validate incorrect names & \ding{55} Returns False & \ding{51} Pass \\
+    \hline
+    Degree program validation (valid) & Validate correct degree programs & \ding{51} Returns True & \ding{51} Pass \\
+    \hline
+    Degree program validation (invalid) & Validate incorrect degree programs & \ding{55} Returns False & \ding{51} Pass \\
+    \hline
+    GPA validation (valid) & Validate correct GPA values & \ding{51} Returns True & \ding{51} Pass \\
+    \hline
+    GPA validation (invalid) & Validate incorrect GPA values & \ding{55} Returns False & \ding{51} Pass \\
+    \hline
+    Graduation year validation (valid) & Validate correct graduation years & \ding{51} Returns True & \ding{51} Pass \\
+    \hline
+    Graduation year validation (invalid) & Validate incorrect graduation years & \ding{55} Returns False & \ding{51} Pass \\
+    \hline
+    Path validation (valid) & Validate correct paths & \ding{51} Returns True & \ding{51} Pass \\
+    \hline
+    Path validation (invalid) & Validate incorrect paths & \ding{55} Returns False & \ding{51} Pass \\
+    \hline
+    Optional path validation (valid) & Validate correct optional paths & \ding{51} Returns True & \ding{51} Pass \\
+    \hline
+    Optional path validation (invalid) & Validate incorrect optional paths & \ding{55} Returns False & \ding{51} Pass \\
+    \hline
+\end{longtable}
+\caption{Authentication Service Test Cases}
+\label{tab:authentication_service_tests}
+
+\section{Additional Notes}
+
+The code is well-structured, with thorough validation tests covering various input scenarios. It ensures proper handling of valid and invalid data types across different authentication and validation functions.
+
+The test suite effectively verifies different edge cases, exceptions, and expected behaviors, demonstrating a responsible and systematic approach to software quality assurance.
+
+The immediate solution to any encountered issues, such as downloading individual data, highlights the team's problem-solving skills and commitment to collaboration.
+
+The tested group was highly responsive, addressing queries with prompt and detailed explanations, showing a strong understanding of their system.
+
+\section{Areas for Improvement}
+
+\subsection{Meta-Testing (Tests for Tests)}
+While the current test suite is comprehensive, additional meta-tests could be implemented to verify the effectiveness and completeness of the test cases themselves. This would help ensure that:
+\begin{itemize}
+    \item Test functions actually cover all possible edge cases.
+    \item Expected failures occur where intended.
+    \item Mocks and patches behave correctly.
+\end{itemize}
+
+Implementing **meta-testing** would add an extra layer of validation to the test framework, reinforcing the reliability and robustness of the software testing process.
