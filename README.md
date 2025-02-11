@@ -8,6 +8,7 @@
 
 **InternHub Students & Companies (S&C)** is a full-stack platform revolutionizing university-industry connections for internships. Our solution combines intelligent matching algorithms with comprehensive workflow management to enhance the internship experience for all stakeholders.
 
+**The Project is deployed here and can be tested out to check if  features are working or not: https://jhabhatiasharma.github.io/login**
 # 🎥 Prototype Demo
 This repository contains interactive prototype demos for different dashboards.
 
